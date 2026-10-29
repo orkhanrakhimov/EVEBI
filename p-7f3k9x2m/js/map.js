@@ -148,6 +148,32 @@
   $("fastOnly").addEventListener("change",render);
   $("showUnknown").addEventListener("change",render);
 
+  /* ---------- locate me ---------- */
+  var userPos=null,meMarker=null;
+  function nearestInfo(){
+    if(!userPos)return;
+    var best=null;
+    stations.forEach(function(s){if(!passes(s))return;var d=hav(userPos,[s.lat,s.lon]);if(!best||d<best.d)best={s:s,d:d}});
+    if(best)$("status").textContent="უახლოესი სადგური: "+best.s.name+", "+(best.d<10?best.d.toFixed(1):Math.round(best.d))+" კმ";
+  }
+  $("locate").addEventListener("click",function(){
+    var b=$("locate");
+    if(!navigator.geolocation){alert("ეს ბრაუზერი მდებარეობას ვერ განსაზღვრავს.");return}
+    b.textContent="ვეძებთ…";
+    navigator.geolocation.getCurrentPosition(function(p){
+      userPos=[p.coords.latitude,p.coords.longitude];
+      if(meMarker)map.removeLayer(meMarker);
+      meMarker=L.marker(userPos,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[16,16],iconAnchor:[8,8]})}).addTo(map);
+      map.setView(userPos,12);
+      var f=$("from");if(!f.querySelector('option[value="__me"]')){var o=document.createElement("option");o.value="__me";o.textContent="ჩემი მდებარეობა";f.insertBefore(o,f.firstChild)}
+      f.value="__me";
+      nearestInfo();b.textContent="ჩემი მდებარეობა";
+    },function(err){
+      b.textContent="ჩემი მდებარეობა";
+      $("status").textContent=err&&err.code===1?"მდებარეობაზე წვდომა დაბლოკილია. ბრაუზერის პარამეტრებში ჩართე ლოკაციის უფლება ამ საიტისთვის.":"მდებარეობის განსაზღვრა ვერ მოხერხდა. სცადე თავიდან.";
+    },{enableHighAccuracy:true,timeout:12000,maximumAge:60000});
+  });
+
   /* ---------- route ---------- */
   var names=Object.keys(CITIES);
   [$("from"),$("to")].forEach(function(sel,i){names.forEach(function(n){var o=document.createElement("option");o.value=n;o.textContent=n;sel.appendChild(o)});sel.value=i===0?"თბილისი":"ბათუმი"});
@@ -216,7 +242,7 @@
       var st=plan.stops[parseInt(li.getAttribute("data-i"),10)];map.setView([st.s.lat,st.s.lon],13)})});
   }
   $("goRoute").addEventListener("click",function(){
-    var a=CITIES[$("from").value],b=CITIES[$("to").value];
+    var a=$("from").value==="__me"?userPos:CITIES[$("from").value],b=CITIES[$("to").value];
     if(!a||!b||$("from").value===$("to").value){$("routeOut").innerHTML='<div class="warn">აირჩიე ორი სხვადასხვა ადგილი.</div>';return}
     var btn=$("goRoute");btn.disabled=true;btn.textContent="მარშრუტი ითვლება…";
     var url="https://router.project-osrm.org/route/v1/driving/"+a[1]+","+a[0]+";"+b[1]+","+b[0]+"?overview=full&geometries=geojson";

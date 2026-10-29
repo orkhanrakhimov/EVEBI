@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="css/map.css?v=3">
+<link rel="stylesheet" href="css/map.css?v=4">
 </head>
 <body class="mapbody">
 <header class="mbar">
@@ -31,7 +31,7 @@
     </div>
 
     <section class="tp on" id="tp-stations">
-      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 3 · რუკა: OpenStreetMap</p>
+      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 4 · რუკა: OpenStreetMap</p>
       <p class="lab">კონექტორი</p>
       <div class="chips" id="connChips">
         <button class="chip" data-k="ccs">CCS2</button>
@@ -65,10 +65,11 @@
     </section>
   </aside>
   <div id="map" role="application" aria-label="დამტენი სადგურების რუკა"></div>
+  <button class="loc" id="locate" aria-label="ჩემი მდებარეობა" title="ჩემი მდებარეობა">ჩემი მდებარეობა</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<script src="js/map.js?v=3"></script>
+<script src="js/map.js?v=4"></script>
 </body>
 </html>
