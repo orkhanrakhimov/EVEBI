@@ -1,5 +1,6 @@
+@font-face{font-family:"MS Block";src:url("assets/msblock.woff") format("woff");font-display:swap}
 :root{
-  --ink:#0b0d10; --panel:#14181c; --line:#262c33; --paper:#f5f3ef; --white:#fff;
+  --ink:#111111; --panel:#14181c; --line:#262c33; --paper:#f5f3ef; --white:#fff;
   --red:#d2354a; --red-d:#b3202f; --red-t:#ff6b7a; --pink:#ffd9dd;
   --body:#454b52; --muted:#737a82; --body-d:#c5cbd1;
 }
@@ -11,10 +12,10 @@ a{color:inherit}
 .wrap{width:min(1120px,100% - 40px);margin-inline:auto}
 
 /* nav */
-.nav{position:sticky;top:0;z-index:10;background:rgba(11,13,16,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{position:sticky;top:0;z-index:10;background:#111;border-bottom:1px solid var(--line)}
 .nav-in{display:flex;align-items:center;gap:28px;height:64px}
 .brand{display:flex;align-items:center}
-.brand img{height:34px;width:auto;border-radius:6px}
+.brand img{height:34px;width:auto}
 .nav nav{display:flex;gap:22px;margin-left:auto}
 .nav nav a{color:var(--body-d);text-decoration:none;font-size:15px}
 .nav nav a:hover{color:#fff}
@@ -51,6 +52,7 @@ a{color:inherit}
 .sec.alt{background:var(--white)}
 .sec.dark{background:var(--ink);color:#fff}
 .sec.red{background:var(--red-d);color:#fff}
+.stats strong{font-family:"MS Block","Sylfaen","Noto Sans Georgian",system-ui,sans-serif}
 h2{font-size:clamp(28px,4vw,42px);line-height:1.2;font-weight:800;max-width:20ch}
 .sub{margin-top:16px;font-size:18px;color:var(--body-d);max-width:52ch}
 .sub.dk{color:var(--body)}
@@ -84,7 +86,7 @@ h2{font-size:clamp(28px,4vw,42px);line-height:1.2;font-weight:800;max-width:20ch
 
 footer{background:var(--ink);color:var(--muted);padding:28px 0;font-size:14px}
 .foot{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.foot img{height:26px;width:auto;border-radius:4px}
+.foot img{height:26px;width:auto}
 
 @media(max-width:900px){
   .cards.four{grid-template-columns:repeat(2,1fr)}
