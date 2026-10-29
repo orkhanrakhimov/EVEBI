@@ -15,8 +15,8 @@
 
   /* ---------- map ---------- */
   var map=L.map("map",{zoomControl:true,preferCanvas:true}).setView([42.0,43.7],7);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{
-    attribution:"&copy; OpenStreetMap, &copy; CARTO",subdomains:"abcd",maxZoom:19}).addTo(map);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    attribution:"&copy; OpenStreetMap contributors",maxZoom:19,className:"dark-tiles"}).addTo(map);
   var cluster=L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:50});
   map.addLayer(cluster);
   var routeLayer=L.layerGroup().addTo(map);

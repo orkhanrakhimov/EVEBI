@@ -68,3 +68,7 @@ body.mapbody{background:var(--black);color:var(--milk);font-family:var(--font);f
   .panel{border-right:0;border-top:1px solid var(--line)}
   .mbar nav a:not(:last-child){display:none}
 }
+
+.dark-tiles{filter:invert(100%) hue-rotate(180deg) brightness(.92) contrast(.88) saturate(.35)}
+.leaflet-control-attribution{background:rgba(15,16,18,.8)!important;color:#8b9199!important}
+.leaflet-control-attribution a{color:#c5cad0!important}
