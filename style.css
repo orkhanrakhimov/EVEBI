@@ -1,6 +1,0 @@
-@font-face{font-family:"MS Block";src:url("assets/msblock.woff") format("woff");font-display:swap}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{background:#111;color:#fff;font-family:"Sylfaen","Noto Sans Georgian",system-ui,sans-serif}
-.start{min-height:100%;display:grid;place-items:center;padding:24px}
-.start img{width:min(420px,70vw);height:auto}
