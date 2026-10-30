@@ -1,3 +1,3 @@
 # EVEBI
 
-Website for evebi.ge: EV videos, podcast, news and guides for Georgia.
+Website for evebi.ge: EV charging map and tools for Georgia.
