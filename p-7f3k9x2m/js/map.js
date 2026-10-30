@@ -14,7 +14,9 @@
   var DC={ccs:1,chademo:1,gbt:1};
 
   /* ---------- map ---------- */
-  var map=L.map("map",{zoomControl:true,preferCanvas:true}).setView([42.0,43.7],7);
+  var map=L.map("map",{zoomControl:false,preferCanvas:true}).setView([42.0,43.7],7);
+  if(L.control&&L.control.zoom)L.control.zoom({position:"topright"}).addTo(map);
+  $("grab").addEventListener("click",function(){$("panel").classList.toggle("min")});
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
     attribution:"&copy; OpenStreetMap contributors",maxZoom:19,className:"dark-tiles"}).addTo(map);
   var cluster=L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:50});

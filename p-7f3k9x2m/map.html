@@ -10,16 +10,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="css/map.css?v=5">
+<link rel="stylesheet" href="css/map.css?v=6">
 </head>
 <body class="mapbody">
-<header class="mbar">
-  <a href="index.html" aria-label="EVEBI"><img src="assets/logo.png" alt="EVEBI"></a>
-  <nav aria-label="მენიუ"><a href="index.html">მთავარი</a></nav>
-</header>
+
 
 <div class="shell">
   <aside class="panel" id="panel">
+    <button class="grab" id="grab" aria-label="პანელის გაშლა/დაკეცვა"><span></span></button>
+    <div class="brand"><a href="index.html" aria-label="EVEBI მთავარი"><img src="assets/logo.png" alt="EVEBI"></a><a class="home" href="index.html">მთავარი</a></div>
     <div class="tabs" role="tablist">
       <button role="tab" class="tab on" data-t="stations" aria-selected="true">სადგურები</button>
       <button role="tab" class="tab" data-t="route" aria-selected="false">მარშრუტი</button>
@@ -27,7 +26,7 @@
     </div>
 
     <section class="tp on" id="tp-stations">
-      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 5 · რუკა: OpenStreetMap</p>
+      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 6 · რუკა: OpenStreetMap</p>
       <p class="lab">კონექტორი</p>
       <div class="chips" id="connChips">
         <button class="chip" data-k="ccs">CCS2</button>
@@ -74,6 +73,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<script src="js/map.js?v=5"></script>
+<script src="js/map.js?v=6"></script>
 </body>
 </html>
