@@ -206,3 +206,10 @@ button{font:inherit;color:inherit}
 .menu button,.menu a{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.06);padding:14px 18px;color:var(--milk);font-size:15.5px;text-decoration:none;cursor:pointer}
 .menu button:last-child,.menu a:last-child{border-bottom:0}
 .menu button:hover,.menu a:hover{background:var(--card)}
+
+/* v10 */
+.pin{width:34px;height:34px;border:0;border-radius:50%;background:transparent;cursor:pointer;flex:none;display:grid;place-items:center;color:var(--grey)}
+.pin:hover{background:var(--card);color:var(--milk)}
+.pin svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#map.picking,#map.picking .leaflet-grab{cursor:crosshair}
+.chart .el{fill:rgba(255,255,255,.1);stroke:none}

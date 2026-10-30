@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="css/map.css?v=9">
+<link rel="stylesheet" href="css/map.css?v=10">
 </head>
 <body class="mapbody">
 <div class="shell">
@@ -45,8 +45,10 @@
     </div>
     <label class="chk"><input type="checkbox" id="fastOnly"> მხოლოდ სწრაფი (DC)</label>
     <label class="chk"><input type="checkbox" id="showUnknown" checked> სადგურები, სადაც კონექტორი არ არის მითითებული</label>
+    <div class="f" style="margin-top:12px"><label for="minKw">მინიმალური სიმძლავრე</label><select id="minKw"><option value="0">ნებისმიერი</option><option value="22">22 კვტ+</option><option value="50">50 კვტ+</option><option value="100">100 კვტ+</option><option value="150">150 კვტ+</option></select></div>
+    <div class="f"><label for="opSel">ქსელი / კომპანია</label><select id="opSel"><option value="">ყველა</option></select></div>
     <p class="hint">მონაცემები OpenStreetMap-იდანაა და შეიძლება არასრული იყოს. <a href="mailto:contact@evebi.ge?subject=რუკის შესწორება">მოგვწერე</a>, თუ შეცდომას დაინახავ.</p>
-    <p class="hint" style="margin-top:6px">ვერსია 9 · რუკა: OpenStreetMap</p>
+    <p class="hint" style="margin-top:6px">ვერსია 10 · რუკა: OpenStreetMap</p>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
@@ -118,6 +120,7 @@
       <div class="list">
         <button class="row" data-go="vehicle"><span>მანქანა</span><i>›</i></button>
         <button class="row" data-go="charging"><span>დატენვა</span><i>›</i></button>
+        <button class="row" data-go="places"><span>სახლი და სამსახური</span><i>›</i></button>
       </div>
       <div class="list">
         <button class="row" data-go="saved"><span>შენახული მარშრუტები</span><i>›</i></button>
@@ -148,6 +151,13 @@
       <p class="hint">ცვლილებები ინახება ავტომატურად.</p>
     </section>
 
+    <section class="view" id="v-places">
+      <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>სახლი და სამსახური</h2><span></span></div>
+      <p class="hint" style="margin-top:0">შენახული მისამართები ჩანს ძებნის სიაში, როცა მარშრუტს ადგენ.</p>
+      <div class="f"><label for="homeIn">სახლი</label><div class="sbox"><input id="homeIn" type="search" autocomplete="off" placeholder="მისამართი"><div class="sugg" id="homeInS" hidden></div></div></div>
+      <div class="f"><label for="workIn">სამსახური</label><div class="sbox"><input id="workIn" type="search" autocomplete="off" placeholder="მისამართი"><div class="sugg" id="workInS" hidden></div></div></div>
+    </section>
+
     <section class="view" id="v-saved">
       <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>შენახული მარშრუტები</h2><span></span></div>
       <div id="savedList"></div>
@@ -157,6 +167,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<script src="js/map.js?v=9"></script>
+<script src="js/map.js?v=10"></script>
 </body>
 </html>
