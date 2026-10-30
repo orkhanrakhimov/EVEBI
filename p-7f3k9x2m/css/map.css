@@ -1,4 +1,5 @@
-:root{--black:#0f1012;--panel:#121315;--card:#26282c;--card2:#1c1e21;--line:#2e3238;--grey:#8b9199;--milk:#f3f1eb;--red:#d2354a;--red-d:#b3202f;--font:"Noto Sans Georgian","Sylfaen",system-ui,sans-serif}
+@font-face{font-family:"LGV Baxy";src:url("../assets/fonts/LGV-Baxy-Regular.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+10D0-10FF,U+10A0-10CF,U+2D00-2D2F}
+:root{--black:#0f1012;--panel:#121315;--card:#26282c;--card2:#1c1e21;--line:#2e3238;--grey:#8b9199;--milk:#f3f1eb;--red:#d2354a;--red-d:#b3202f;--font:"LGV Baxy","Sylfaen",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body.mapbody{background:var(--black);color:var(--milk);font-family:var(--font);font-size:15px;line-height:1.5;overflow:hidden}
