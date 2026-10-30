@@ -49,7 +49,7 @@
     document.querySelectorAll(".view").forEach(function(x){x.classList.toggle("on",x.id==="v-"+v)});
     $("panel").classList.remove("min");
     var el=$("v-"+v);if(el)el.scrollTop=0;
-    if(v==="car"){$("pickList").hidden=false;$("pickConn").hidden=true}
+    if(v==="car")pickShow("brands");
     if(v==="dest")renderDests();
     if(v==="saved")renderSaved();
     if(v==="vehicle")fillVehicle();
@@ -71,20 +71,40 @@
     if(e.target.closest("[data-savesoc]")){saveSet();saveGarage();toast("შენახულია")}
   });
   $("grab").addEventListener("click",function(){$("panel").classList.toggle("min")});
-  $("btnMenu").addEventListener("click",function(){show("settings")});
+  function menuOpen(o){$("menu").hidden=!o;$("btnMenu").setAttribute("aria-expanded",o?"true":"false")}
+  $("btnMenu").addEventListener("click",function(e){e.stopPropagation();menuOpen($("menu").hidden)});
+  $("menu").addEventListener("click",function(e){
+    var b=e.target.closest("[data-m]");if(!b){menuOpen(false);return}
+    var m=b.getAttribute("data-m");menuOpen(false);
+    if(m==="filter"){$("filters").hidden=false;return}
+    viewStack=["home"];show(m);
+  });
+  document.addEventListener("click",function(e){if(!$("menu").hidden&&!e.target.closest(".topbtns"))menuOpen(false)});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")menuOpen(false)});
 
   /* ---------- car box ---------- */
-  var CAR_SVG='<svg class="carsvg" viewBox="0 0 240 90" aria-hidden="true"><path d="M10 64Q12 50 42 45L74 27Q82 22 98 22H150Q166 22 176 32L196 45Q230 49 232 64V69Q232 73 226 73H14Q8 73 8 69Z" fill="#d9d6cf"/><path d="M82 30 100 27H148Q158 27 165 34L180 45H70Z" fill="#2a2c30"/><circle cx="58" cy="72" r="16" fill="#111"/><circle cx="58" cy="72" r="8" fill="#5b5f66"/><circle cx="186" cy="72" r="16" fill="#111"/><circle cx="186" cy="72" r="8" fill="#5b5f66"/></svg>';
+  var BODY={
+    fastback:{b:"M8 78V64Q8 56 24 53L60 48Q80 28 108 24H138Q158 24 172 36L194 48L224 54Q234 57 234 66V78Z",w:"M86 46Q96 31 112 29H136Q150 29 160 38L172 46Z",d:"M118 29V46"},
+    suv:{b:"M8 78V56Q8 48 18 46L34 43L44 26Q48 14 62 12H146Q160 12 170 22L190 44L222 50Q234 53 234 64V78Z",w:"M54 42L60 22Q62 17 70 17H146Q154 17 160 24L176 42Z",d:"M108 17V42"},
+    hatch:{b:"M10 78V58Q10 50 22 48L44 45Q54 28 76 24H128Q152 24 166 38L190 48L220 53Q232 56 232 66V78Z",w:"M64 45Q70 31 84 29H126Q142 29 154 40L164 46Z",d:"M106 29V46"}
+  };
+  var svgN=0;
+  function carSvg(body){
+    var s=BODY[body]||BODY.fastback,id="g"+(++svgN);
+    return '<svg class="carsvg" viewBox="0 0 240 100" aria-hidden="true"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f2ec"/><stop offset=".5" stop-color="#d2cec5"/><stop offset="1" stop-color="#8f8c86"/></linearGradient></defs>'+
+      '<ellipse cx="121" cy="94" rx="110" ry="5" fill="rgba(0,0,0,.4)"/><path d="'+s.b+'" fill="url(#'+id+')"/><path d="'+s.w+'" fill="#1b1d21" opacity=".93"/><path d="'+s.d+'" stroke="#d2cec5" stroke-width="2.5" opacity=".85"/>'+
+      '<circle cx="56" cy="78" r="17" fill="#0f1012"/><circle cx="56" cy="78" r="8.5" fill="#6b6f77"/><circle cx="186" cy="78" r="17" fill="#0f1012"/><circle cx="186" cy="78" r="8.5" fill="#6b6f77"/></svg>';
+  }
   function sliderPct(sl){sl.style.setProperty("--p",((sl.value-5)/95*100)+"%")}
   function renderCarBoxes(){
     document.querySelectorAll("[data-box]").forEach(function(b){
       if(!garage.saved){
-        b.innerHTML='<h3>მანქანა არ არის არჩეული</h3>'+CAR_SVG+'<button class="light wide" data-pick>აირჩიე მანქანა</button>';
+        b.innerHTML='<h3>მანქანა არ არის არჩეული</h3>'+carSvg()+'<button class="light wide" data-pick>აირჩიე მანქანა</button>';
         return;
       }
       var ro=b.classList.contains("ro");
       b.innerHTML='<div class="ch"><h3>'+esc(garage.name||"ჩემი მანქანა")+'</h3>'+(ro?'':'<button class="gear" data-go="vehicle" aria-label="მანქანის პარამეტრები"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></button>')+'</div>'+
-        '<div class="cmeta">'+garage.kwh+' კვტსთ · ~'+Math.round(rangeOf(garage))+' კმ'+(garage.conn?' · '+CONN[garage.conn]:'')+'</div>'+CAR_SVG+
+        '<div class="cmeta">'+garage.kwh+' კვტსთ · ~'+Math.round(rangeOf(garage))+' კმ'+(garage.conn?' · '+CONN[garage.conn]:'')+'</div>'+carSvg(garage.body)+
         (ro?'':'<div class="soc"><span class="battico"></span><b data-socv>'+S.soc+'%</b></div><input class="slider" type="range" min="5" max="100" step="1" value="'+S.soc+'" aria-label="ბატარეა გასვლისას">'+
         '<div class="two"><button class="soft" data-pick>შეცვლა</button><button class="light" data-savesoc>შენახვა</button></div>');
       var sl=b.querySelector(".slider");
@@ -96,37 +116,55 @@
     });
   }
 
-  /* ---------- car picker ---------- */
-  var pending=null;
-  function loadCars(){
-    fetch("data/cars.json").then(function(r){return r.json()}).then(function(j){CARS=j.cars||[];buildPick()}).catch(function(){});
+  /* ---------- car picker: brand -> model -> connector ---------- */
+  var pending=null,pickStep="brands";
+  function pickShow(step){
+    pickStep=step;
+    $("pickBrands").hidden=step!=="brands";$("pickModels").hidden=step!=="models";$("pickConn").hidden=step!=="conn";
+    var el=$("v-car");if(el)el.scrollTop=0;
   }
-  function buildPick(){
+  function loadCars(){
+    fetch("data/cars.json").then(function(r){return r.json()}).then(function(j){CARS=j.cars||[];buildBrands()}).catch(function(){});
+  }
+  function buildBrands(){
+    var box=$("brandList");box.innerHTML="";
+    var seen={},order=[];CARS.forEach(function(c){if(!seen[c.brand]){seen[c.brand]=[];order.push(c.brand)}seen[c.brand].push(c)});
+    order.forEach(function(br){
+      var b=document.createElement("button");b.className="bcard";
+      b.innerHTML=carSvg(seen[br][0].body)+'<b>'+esc(br)+'</b><span>'+seen[br].length+' მოდელი</span>';
+      b.addEventListener("click",function(){buildModels(br,seen[br])});
+      box.appendChild(b);
+    });
+  }
+  function buildModels(br,list){
+    $("brandName").textContent=br;
     var box=$("carList");box.innerHTML="";
-    CARS.forEach(function(c){
+    list.forEach(function(c){
       var b=document.createElement("button");b.className="car";
-      b.innerHTML='<b>'+esc(c.name)+'</b><span>'+c.kwh+' კვტსთ · ~'+Math.round(c.kwh/c.cons*100)+' კმ</span>';
+      b.innerHTML='<div class="ct"><b>'+esc(c.model)+'</b><span>'+c.kwh+' კვტსთ · ~'+Math.round(c.kwh/c.cons*100)+' კმ</span></div>'+carSvg(c.body);
       b.addEventListener("click",function(){
-        pending=c;$("pickName").textContent=c.name;$("pickList").hidden=true;$("pickConn").hidden=false;
+        pending=c;$("pickName").textContent=c.name;$("pickCar").innerHTML=carSvg(c.body);pickShow("conn");
         var sel=c.conn||"";document.querySelectorAll("#pickChips .chip").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-k")===sel)});
         $("pickGo").disabled=!sel;$("pickGo").setAttribute("data-k",sel);
       });
       box.appendChild(b);
     });
+    pickShow("models");
   }
   document.querySelectorAll("#pickChips .chip").forEach(function(ch){ch.addEventListener("click",function(){
     document.querySelectorAll("#pickChips .chip").forEach(function(x){x.classList.toggle("on",x===ch)});
     $("pickGo").setAttribute("data-k",ch.getAttribute("data-k"));$("pickGo").disabled=false;
   })});
-  $("pickBack").addEventListener("click",function(){$("pickList").hidden=false;$("pickConn").hidden=true});
+  $("modelsBack").addEventListener("click",function(){pickShow("brands")});
+  $("pickBack").addEventListener("click",function(){pickShow("models")});
   $("pickGo").addEventListener("click",function(){
     if(!pending)return;
-    garage={carId:pending.id,name:pending.name,kwh:pending.kwh,cons:pending.cons,dc:pending.dc,deg:0,conn:$("pickGo").getAttribute("data-k"),saved:true};
+    garage={carId:pending.id,name:pending.name,body:pending.body,kwh:pending.kwh,cons:pending.cons,dc:pending.dc,deg:0,conn:$("pickGo").getAttribute("data-k"),saved:true};
     saveGarage();applyGarageFilter();
     viewStack=["home"];show("home",false);
   });
   $("pickOther").addEventListener("click",function(){
-    garage={carId:"other",name:"ჩემი მანქანა",kwh:60,cons:17,dc:100,deg:0,conn:"",saved:true};
+    garage={carId:"other",name:"ჩემი მანქანა",body:"fastback",kwh:60,cons:17,dc:100,deg:0,conn:"",saved:true};
     saveGarage();viewStack=["home","settings"];show("vehicle");
   });
   function applyGarageFilter(){

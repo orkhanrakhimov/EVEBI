@@ -10,14 +10,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="css/map.css?v=8">
+<link rel="stylesheet" href="css/map.css?v=9">
 </head>
 <body class="mapbody">
 <div class="shell">
   <div id="map" role="application" aria-label="დამტენი სადგურების რუკა"></div>
 
   <div class="topbtns">
-    <button class="rbtn" id="btnMenu" aria-label="პარამეტრები" title="პარამეტრები"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <button class="rbtn" id="btnMenu" aria-label="მენიუ" title="მენიუ" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <nav class="menu" id="menu" hidden aria-label="მენიუ">
+      <button data-m="vehicle">მანქანა</button>
+      <button data-m="charging">დატენვის პარამეტრები</button>
+      <button data-m="saved">შენახული მარშრუტები</button>
+      <button data-m="filter">სადგურების ფილტრი</button>
+      <a href="index.html">მთავარი გვერდი</a>
+      <a href="mailto:contact@evebi.ge?subject=EVEBI რუკა">მოგვწერე</a>
+    </nav>
   </div>
   <div class="botbtns">
     <button class="rbtn" id="btnFilter" aria-label="სადგურების ფილტრი" title="სადგურების ფილტრი"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></button>
@@ -38,7 +46,7 @@
     <label class="chk"><input type="checkbox" id="fastOnly"> მხოლოდ სწრაფი (DC)</label>
     <label class="chk"><input type="checkbox" id="showUnknown" checked> სადგურები, სადაც კონექტორი არ არის მითითებული</label>
     <p class="hint">მონაცემები OpenStreetMap-იდანაა და შეიძლება არასრული იყოს. <a href="mailto:contact@evebi.ge?subject=რუკის შესწორება">მოგვწერე</a>, თუ შეცდომას დაინახავ.</p>
-    <p class="hint" style="margin-top:6px">ვერსია 8 · რუკა: OpenStreetMap</p>
+    <p class="hint" style="margin-top:6px">ვერსია 9 · რუკა: OpenStreetMap</p>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
@@ -58,14 +66,18 @@
 
     <!-- CAR PICKER -->
     <section class="view" id="v-car">
-      <div id="pickList">
-        <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>აირჩიე მანქანა</h2><span></span></div>
-        <p class="hint" style="margin:0 0 14px">მარშრუტი შენს მანქანაზე მოირგება.</p>
-        <div class="carlist" id="carList"></div>
+      <div id="pickBrands">
+        <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>აირჩიე მარკა</h2><span></span></div>
+        <div class="brands" id="brandList"></div>
         <button class="alt" id="pickOther">ჩემი მანქანა სიაში არ არის</button>
+      </div>
+      <div id="pickModels" hidden>
+        <div class="vhead"><button class="bk" id="modelsBack" aria-label="უკან">←</button><h2 id="brandName"></h2><span></span></div>
+        <div class="carlist" id="carList"></div>
       </div>
       <div id="pickConn" hidden>
         <div class="vhead"><button class="bk" id="pickBack" aria-label="უკან">←</button><h2 id="pickName"></h2><span></span></div>
+        <div class="pickcar" id="pickCar"></div>
         <p class="hint" style="margin:0 0 14px">რომელი კონექტორი აქვს შენს მანქანას? იმპორტის ქვეყნის მიხედვით განსხვავდება (ჩინეთიდან ხშირად GB/T).</p>
         <div class="chips" id="pickChips">
           <button class="chip" data-k="ccs">CCS2</button><button class="chip" data-k="type2">Type 2</button><button class="chip" data-k="chademo">CHAdeMO</button><button class="chip" data-k="tesla">Tesla</button><button class="chip" data-k="gbt">GB/T</button>
@@ -145,6 +157,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<script src="js/map.js?v=8"></script>
+<script src="js/map.js?v=9"></script>
 </body>
 </html>

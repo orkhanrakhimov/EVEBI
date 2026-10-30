@@ -44,7 +44,7 @@ button{font:inherit;color:inherit}
 .gear:hover{background:rgba(255,255,255,.08)}
 .gear svg,.rbtn svg,.soft svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .cmeta{color:var(--grey);font-size:13.5px}
-.carsvg{display:block;width:62%;margin:2px 0 6px auto}
+.carsvg{display:block;width:62%;margin:2px 0 6px auto;overflow:visible}
 .soc{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;margin-bottom:10px}
 .battico{display:inline-block;width:24px;height:12px;border:2px solid var(--milk);border-radius:3px;position:relative}
 .battico:after{content:"";position:absolute;right:-5px;top:2px;width:3px;height:4px;background:var(--milk);border-radius:0 2px 2px 0}
@@ -91,7 +91,9 @@ button{font:inherit;color:inherit}
 
 /* ---------- car picker ---------- */
 .carlist{display:grid;gap:8px}
-.car{display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:var(--card);border:1px solid transparent;padding:13px 16px;border-radius:16px;cursor:pointer}
+.car{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;background:var(--card);border:1px solid transparent;padding:12px 14px 12px 18px;border-radius:18px;cursor:pointer;width:100%}
+.car .ct{display:flex;flex-direction:column;min-width:0}
+.car .carsvg{width:46%;margin:0;flex:none}
 .car:hover{border-color:var(--red)}
 .car b{font-size:15.5px}
 .car span{color:var(--grey);font-size:13px}
@@ -191,3 +193,16 @@ button{font:inherit;color:inherit}
   .leaflet-top.leaflet-right{margin-top:62px}
   .toast{bottom:auto;top:76px}
 }
+
+/* v9: brands grid, menu */
+.brands{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bcard{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--card);border:1px solid transparent;border-radius:18px;padding:14px;cursor:pointer;text-align:left}
+.bcard:hover{border-color:var(--red)}
+.bcard .carsvg{width:100%;margin:0 0 8px}
+.bcard b{font-size:16px}.bcard span{color:var(--grey);font-size:13px}
+.pickcar{background:var(--card);border-radius:20px;padding:18px 16px 10px;margin-bottom:14px}
+.pickcar .carsvg{width:80%;margin:0 auto}
+.menu{position:absolute;right:0;top:56px;width:250px;background:var(--panel);border:1px solid rgba(255,255,255,.09);border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.65);overflow:hidden}
+.menu button,.menu a{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.06);padding:14px 18px;color:var(--milk);font-size:15.5px;text-decoration:none;cursor:pointer}
+.menu button:last-child,.menu a:last-child{border-bottom:0}
+.menu button:hover,.menu a:hover{background:var(--card)}
