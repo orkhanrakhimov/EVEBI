@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="css/map.css?v=6">
+<link rel="stylesheet" href="css/map.css?v=7">
 </head>
 <body class="mapbody">
 
@@ -19,14 +19,33 @@
   <aside class="panel" id="panel">
     <button class="grab" id="grab" aria-label="პანელის გაშლა/დაკეცვა"><span></span></button>
     <div class="brand"><a href="index.html" aria-label="EVEBI მთავარი"><img src="assets/logo.png" alt="EVEBI"></a><a class="home" href="index.html">მთავარი</a></div>
+    <div class="carcard" id="carCard" hidden></div>
     <div class="tabs" role="tablist">
       <button role="tab" class="tab on" data-t="stations" aria-selected="true">სადგურები</button>
       <button role="tab" class="tab" data-t="route" aria-selected="false">მარშრუტი</button>
       <button role="tab" class="tab" data-t="garage" aria-selected="false">ჩემი გარაჟი</button>
     </div>
 
-    <section class="tp on" id="tp-stations">
-      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 6 · რუკა: OpenStreetMap</p>
+    <section class="tp" id="tp-pick">
+      <div id="pickList">
+        <h2 class="ptitle">რა მანქანა გაქვს?</h2>
+        <p class="hint" style="margin:0 0 14px">აირჩიე და რუკა მარშრუტს შენს მანქანაზე მოარგებს.</p>
+        <div class="carlist" id="carList"></div>
+        <button class="alt" id="pickOther">ჩემი მანქანა სიაში არ არის</button>
+      </div>
+      <div id="pickConn" hidden>
+        <button class="back" id="pickBack">← უკან</button>
+        <h2 class="ptitle" id="pickName"></h2>
+        <p class="hint" style="margin:0 0 14px">რომელი კონექტორი აქვს შენს მანქანას? იმპორტის ქვეყნის მიხედვით განსხვავდება (ჩინეთიდან ხშირად GB/T).</p>
+        <div class="chips" id="pickChips">
+          <button class="chip" data-k="ccs">CCS2</button><button class="chip" data-k="type2">Type 2</button><button class="chip" data-k="chademo">CHAdeMO</button><button class="chip" data-k="tesla">Tesla</button><button class="chip" data-k="gbt">GB/T</button>
+        </div>
+        <button class="go" id="pickGo" disabled>გაგრძელება</button>
+      </div>
+    </section>
+
+    <section class="tp" id="tp-stations">
+      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 7 · რუკა: OpenStreetMap</p>
       <p class="lab">კონექტორი</p>
       <div class="chips" id="connChips">
         <button class="chip" data-k="ccs">CCS2</button>
@@ -41,7 +60,6 @@
     </section>
 
     <section class="tp" id="tp-route">
-      <p class="lab" id="carLine"></p>
       <div class="f"><label for="from">საიდან</label><select id="from"></select></div>
       <div class="f"><label for="to">სად</label><select id="to"></select></div>
       <div class="f"><label for="startPct">ბატარეა გასვლისას, %</label><input id="startPct" type="number" min="10" max="100" step="1" value="90"></div>
@@ -73,6 +91,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<script src="js/map.js?v=6"></script>
+<script src="js/map.js?v=7"></script>
 </body>
 </html>

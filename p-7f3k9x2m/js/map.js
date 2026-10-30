@@ -161,7 +161,7 @@
       CARS=j.cars||[];
       CARS.forEach(function(c){var o=document.createElement("option");o.value=c.id;o.textContent=c.name;sel.appendChild(o)});
       var o=document.createElement("option");o.value="other";o.textContent="სხვა მანქანა (ხელით)";sel.appendChild(o);
-      fillGarage();
+      fillGarage();buildPick();
     }).catch(function(){
       var o=document.createElement("option");o.value="other";o.textContent="სხვა მანქანა (ხელით)";sel.appendChild(o);fillGarage();
     });
@@ -174,8 +174,48 @@
   });
   ["gKwh","gCons"].forEach(function(id){$(id).addEventListener("input",rangeOut)});
   function carLine(){
-    $("carLine").textContent=garage.saved?("მანქანა: "+(garage.name||"ჩემი მანქანა")+", ბატარეა "+garage.kwh+" კვტსთ, დაახლოებით "+Math.round(rangeOf(garage))+" კმ"+(garage.conn?", "+CONN[garage.conn]:"")):"მანქანა არ არის შენახული: ვიყენებთ საშუალო მანქანას (60 კვტსთ). აირჩიე მოდელი „ჩემი გარაჟი“ ჩანართში.";
+    var c=$("carCard");
+    if(!garage.saved){c.hidden=true;return}
+    c.hidden=false;
+    c.innerHTML='<div><b>'+esc(garage.name||"ჩემი მანქანა")+'</b><span>'+garage.kwh+' კვტსთ · დაახლოებით '+Math.round(rangeOf(garage))+' კმ'+(garage.conn?' · '+CONN[garage.conn]:'')+'</span></div><button id="changeCar">შეცვლა</button>';
+    $("changeCar").addEventListener("click",enterPick);
   }
+  /* ---- first step: choose the car ---- */
+  var pending=null;
+  function showTab(t){var b=document.querySelector('.tab[data-t="'+t+'"]');if(b)b.click()}
+  function enterPick(){
+    $("panel").classList.add("onboard");$("panel").classList.remove("min");$("carCard").hidden=true;
+    document.querySelectorAll(".tp").forEach(function(x){x.classList.remove("on")});
+    $("tp-pick").classList.add("on");$("pickList").hidden=false;$("pickConn").hidden=true;
+  }
+  function exitPick(tab){
+    $("panel").classList.remove("onboard");$("tp-pick").classList.remove("on");carLine();showTab(tab);
+  }
+  function buildPick(){
+    var box=$("carList");box.innerHTML="";
+    CARS.forEach(function(c){
+      var b=document.createElement("button");b.className="car";
+      b.innerHTML='<b>'+esc(c.name)+'</b><span>'+c.kwh+' კვტსთ · ~'+Math.round(c.kwh/c.cons*100)+' კმ</span>';
+      b.addEventListener("click",function(){
+        pending=c;$("pickName").textContent=c.name;$("pickList").hidden=true;$("pickConn").hidden=false;
+        var sel=c.conn||"";document.querySelectorAll("#pickChips .chip").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-k")===sel)});
+        $("pickGo").disabled=!sel;$("pickGo").setAttribute("data-k",sel);
+      });
+      box.appendChild(b);
+    });
+  }
+  document.querySelectorAll("#pickChips .chip").forEach(function(ch){ch.addEventListener("click",function(){
+    document.querySelectorAll("#pickChips .chip").forEach(function(x){x.classList.toggle("on",x===ch)});
+    $("pickGo").setAttribute("data-k",ch.getAttribute("data-k"));$("pickGo").disabled=false;
+  })});
+  $("pickBack").addEventListener("click",function(){$("pickList").hidden=false;$("pickConn").hidden=true});
+  $("pickGo").addEventListener("click",function(){
+    if(!pending)return;
+    garage={carId:pending.id,name:pending.name,kwh:pending.kwh,cons:pending.cons,dc:pending.dc,conn:$("pickGo").getAttribute("data-k"),res:15,saved:true};
+    store.set("evebi_garage",JSON.stringify(garage));
+    fillGarage();applyGarageFilter();exitPick("route");
+  });
+  $("pickOther").addEventListener("click",function(){exitPick("garage")});
   $("saveGarage").addEventListener("click",function(){
     var k=parseFloat($("gKwh").value),c=parseFloat($("gCons").value),dc=parseFloat($("gDc").value),res=parseFloat($("gRes").value);
     if(!(k>=10&&k<=200)||!(c>=8&&c<=40)){$("gMsg").textContent="აირჩიე მოდელი ან ჩაწერე ბატარეა (10–200 კვტსთ) და ხარჯი (8–40).";return}
@@ -183,7 +223,7 @@
     garage={carId:id,name:car?car.name:($("gName").value.trim()||"ჩემი მანქანა"),kwh:k,cons:c,dc:(dc>=3?dc:50),conn:$("gConn").value,res:(res>=5&&res<=40)?res:15,saved:true};
     store.set("evebi_garage",JSON.stringify(garage));
     $("gMsg").textContent="შენახულია.";
-    carLine();applyGarageFilter();
+    carLine();applyGarageFilter();showTab("route");
   });
   function applyGarageFilter(){
     if(!garage.conn)return;
@@ -332,4 +372,5 @@
   });
 
   loadGarage();loadCars();carLine();init();loadPartners();applyGarageFilter();
+  if(garage.saved)showTab("route");else enterPick();
 })();
