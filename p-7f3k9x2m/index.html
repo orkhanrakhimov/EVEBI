@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="css/map.css?v=4">
+<link rel="stylesheet" href="css/map.css?v=5">
 </head>
 <body class="mapbody">
 <header class="mbar">
@@ -31,7 +31,7 @@
     </div>
 
     <section class="tp on" id="tp-stations">
-      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 4 · რუკა: OpenStreetMap</p>
+      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 5 · რუკა: OpenStreetMap</p>
       <p class="lab">კონექტორი</p>
       <div class="chips" id="connChips">
         <button class="chip" data-k="ccs">CCS2</button>
@@ -49,17 +49,25 @@
       <p class="lab" id="carLine"></p>
       <div class="f"><label for="from">საიდან</label><select id="from"></select></div>
       <div class="f"><label for="to">სად</label><select id="to"></select></div>
+      <div class="f"><label for="startPct">ბატარეა გასვლისას, %</label><input id="startPct" type="number" min="10" max="100" step="1" value="90"></div>
+      <div class="f"><label for="cond">პირობები</label>
+        <select id="cond"><option value="1">ჩვეულებრივი მგზავრობა</option><option value="1.2">ზამთარი ან მაღალი სიჩქარე (+20% ხარჯი)</option><option value="1.3">მთა: გუდაური, მესტია (+30% ხარჯი)</option></select></div>
       <button class="go" id="goRoute">გამოთვალე მარშრუტი</button>
       <div id="routeOut" aria-live="polite"></div>
     </section>
 
     <section class="tp" id="tp-garage">
       <p class="hint" style="margin-top:0">მანქანის მონაცემი ინახება მხოლოდ შენს ბრაუზერში. მარშრუტი და ფილტრი მათ იყენებს.</p>
-      <div class="f"><label for="gName">მანქანა</label><input id="gName" type="text" placeholder="მაგ: BYD Seal"></div>
-      <div class="f"><label for="gRange">რეალური დიაპაზონი, კმ</label><input id="gRange" type="number" min="50" max="1000" step="10" placeholder="300"></div>
+      <div class="f"><label for="gCar">მანქანის მოდელი</label><select id="gCar"><option value="">აირჩიე მოდელი</option></select></div>
+      <div class="f" id="gNameWrap" hidden><label for="gName">სახელი</label><input id="gName" type="text" placeholder="მაგ: ჩემი მანქანა"></div>
+      <div class="f"><label for="gKwh">ბატარეა (სასარგებლო), კვტსთ</label><input id="gKwh" type="number" min="10" max="200" step="1" placeholder="60"></div>
+      <div class="f"><label for="gCons">რეალური ხარჯი, კვტსთ / 100 კმ</label><input id="gCons" type="number" min="8" max="40" step="0.5" placeholder="17"></div>
+      <div class="f"><label for="gDc">მაქს. სწრაფი დატენვა, კვტ</label><input id="gDc" type="number" min="3" max="400" step="1" placeholder="100"></div>
       <div class="f"><label for="gConn">კონექტორი</label>
-        <select id="gConn"><option value="">არ მაქვს არჩეული</option><option value="ccs">CCS2</option><option value="type2">Type 2</option><option value="chademo">CHAdeMO</option><option value="tesla">Tesla</option><option value="gbt">GB/T</option></select></div>
+        <select id="gConn"><option value="">არ მაქვს არჩეული</option><option value="ccs">CCS2</option><option value="type2">Type 2</option><option value="chademo">CHAdeMO</option><option value="tesla">Tesla</option><option value="gbt">GB/T</option></select>
+        <p class="hint" style="margin:6px 0 0">იმპორტის ქვეყნის მიხედვით კონექტორი განსხვავდება (ჩინეთიდან ხშირად GB/T). შეამოწმე შენი.</p></div>
       <div class="f"><label for="gRes">მარაგი, % (ამდენზე ნაკლები არ გინდა დარჩეს)</label><input id="gRes" type="number" min="5" max="40" step="1" value="15"></div>
+      <p class="sub" id="gRangeOut"></p>
       <button class="go" id="saveGarage">შენახვა</button>
       <p class="hint" id="gMsg"></p>
     </section>
@@ -70,6 +78,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<script src="js/map.js?v=4"></script>
+<script src="js/map.js?v=5"></script>
 </body>
 </html>

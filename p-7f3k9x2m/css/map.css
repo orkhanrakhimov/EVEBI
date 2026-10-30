@@ -77,3 +77,6 @@ body.mapbody{background:var(--black);color:var(--milk);font-family:var(--font);f
 .loc:hover{background:var(--red-d)}
 .me{width:16px;height:16px;border-radius:50%;background:#4aa3ff;border:3px solid #fff;box-shadow:0 0 0 6px rgba(74,163,255,.3)}
 @media(max-width:820px){.loc{bottom:auto;top:calc(56px + 12px);right:12px}}
+.dot.official{width:20px;height:20px;margin:-3px;background:#f3f1eb;border:4px solid var(--red);box-shadow:0 0 0 4px rgba(210,53,74,.35)}
+.pop .badge{display:inline-block;background:var(--red);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:6px}
+.stops li div span{display:block}

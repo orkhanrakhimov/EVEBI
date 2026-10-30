@@ -52,8 +52,13 @@
     if(s.cap)rows.push("ადგილები: "+esc(s.cap));
     if(s.fee)rows.push("ფასიანია: "+esc(s.fee==="yes"?"დიახ":s.fee==="no"?"არა":s.fee));
     if(s.hours)rows.push("საათები: "+esc(s.hours));
+    if(s.partner){
+      if(s.price)rows.push("ფასი: "+esc(s.price)+" ლარი/კვტსთ");
+      if(s.pay)rows.push("გადახდა: "+esc(s.pay));
+      if(s.phone)rows.push("ტელ: "+esc(s.phone));
+    }
     var mail="mailto:contact@evebi.ge?subject="+encodeURIComponent("რუკის შესწორება: "+s.name)+"&body="+encodeURIComponent("სადგური: "+s.name+"\nკოორდინატები: "+s.lat.toFixed(5)+", "+s.lon.toFixed(5)+"\nრა უნდა შეიცვალოს: ");
-    return '<div class="pop"><h4>'+esc(s.name)+'</h4>'+rows.map(function(r){return '<div class="row">'+r+'</div>'}).join("")+tags+
+    return '<div class="pop"><h4>'+esc(s.name)+'</h4>'+(s.partner?'<div class="badge">ოფიციალური მონაცემი</div>':'')+rows.map(function(r){return '<div class="row">'+r+'</div>'}).join("")+tags+
       '<br><a class="rep" href="'+mail+'">შეცდომაა ან ინფორმაცია აკლია?</a></div>';
   }
 
@@ -74,13 +79,13 @@
     stations.forEach(function(s){
       if(!passes(s))return;
       n++;
-      var icon=L.divIcon({className:"",html:'<div class="dot'+(s.fast?' fast':'')+'"></div>',iconSize:[14,14],iconAnchor:[7,7]});
+      var icon=L.divIcon({className:"",html:'<div class="dot'+(s.fast?' fast':'')+(s.partner?' official':'')+'"></div>',iconSize:[14,14],iconAnchor:[7,7]});
       var m=L.marker([s.lat,s.lon],{icon:icon,title:s.name});
       m.bindPopup(function(){return popup(s)});
       markers.push(m);
     });
     cluster.addLayers(markers);
-    $("status").textContent=stations.length?("ნაჩვენებია "+n+" სადგური "+stations.length+"-დან"):$("status").textContent;
+    $("status").textContent=stations.length?("ნაჩვენებია "+n+" სადგური "+stations.length+"-დან"+(partners.length?" (მათგან "+partners.length+" ოფიციალური)":"")):$("status").textContent;
   }
 
   /* ---------- load stations ---------- */
@@ -92,10 +97,27 @@
       .then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json()})
       .catch(function(){return loadFrom(i+1)});
   }
+  var partners=[],osmEls=[];
   function setStations(els){
+    osmEls=els;rebuild();
+  }
+  function rebuild(){
     var seen={};
-    stations=els.map(parseStation).filter(function(s){if(!s||seen[s.id])return false;seen[s.id]=1;return true});
+    var osm=osmEls.map(parseStation).filter(function(s){if(!s||seen[s.id])return false;seen[s.id]=1;return true});
+    osm=osm.filter(function(s){return !partners.some(function(p){return hav([p.lat,p.lon],[s.lat,s.lon])<0.08})});
+    stations=osm.concat(partners);
     render();
+  }
+  function loadPartners(){
+    fetch("data/partners.json?v="+Date.now()).then(function(r){return r.ok?r.json():[]}).then(function(a){
+      partners=(Array.isArray(a)?a:[]).filter(function(p){return p&&typeof p.lat==="number"&&typeof p.lon==="number"}).map(function(p){
+        var conns={},dc=false;Object.keys(p.conns||{}).forEach(function(k){if(CONN[k]&&p.conns[k]){conns[k]=true;if(DC[k])dc=true}});
+        var pw=parseFloat(p.power)||0;
+        return {id:"p-"+(p.id||p.name),lat:p.lat,lon:p.lon,name:p.name||"დამტენი სადგური",operator:p.operator||"",conns:conns,known:Object.keys(conns).length>0,
+          power:pw,fast:dc||pw>=40,fee:"",hours:p.hours||"",cap:p.plugs||"",addr:p.addr||"",partner:true,price:p.price||"",pay:p.pay||"",phone:p.phone||""};
+      });
+      if(stations.length||osmEls.length)rebuild();
+    }).catch(function(){});
   }
   function init(){
     var cached=null,ts=0;
@@ -114,16 +136,49 @@
   }
 
   /* ---------- garage ---------- */
-  var garage={name:"",range:300,conn:"",res:15};
-  function loadGarage(){try{var g=JSON.parse(store.get("evebi_garage")||"null");if(g)garage=Object.assign(garage,g)}catch(e){}}
-  function fillGarage(){$("gName").value=garage.name||"";$("gRange").value=garage.saved?garage.range:"";$("gConn").value=garage.conn||"";$("gRes").value=garage.res}
+  var garage={carId:"",name:"",kwh:0,cons:0,dc:0,conn:"",res:15,saved:false};
+  var CARS=[];
+  function rangeOf(g){return g.kwh&&g.cons?g.kwh/g.cons*100:0}
+  function loadGarage(){try{var g=JSON.parse(store.get("evebi_garage")||"null");
+    if(g){ if(!g.kwh&&g.range){g.kwh=Math.round(g.range*0.17);g.cons=17;g.dc=g.dc||50}
+      garage=Object.assign(garage,g)}}catch(e){}}
+  function fillGarage(){
+    $("gCar").value=garage.carId||"";
+    $("gNameWrap").hidden=garage.carId!=="other";
+    $("gName").value=garage.name||"";
+    $("gKwh").value=garage.kwh||"";$("gCons").value=garage.cons||"";$("gDc").value=garage.dc||"";
+    $("gConn").value=garage.conn||"";$("gRes").value=garage.res;rangeOut();
+  }
+  function rangeOut(){
+    var k=parseFloat($("gKwh").value),c=parseFloat($("gCons").value);
+    $("gRangeOut").textContent=(k>0&&c>0)?("დაახლოებით "+Math.round(k/c*100)+" კმ ერთი დატენვით (რეალური მგზავრობისას)"):"";
+  }
+  function loadCars(){
+    var sel=$("gCar");
+    fetch("data/cars.json").then(function(r){return r.json()}).then(function(j){
+      CARS=j.cars||[];
+      CARS.forEach(function(c){var o=document.createElement("option");o.value=c.id;o.textContent=c.name;sel.appendChild(o)});
+      var o=document.createElement("option");o.value="other";o.textContent="სხვა მანქანა (ხელით)";sel.appendChild(o);
+      fillGarage();
+    }).catch(function(){
+      var o=document.createElement("option");o.value="other";o.textContent="სხვა მანქანა (ხელით)";sel.appendChild(o);fillGarage();
+    });
+  }
+  $("gCar").addEventListener("change",function(){
+    var id=$("gCar").value;$("gNameWrap").hidden=id!=="other";
+    var c=CARS.filter(function(x){return x.id===id})[0];
+    if(c){$("gKwh").value=c.kwh;$("gCons").value=c.cons;$("gDc").value=c.dc;if(c.conn)$("gConn").value=c.conn;$("gName").value=c.name}
+    rangeOut();
+  });
+  ["gKwh","gCons"].forEach(function(id){$(id).addEventListener("input",rangeOut)});
   function carLine(){
-    $("carLine").textContent=garage.saved?("მანქანა: "+(garage.name||"ჩემი მანქანა")+", დიაპაზონი "+garage.range+" კმ"+(garage.conn?", "+CONN[garage.conn]:"")):"მანქანა არ არის შენახული: ვიყენებთ 300 კმ-ს. დაამატე „ჩემი გარაჟი“ ჩანართში.";
+    $("carLine").textContent=garage.saved?("მანქანა: "+(garage.name||"ჩემი მანქანა")+", ბატარეა "+garage.kwh+" კვტსთ, დაახლოებით "+Math.round(rangeOf(garage))+" კმ"+(garage.conn?", "+CONN[garage.conn]:"")):"მანქანა არ არის შენახული: ვიყენებთ საშუალო მანქანას (60 კვტსთ). აირჩიე მოდელი „ჩემი გარაჟი“ ჩანართში.";
   }
   $("saveGarage").addEventListener("click",function(){
-    var r=parseFloat($("gRange").value),res=parseFloat($("gRes").value);
-    if(!(r>=50&&r<=1000)){$("gMsg").textContent="ჩაწერე დიაპაზონი 50-დან 1000 კმ-მდე.";return}
-    garage={name:$("gName").value.trim(),range:r,conn:$("gConn").value,res:(res>=5&&res<=40)?res:15,saved:true};
+    var k=parseFloat($("gKwh").value),c=parseFloat($("gCons").value),dc=parseFloat($("gDc").value),res=parseFloat($("gRes").value);
+    if(!(k>=10&&k<=200)||!(c>=8&&c<=40)){$("gMsg").textContent="აირჩიე მოდელი ან ჩაწერე ბატარეა (10–200 კვტსთ) და ხარჯი (8–40).";return}
+    var id=$("gCar").value,car=CARS.filter(function(x){return x.id===id})[0];
+    garage={carId:id,name:car?car.name:($("gName").value.trim()||"ჩემი მანქანა"),kwh:k,cons:c,dc:(dc>=3?dc:50),conn:$("gConn").value,res:(res>=5&&res<=40)?res:15,saved:true};
     store.set("evebi_garage",JSON.stringify(garage));
     $("gMsg").textContent="შენახულია.";
     carLine();applyGarageFilter();
@@ -182,10 +237,10 @@
     var x=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLo/2)*Math.sin(dLo/2);
     return 2*R*Math.asin(Math.sqrt(x))}
 
-  /* planStops: pure function, exported for tests.
-     pts: [[lat,lon],...] route; cands: stations; range km; res fraction.
-     First leg starts from a full battery. After each charge we assume 80%. */
-  function planStops(pts,cands,range,res){
+  /* planTrip: pure function, exported for tests.
+     pts: route [[lat,lon]]; cands: stations; car {kwh,cons(kWh/100km, already with conditions),dc};
+     startPct, resPct: percent. Charges to 80% (or only as much as needed on the last stop). */
+  function planTrip(pts,cands,car,startPct,resPct){
     var cum=[0];for(var i=1;i<pts.length;i++)cum.push(cum[i-1]+hav(pts[i-1],pts[i]));
     var total=cum[cum.length-1];
     var near=[];
@@ -196,21 +251,31 @@
       var dist=hav(pts[bi],[s.lat,s.lon]);
       if(dist<=4)near.push({s:s,along:cum[bi],off:dist});
     });
-    near.sort(function(a,b){return a.along-b.along});
-    var firstLeg=range*(1-res),nextLeg=range*(0.8-res);
-    if(nextLeg<=20)nextLeg=20;
-    var pos=0,leg=firstLeg,stops=[],gap=null;
-    if(total<=leg)return {total:total,stops:[],gap:null,firstLeg:firstLeg,nextLeg:nextLeg};
-    var guard=0;
-    while(total-pos>leg&&guard++<20){
-      var pick=null;
-      near.forEach(function(n){if(n.along>pos+1&&n.along<=pos+leg&&(!pick||n.along>pick.along))pick=n});
-      if(!pick){gap={from:pos,to:Math.min(pos+leg,total)};break}
-      stops.push(pick);pos=pick.along;leg=nextLeg;
+    var e=car.cons/100,kwh=car.kwh,reserve=kwh*resPct/100,cap=kwh*0.8;
+    var soc=kwh*startPct/100,pos=0,stops=[],gap=null,low=false,guard=0;
+    var res={total:total,stops:stops,gap:null,arrivePct:null,startLow:false,chargeMin:0};
+    if(soc<=reserve){res.startLow=true;return res}
+    while(guard++<25){
+      var reach=(soc-reserve)/e;
+      if(total-pos<=reach){res.arrivePct=Math.max(0,(soc-(total-pos)*e)/kwh*100);return res}
+      var inR=near.filter(function(n){return n.along>pos+1&&n.along<=pos+reach});
+      var fastR=inR.filter(function(n){return n.s.fast});
+      var pool=fastR.length?fastR:inR,pick=null;
+      pool.forEach(function(n){if(!pick||n.along>pick.along)pick=n});
+      if(!pick){res.gap={from:pos,to:Math.min(pos+reach,total)};return res}
+      var arrive=soc-(pick.along-pos)*e;
+      var need=(total-pick.along)*e+reserve+kwh*0.03;
+      var target=need<=cap?Math.max(need,arrive):Math.max(cap,arrive);
+      var add=target-arrive,p,avg;
+      if(pick.s.fast){p=Math.min(car.dc||50,pick.s.power||50);avg=p*0.7}
+      else{p=Math.min(11,pick.s.power||7);avg=p*0.95}
+      var mins=add>0.2?add/avg*60:0;
+      pick.arrivePct=arrive/kwh*100;pick.targetPct=target/kwh*100;pick.addKwh=add;pick.mins=mins;pick.kw=Math.round(avg);
+      res.chargeMin+=mins;stops.push(pick);soc=target;pos=pick.along;
     }
-    return {total:total,stops:stops,gap:gap,firstLeg:firstLeg,nextLeg:nextLeg};
+    return res;
   }
-  window.__planStops=planStops;
+  window.__planTrip=planTrip;
 
   var fmtKm=function(n){return Math.round(n)+" კმ"};
   function showRoute(coords,plan,dur){
@@ -224,19 +289,22 @@
     });
     map.fitBounds(line.getBounds(),{padding:[40,40]});
   }
+  function fmtMin(m){m=Math.round(m);var h=Math.floor(m/60);return (h?h+" სთ ":"")+(m%60)+" წთ"}
   function renderRoute(coords,plan,dur){
     var out=$("routeOut"),h=[];
-    var hrs=dur?Math.floor(dur/3600):0,min=dur?Math.round((dur%3600)/60):0;
-    h.push('<p class="sum">'+fmtKm(plan.total)+(dur?', დაახლოებით '+(hrs?hrs+' სთ ':'')+min+' წთ':'')+'</p>');
-    h.push('<p class="sub">'+(plan.stops.length?plan.stops.length+' დატენვის გაჩერება':'დატენვის გარეშე')+'. დაშვება: პირველი მონაკვეთი სრული ბატარეით, შემდეგ დატენვა 80%-მდე და '+Math.round(garage.res)+'% მარაგი.</p>');
-    if(!plan.stops.length&&!plan.gap)h.push('<div class="ok">ეს გზა ერთი დატენვით გაგივლია '+fmtKm(plan.firstLeg)+'-მდე უსაფრთხო მანძილით.</div>');
+    var drive=dur||0,totalSec=drive+plan.chargeMin*60;
+    h.push('<p class="sum">'+fmtKm(plan.total)+(dur?', გზაში '+fmtMin(drive/60)+(plan.chargeMin?' + დატენვა '+fmtMin(plan.chargeMin):''):'')+'</p>');
+    if(plan.startLow){out.innerHTML=h.join("")+'<div class="warn">გასვლისას ბატარეა მარაგის ქვემოთაა. ჯერ დატენე ან შეამცირე მარაგი.</div>';return}
+    h.push('<p class="sub">'+(plan.stops.length?plan.stops.length+' დატენვის გაჩერება':'დატენვის გარეშე')+(plan.arrivePct!=null?'. ჩახვალ დაახლოებით '+Math.round(plan.arrivePct)+'% ბატარეით.':'.')+'</p>');
+    if(!plan.stops.length&&!plan.gap&&plan.arrivePct!=null)h.push('<div class="ok">ეს გზა ერთი დატენვით გაგივლია.</div>');
     if(plan.stops.length){
       h.push('<ul class="stops">'+plan.stops.map(function(st,i){
-        return '<li data-i="'+i+'"><span class="n">'+(i+1)+'</span><div><b>'+esc(st.s.name)+'</b><span>გზის '+fmtKm(st.along)+'-ზე'+(st.off>0.3?', გზიდან '+st.off.toFixed(1)+' კმ-ზე':'')+(st.s.fast?', სწრაფი':'')+'</span></div></li>';
+        var det=Math.round(st.arrivePct)+'% → '+Math.round(st.targetPct)+'%'+(st.mins?', დაახლოებით '+fmtMin(st.mins)+' ('+st.kw+' კვტ საშუალოდ)':'');
+        return '<li data-i="'+i+'"><span class="n">'+(i+1)+'</span><div><b>'+esc(st.s.name)+(st.s.partner?' · ოფიციალური':'')+'</b><span>გზის '+fmtKm(st.along)+'-ზე'+(st.off>0.3?', გზიდან '+st.off.toFixed(1)+' კმ-ზე':'')+(st.s.fast?', სწრაფი':', ნელი დატენვა')+'</span><span>'+det+'</span></div></li>';
       }).join("")+'</ul>');
     }
     if(plan.gap)h.push('<div class="warn">გზის '+fmtKm(plan.gap.from)+'–'+fmtKm(plan.gap.to)+' მონაკვეთზე შენი კონექტორისთვის სადგური ვერ ვიპოვეთ. ეს შეიძლება ნიშნავდეს, რომ რუკაზე მონაცემი აკლია. შეამოწმე სადგური ადგილზე ან მოგვწერე.</div>');
-    h.push('<p class="hint">სადგურების მონაცემი OpenStreetMap-იდანაა და შეიძლება არასრული იყოს. ვერ ვამოწმებთ, მუშაობს თუ არა სადგური ამ წუთას.</p>');
+    h.push('<p class="hint">გამოთვლა მიახლოებითია: დატენვის დრო დამოკიდებულია ამინდზე, ბატარეის ტემპერატურაზე და სადგურზე. სადგურების მონაცემი OpenStreetMap-იდანაა და შეიძლება არასრული იყოს. ვერ ვამოწმებთ, მუშაობს თუ არა სადგური ამ წუთას.</p>');
     out.innerHTML=h.join("");
     out.querySelectorAll(".stops li").forEach(function(li){li.addEventListener("click",function(){
       var st=plan.stops[parseInt(li.getAttribute("data-i"),10)];map.setView([st.s.lat,st.s.lon],13)})});
@@ -244,14 +312,16 @@
   $("goRoute").addEventListener("click",function(){
     var a=$("from").value==="__me"?userPos:CITIES[$("from").value],b=CITIES[$("to").value];
     if(!a||!b||$("from").value===$("to").value){$("routeOut").innerHTML='<div class="warn">აირჩიე ორი სხვადასხვა ადგილი.</div>';return}
+    var sp=parseFloat($("startPct").value);if(!(sp>=5&&sp<=100))sp=90;
     var btn=$("goRoute");btn.disabled=true;btn.textContent="მარშრუტი ითვლება…";
     var url="https://router.project-osrm.org/route/v1/driving/"+a[1]+","+a[0]+";"+b[1]+","+b[0]+"?overview=full&geometries=geojson";
     fetch(url).then(function(r){if(!r.ok)throw new Error("route");return r.json()}).then(function(j){
       var rt=j.routes&&j.routes[0];if(!rt)throw new Error("noroute");
       var pts=rt.geometry.coordinates.map(function(c){return [c[1],c[0]]});
       var cands=stations.filter(function(s){return !garage.conn||!s.known||s.conns[garage.conn]});
-      var range=garage.saved?garage.range:300,res=(garage.res||15)/100;
-      var plan=planStops(pts,cands,range,res);
+      var cond=parseFloat($("cond").value)||1;
+      var car=garage.saved?{kwh:garage.kwh,cons:garage.cons*cond,dc:garage.dc}:{kwh:60,cons:17*cond,dc:100};
+      var plan=planTrip(pts,cands,car,sp,garage.saved?(garage.res||15):15);
       showRoute(pts,plan,rt.duration);renderRoute(pts,plan,rt.duration);
       if(window.innerWidth<=820)$("map").scrollIntoView({behavior:"smooth"});
     }).catch(function(){
@@ -259,5 +329,5 @@
     }).then(function(){btn.disabled=false;btn.textContent="გამოთვალე მარშრუტი"});
   });
 
-  loadGarage();fillGarage();carLine();init();applyGarageFilter();
+  loadGarage();loadCars();carLine();init();loadPartners();applyGarageFilter();
 })();

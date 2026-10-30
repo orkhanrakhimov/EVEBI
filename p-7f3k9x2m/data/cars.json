@@ -1,0 +1,19 @@
+{
+  "note": "Approximate real-world figures (usable battery kWh, mixed-driving kWh/100km, peak DC kW). EVEBI will refine these with real tests.",
+  "cars": [
+    {"id":"byd-seal","name":"BYD Seal","kwh":82,"cons":18.5,"dc":150,"conn":"ccs"},
+    {"id":"byd-atto3","name":"BYD Atto 3 (Yuan Plus)","kwh":60,"cons":17,"dc":88,"conn":"ccs"},
+    {"id":"byd-dolphin","name":"BYD Dolphin (60 kWh)","kwh":60,"cons":15,"dc":88,"conn":"ccs"},
+    {"id":"byd-han","name":"BYD Han EV","kwh":85,"cons":19.5,"dc":120,"conn":"ccs"},
+    {"id":"byd-songplus","name":"BYD Song Plus EV","kwh":71,"cons":18.5,"dc":140,"conn":"ccs"},
+    {"id":"zeekr-001","name":"Zeekr 001","kwh":95,"cons":19.5,"dc":200,"conn":"ccs"},
+    {"id":"tesla-3","name":"Tesla Model 3","kwh":57,"cons":16,"dc":170,"conn":""},
+    {"id":"tesla-y","name":"Tesla Model Y","kwh":75,"cons":17.5,"dc":250,"conn":""},
+    {"id":"leaf-40","name":"Nissan Leaf 40 kWh","kwh":39,"cons":17.5,"dc":50,"conn":"chademo"},
+    {"id":"leaf-62","name":"Nissan Leaf 62 kWh","kwh":59,"cons":18.5,"dc":100,"conn":"chademo"},
+    {"id":"kona-64","name":"Hyundai Kona Electric 64 kWh","kwh":64,"cons":16,"dc":77,"conn":"ccs"},
+    {"id":"ioniq5","name":"Hyundai Ioniq 5 (77 kWh)","kwh":74,"cons":19,"dc":220,"conn":"ccs"},
+    {"id":"niro-ev","name":"Kia Niro EV","kwh":64,"cons":16.5,"dc":77,"conn":"ccs"},
+    {"id":"id4","name":"VW ID.4 77 kWh","kwh":77,"cons":19.5,"dc":125,"conn":"ccs"}
+  ]
+}
