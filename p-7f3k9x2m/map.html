@@ -3,94 +3,148 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>EVEBI: დამტენების რუკა</title>
-<meta name="description" content="საქართველოს დამტენი სადგურების რუკა, შენი გარაჟი და მარშრუტი დატენვის გაჩერებებით.">
+<meta name="description" content="საქართველოს დამტენი სადგურების რუკა და მარშრუტი შენი მანქანით.">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="css/map.css?v=7">
+<link rel="stylesheet" href="css/map.css?v=8">
 </head>
 <body class="mapbody">
-
-
 <div class="shell">
+  <div id="map" role="application" aria-label="დამტენი სადგურების რუკა"></div>
+
+  <div class="topbtns">
+    <button class="rbtn" id="btnMenu" aria-label="პარამეტრები" title="პარამეტრები"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+  <div class="botbtns">
+    <button class="rbtn" id="btnFilter" aria-label="სადგურების ფილტრი" title="სადგურების ფილტრი"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></button>
+    <button class="rbtn" id="locate" aria-label="ჩემი მდებარეობა" title="ჩემი მდებარეობა"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg></button>
+  </div>
+
+  <div class="filters" id="filters" hidden>
+    <div class="fhead"><b>სადგურების ფილტრი</b><button class="x" id="filtersClose" aria-label="დახურვა">×</button></div>
+    <p class="status" id="status">სადგურები იტვირთება…</p>
+    <p class="lab">კონექტორი</p>
+    <div class="chips" id="connChips">
+      <button class="chip" data-k="ccs">CCS2</button>
+      <button class="chip" data-k="type2">Type 2</button>
+      <button class="chip" data-k="chademo">CHAdeMO</button>
+      <button class="chip" data-k="tesla">Tesla</button>
+      <button class="chip" data-k="gbt">GB/T</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="fastOnly"> მხოლოდ სწრაფი (DC)</label>
+    <label class="chk"><input type="checkbox" id="showUnknown" checked> სადგურები, სადაც კონექტორი არ არის მითითებული</label>
+    <p class="hint">მონაცემები OpenStreetMap-იდანაა და შეიძლება არასრული იყოს. <a href="mailto:contact@evebi.ge?subject=რუკის შესწორება">მოგვწერე</a>, თუ შეცდომას დაინახავ.</p>
+    <p class="hint" style="margin-top:6px">ვერსია 8 · რუკა: OpenStreetMap</p>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
   <aside class="panel" id="panel">
     <button class="grab" id="grab" aria-label="პანელის გაშლა/დაკეცვა"><span></span></button>
-    <div class="brand"><a href="index.html" aria-label="EVEBI მთავარი"><img src="assets/logo.png" alt="EVEBI"></a><a class="home" href="index.html">მთავარი</a></div>
-    <div class="carcard" id="carCard" hidden></div>
-    <div class="tabs" role="tablist">
-      <button role="tab" class="tab on" data-t="stations" aria-selected="true">სადგურები</button>
-      <button role="tab" class="tab" data-t="route" aria-selected="false">მარშრუტი</button>
-      <button role="tab" class="tab" data-t="garage" aria-selected="false">ჩემი გარაჟი</button>
-    </div>
 
-    <section class="tp" id="tp-pick">
+    <!-- HOME -->
+    <section class="view on" id="v-home">
+      <div class="brand"><a href="index.html" aria-label="EVEBI მთავარი"><img src="assets/logo.png" alt="EVEBI"></a><a class="home" href="index.html">მთავარი</a></div>
+      <div class="sbox"><input id="homeSearch" type="search" placeholder="სად მიდიხარ?" autocomplete="off" aria-label="დანიშნულება"><div class="sugg" id="homeSugg" hidden></div></div>
+      <div class="carbox" data-box></div>
+      <div class="two">
+        <button class="soft" data-go="settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>პარამეტრები</button>
+        <button class="soft" data-go="saved"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/></svg>შენახული</button>
+      </div>
+    </section>
+
+    <!-- CAR PICKER -->
+    <section class="view" id="v-car">
       <div id="pickList">
-        <h2 class="ptitle">რა მანქანა გაქვს?</h2>
-        <p class="hint" style="margin:0 0 14px">აირჩიე და რუკა მარშრუტს შენს მანქანაზე მოარგებს.</p>
+        <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>აირჩიე მანქანა</h2><span></span></div>
+        <p class="hint" style="margin:0 0 14px">მარშრუტი შენს მანქანაზე მოირგება.</p>
         <div class="carlist" id="carList"></div>
         <button class="alt" id="pickOther">ჩემი მანქანა სიაში არ არის</button>
       </div>
       <div id="pickConn" hidden>
-        <button class="back" id="pickBack">← უკან</button>
-        <h2 class="ptitle" id="pickName"></h2>
+        <div class="vhead"><button class="bk" id="pickBack" aria-label="უკან">←</button><h2 id="pickName"></h2><span></span></div>
         <p class="hint" style="margin:0 0 14px">რომელი კონექტორი აქვს შენს მანქანას? იმპორტის ქვეყნის მიხედვით განსხვავდება (ჩინეთიდან ხშირად GB/T).</p>
         <div class="chips" id="pickChips">
           <button class="chip" data-k="ccs">CCS2</button><button class="chip" data-k="type2">Type 2</button><button class="chip" data-k="chademo">CHAdeMO</button><button class="chip" data-k="tesla">Tesla</button><button class="chip" data-k="gbt">GB/T</button>
         </div>
-        <button class="go" id="pickGo" disabled>გაგრძელება</button>
+        <button class="prime" id="pickGo" disabled>გაგრძელება</button>
       </div>
     </section>
 
-    <section class="tp" id="tp-stations">
-      <p class="status" id="status">სადგურები იტვირთება…</p><p class="hint" style="margin:-8px 0 14px;font-size:12px">ვერსია 7 · რუკა: OpenStreetMap</p>
-      <p class="lab">კონექტორი</p>
-      <div class="chips" id="connChips">
-        <button class="chip" data-k="ccs">CCS2</button>
-        <button class="chip" data-k="type2">Type 2</button>
-        <button class="chip" data-k="chademo">CHAdeMO</button>
-        <button class="chip" data-k="tesla">Tesla</button>
-        <button class="chip" data-k="gbt">GB/T</button>
+    <!-- DESTINATIONS -->
+    <section class="view" id="v-dest">
+      <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>მარშრუტი</h2><span></span></div>
+      <div id="destRows"></div>
+      <div class="addrow"><button class="lnk" id="addStop">+ გაჩერების დამატება</button></div>
+      <div class="carbox" data-box></div>
+      <div class="two">
+        <button class="soft" data-go="settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>პარამეტრები</button>
+        <button class="prime" id="planBtn">გათვლა</button>
       </div>
-      <label class="chk"><input type="checkbox" id="fastOnly"> მხოლოდ სწრაფი (DC)</label>
-      <label class="chk"><input type="checkbox" id="showUnknown" checked> ვაჩვენო სადგურები, სადაც კონექტორი არ არის მითითებული</label>
-      <p class="hint">მონაცემები OpenStreetMap-იდანაა და შეიძლება არასრული იყოს. დაინახე შეცდომა? <a href="mailto:contact@evebi.ge?subject=რუკის შესწორება">მოგვწერე</a>.</p>
+      <div id="planMsg" aria-live="polite"></div>
     </section>
 
-    <section class="tp" id="tp-route">
-      <div class="f"><label for="from">საიდან</label><select id="from"></select></div>
-      <div class="f"><label for="to">სად</label><select id="to"></select></div>
-      <div class="f"><label for="startPct">ბატარეა გასვლისას, %</label><input id="startPct" type="number" min="10" max="100" step="1" value="90"></div>
+    <!-- ROUTE -->
+    <section class="view" id="v-route">
+      <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2 id="rTitle"></h2><span></span></div>
+      <div class="alts" id="alts"></div>
+      <div id="rBody"></div>
+    </section>
+
+    <!-- CHARGER -->
+    <section class="view" id="v-charger">
+      <div class="vhead"><span></span><h2 id="cTitle" class="left"></h2><button class="bk" data-back aria-label="დახურვა">×</button></div>
+      <div id="cBody"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="v-settings">
+      <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>პარამეტრები</h2><span></span></div>
+      <div class="list">
+        <button class="row" data-go="vehicle"><span>მანქანა</span><i>›</i></button>
+        <button class="row" data-go="charging"><span>დატენვა</span><i>›</i></button>
+      </div>
+      <div class="list">
+        <button class="row" data-go="saved"><span>შენახული მარშრუტები</span><i>›</i></button>
+      </div>
+      <div class="two"><a class="soft" href="mailto:contact@evebi.ge?subject=EVEBI რუკა">მოგვწერე</a><a class="soft" href="index.html">მთავარი გვერდი</a></div>
+    </section>
+
+    <section class="view" id="v-vehicle">
+      <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2 id="vTitle">მანქანა</h2><span></span></div>
+      <div class="carbox ro" data-box></div>
+      <div class="f"><label for="gKwh">ბატარეა (სასარგებლო), კვტსთ</label><input id="gKwh" type="number" min="10" max="200" step="1"></div>
+      <div class="f"><label for="gCons">რეალური ხარჯი, კვტსთ / 100 კმ</label><input id="gCons" type="number" min="8" max="40" step="0.5"></div>
+      <div class="f"><label for="gDc">მაქს. სწრაფი დატენვა, კვტ</label><input id="gDc" type="number" min="3" max="400" step="1"></div>
+      <div class="f"><label for="gDeg">ბატარეის ცვეთა, %</label><input id="gDeg" type="number" min="0" max="40" step="1"></div>
+      <div class="f"><label for="gConn">კონექტორი</label>
+        <select id="gConn"><option value="">არ მაქვს არჩეული</option><option value="ccs">CCS2</option><option value="type2">Type 2</option><option value="chademo">CHAdeMO</option><option value="tesla">Tesla</option><option value="gbt">GB/T</option></select></div>
+      <p class="sub" id="gRangeOut"></p>
+      <button class="soft wide" id="changeCar">მანქანის შეცვლა</button>
+    </section>
+
+    <section class="view" id="v-charging">
+      <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>დატენვა</h2><span></span></div>
+      <div class="f"><label for="sMinC">მინიმალური ბატარეა სადგურზე ჩასვლისას, %</label><input id="sMinC" type="number" min="3" max="40" step="1"></div>
+      <div class="f"><label for="sMinD">მინიმალური ბატარეა დანიშნულებაში, %</label><input id="sMinD" type="number" min="3" max="60" step="1"></div>
+      <div class="f"><label for="sMax">დატენვის ზღვარი, %</label><input id="sMax" type="number" min="50" max="100" step="5"></div>
       <div class="f"><label for="cond">პირობები</label>
         <select id="cond"><option value="1">ჩვეულებრივი მგზავრობა</option><option value="1.2">ზამთარი ან მაღალი სიჩქარე (+20% ხარჯი)</option><option value="1.3">მთა: გუდაური, მესტია (+30% ხარჯი)</option></select></div>
-      <button class="go" id="goRoute">გამოთვალე მარშრუტი</button>
-      <div id="routeOut" aria-live="polite"></div>
+      <p class="hint">ცვლილებები ინახება ავტომატურად.</p>
     </section>
 
-    <section class="tp" id="tp-garage">
-      <p class="hint" style="margin-top:0">მანქანის მონაცემი ინახება მხოლოდ შენს ბრაუზერში. მარშრუტი და ფილტრი მათ იყენებს.</p>
-      <div class="f"><label for="gCar">მანქანის მოდელი</label><select id="gCar"><option value="">აირჩიე მოდელი</option></select></div>
-      <div class="f" id="gNameWrap" hidden><label for="gName">სახელი</label><input id="gName" type="text" placeholder="მაგ: ჩემი მანქანა"></div>
-      <div class="f"><label for="gKwh">ბატარეა (სასარგებლო), კვტსთ</label><input id="gKwh" type="number" min="10" max="200" step="1" placeholder="60"></div>
-      <div class="f"><label for="gCons">რეალური ხარჯი, კვტსთ / 100 კმ</label><input id="gCons" type="number" min="8" max="40" step="0.5" placeholder="17"></div>
-      <div class="f"><label for="gDc">მაქს. სწრაფი დატენვა, კვტ</label><input id="gDc" type="number" min="3" max="400" step="1" placeholder="100"></div>
-      <div class="f"><label for="gConn">კონექტორი</label>
-        <select id="gConn"><option value="">არ მაქვს არჩეული</option><option value="ccs">CCS2</option><option value="type2">Type 2</option><option value="chademo">CHAdeMO</option><option value="tesla">Tesla</option><option value="gbt">GB/T</option></select>
-        <p class="hint" style="margin:6px 0 0">იმპორტის ქვეყნის მიხედვით კონექტორი განსხვავდება (ჩინეთიდან ხშირად GB/T). შეამოწმე შენი.</p></div>
-      <div class="f"><label for="gRes">მარაგი, % (ამდენზე ნაკლები არ გინდა დარჩეს)</label><input id="gRes" type="number" min="5" max="40" step="1" value="15"></div>
-      <p class="sub" id="gRangeOut"></p>
-      <button class="go" id="saveGarage">შენახვა</button>
-      <p class="hint" id="gMsg"></p>
+    <section class="view" id="v-saved">
+      <div class="vhead"><button class="bk" data-back aria-label="უკან">←</button><h2>შენახული მარშრუტები</h2><span></span></div>
+      <div id="savedList"></div>
     </section>
   </aside>
-  <div id="map" role="application" aria-label="დამტენი სადგურების რუკა"></div>
-  <button class="loc" id="locate" aria-label="ჩემი მდებარეობა" title="ჩემი მდებარეობა">ჩემი მდებარეობა</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<script src="js/map.js?v=7"></script>
+<script src="js/map.js?v=8"></script>
 </body>
 </html>
