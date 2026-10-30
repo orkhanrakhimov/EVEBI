@@ -37,8 +37,8 @@
         garage=Object.assign(garage,g)}}catch(e){}
     try{var s=JSON.parse(store.get("evebi_set")||"null");if(s)S=Object.assign(S,s)}catch(e){}
   }
-  function saveGarage(){store.set("evebi_garage",JSON.stringify(garage))}
-  function saveSet(){store.set("evebi_set",JSON.stringify(S))}
+  function saveGarage(){store.set("evebi_garage",JSON.stringify(garage));syncPush()}
+  function saveSet(){store.set("evebi_set",JSON.stringify(S));syncPush()}
   function effKwh(g){return g.kwh*(1-(g.deg||0)/100)}
   function rangeOf(g){return g.kwh&&g.cons?effKwh(g)/g.cons*100:0}
 
@@ -53,6 +53,7 @@
     if(v==="dest")renderDests();
     if(v==="saved")renderSaved();
     if(v==="places")fillPlaces();
+    if(v==="account")renderAccount();
     if(v==="vehicle")fillVehicle();
     if(v==="charging")fillCharging();
     renderCarBoxes();
@@ -328,7 +329,7 @@
   /* ---------- place search (OpenStreetMap Nominatim) ---------- */
   var searchCache={};
   function getPlaces(){try{return JSON.parse(store.get("evebi_places")||"{}")||{}}catch(e){return {}}}
-  function setPlace(k,p){var o=getPlaces();o[k]=p;store.set("evebi_places",JSON.stringify(o))}
+  function setPlace(k,p){var o=getPlaces();o[k]=p;store.set("evebi_places",JSON.stringify(o));syncPush()}
   function nominatim(q){
     if(searchCache[q])return Promise.resolve(searchCache[q]);
     var url="https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&countrycodes=ge&accept-language=ka&q="+encodeURIComponent(q);
@@ -651,7 +652,7 @@
   function savePlan(){
     var a=getSaved();
     a.unshift({id:Date.now(),title:dests[0].name+" → "+dests[dests.length-1].name,dests:dests,soc:S.soc,car:garage.name});
-    store.set("evebi_plans",JSON.stringify(a.slice(0,20)));toast("მარშრუტი შენახულია");
+    store.set("evebi_plans",JSON.stringify(a.slice(0,20)));syncPush();toast("მარშრუტი შენახულია");
   }
   function renderSaved(){
     var a=getSaved(),box=$("savedList");
@@ -662,6 +663,145 @@
       dests=p.dests;S.soc=p.soc;saveSet();show("dest");plan()})});
     box.querySelectorAll("[data-del]").forEach(function(b){b.addEventListener("click",function(){
       store.set("evebi_plans",JSON.stringify(getSaved().filter(function(x){return String(x.id)!==b.getAttribute("data-del")})));renderSaved()})});
+  }
+
+  /* ---------- accounts and reviews (Supabase REST, no library) ---------- */
+  var CFG=window.EVEBI_CFG||{},SB_ON=!!(CFG.supabaseUrl&&CFG.supabaseKey),sess=null;
+  function sbLoad(){try{sess=JSON.parse(store.get("evebi_sess")||"null")}catch(e){sess=null}}
+  function sbSave(){if(sess)store.set("evebi_sess",JSON.stringify(sess));else store.set("evebi_sess","")}
+  function jwtPart(t){try{return JSON.parse(atob(t.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")))}catch(e){return {}}}
+  function takeAuthHash(){
+    var hs=String(location.hash||"");
+    if(hs.indexOf("access_token=")<0)return;
+    var q=new URLSearchParams(hs.replace(/^#/,"")),at=q.get("access_token");
+    if(at){var p=jwtPart(at);sess={access:at,refresh:q.get("refresh_token")||"",exp:Date.now()+(parseInt(q.get("expires_in")||"3600",10)-30)*1000,uid:p.sub||"",email:p.email||""};sbSave()}
+    try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+  }
+  function sbRefresh(){
+    if(!sess||!sess.refresh)return Promise.resolve(false);
+    return fetch(CFG.supabaseUrl+"/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:{"apikey":CFG.supabaseKey,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:sess.refresh})})
+      .then(function(r){if(!r.ok)throw new Error("rf");return r.json()}).then(function(j){
+        var p=jwtPart(j.access_token);sess={access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in-30)*1000,uid:p.sub||sess.uid,email:p.email||sess.email};sbSave();return true})
+      .catch(function(){sess=null;sbSave();return false});
+  }
+  function sbReq(path,opt){
+    opt=opt||{};
+    var go=function(){
+      var h=Object.assign({"apikey":CFG.supabaseKey,"Authorization":"Bearer "+((sess&&sess.access)||CFG.supabaseKey)},opt.headers||{});
+      return fetch(CFG.supabaseUrl+path,{method:opt.method||"GET",headers:h,body:opt.body});
+    };
+    if(sess&&sess.exp<Date.now())return sbRefresh().then(go);
+    return go();
+  }
+  function sbSignIn(email){
+    var redirect=location.origin+location.pathname;
+    return fetch(CFG.supabaseUrl+"/auth/v1/otp?redirect_to="+encodeURIComponent(redirect),{method:"POST",headers:{"apikey":CFG.supabaseKey,"Content-Type":"application/json"},body:JSON.stringify({email:email,create_user:true})})
+      .then(function(r){if(!r.ok)throw new Error("otp")});
+  }
+  function ago(iso){
+    if(!iso)return "";var d=(Date.now()-new Date(iso).getTime())/86400000;
+    if(d<1)return "დღეს";if(d<2)return "გუშინ";if(d<31)return Math.floor(d)+" დღის წინ";if(d<365)return Math.floor(d/30)+" თვის წინ";return "ერთ წელზე მეტი ხნის წინ";
+  }
+  var STATUS={worked:"იმუშავა",failed:"არ იმუშავა",partial:"ნაწილობრივ იმუშავა"};
+  function stars(n){var s="";for(var i=1;i<=5;i++)s+=i<=Math.round(n)?"★":"☆";return s}
+  function renderReviews(s){
+    var box=$("revBox");if(!box)return;
+    if(!SB_ON){
+      var cur=ratingGet(s.id);
+      box.innerHTML='<p class="lab">შენი შეფასება</p><div class="stars" id="stars">'+[1,2,3,4,5].map(function(n){return '<button class="star'+(n<=cur?' on':'')+'" data-star="'+n+'" aria-label="'+n+' ვარსკვლავი">★</button>'}).join("")+'</div><p class="hint" style="margin-top:6px">საერთო შეფასებები მალე დაემატება. ახლა ეს მხოლოდ შენს მოწყობილობაზე ინახება.</p>';
+      box.querySelectorAll(".star").forEach(function(b){b.addEventListener("click",function(){var n=parseInt(b.getAttribute("data-star"),10);ratingSet(s.id,n);box.querySelectorAll(".star").forEach(function(x){x.classList.toggle("on",parseInt(x.getAttribute("data-star"),10)<=n)})})});
+      return;
+    }
+    box.innerHTML='<p class="hint">შეფასებები იტვირთება…</p>';
+    var sid=encodeURIComponent(s.id);
+    Promise.all([
+      sbReq("/rest/v1/station_stats?station_id=eq."+sid+"&select=*").then(function(r){return r.ok?r.json():[]}).catch(function(){return []}),
+      sbReq("/rest/v1/reviews?station_id=eq."+sid+"&order=updated_at.desc&limit=8&select=rating,status,comment,updated_at").then(function(r){return r.ok?r.json():[]}).catch(function(){return []})
+    ]).then(function(res){
+      var st=res[0][0],list=res[1],h=[];
+      if(st&&(st.rating_count>0||st.worked>0||st.failed_30d>0)){
+        h.push('<div class="revsum">'+(st.rating_count>0?'<b>'+stars(st.avg_rating)+' '+st.avg_rating+'</b> <span>('+st.rating_count+')</span>':'')+
+          (st.last_worked?'<div class="ok2">ბოლოს იმუშავა: '+ago(st.last_worked)+'</div>':'')+
+          (st.failed_30d>0?'<div class="bad2">ბოლო 30 დღეში „არ იმუშავა“: '+st.failed_30d+'</div>':'')+'</div>');
+      }else h.push('<p class="hint" style="margin-top:0">ამ სადგურზე ჯერ შეფასება არ არის. იყავი პირველი.</p>');
+      list.filter(function(x){return x.comment||x.status}).forEach(function(x){
+        h.push('<div class="rev"><div class="rh">'+(x.rating?'<span class="rs">'+stars(x.rating)+'</span>':'')+(x.status?'<span class="rt '+x.status+'">'+STATUS[x.status]+'</span>':'')+'<span class="rd">'+ago(x.updated_at)+'</span></div>'+(x.comment?'<p>'+esc(x.comment)+'</p>':'')+'</div>');
+      });
+      h.push('<div class="revform" id="revForm"></div>');
+      box.innerHTML=h.join("");
+      renderReviewForm(s);
+    });
+  }
+  function renderReviewForm(s){
+    var f=$("revForm");if(!f)return;
+    if(!sess){
+      f.innerHTML='<p class="lab">დატოვე შეფასება</p><p class="hint" style="margin-top:0">შესასვლელად ჩაწერე ელფოსტა. გამოგიგზავნით ბმულს, პაროლი არ გჭირდება.</p><div class="f"><input id="revEmail" type="email" placeholder="ელფოსტა" autocomplete="email"></div><button class="light wide" id="revLogin">ბმულის გამოგზავნა</button><p class="hint" id="revMsg"></p>';
+      $("revLogin").addEventListener("click",function(){
+        var em=$("revEmail").value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){$("revMsg").textContent="ჩაწერე სწორი ელფოსტა.";return}
+        $("revLogin").disabled=true;
+        sbSignIn(em).then(function(){$("revMsg").textContent="გამოგიგზავნეთ ბმული. გახსენი ელფოსტა და დააჭირე ბმულს, შემდეგ დაბრუნდი აქ."}).catch(function(){$("revMsg").textContent="ვერ გავაგზავნეთ. სცადე ცოტა ხანში."}).then(function(){$("revLogin").disabled=false});
+      });
+      return;
+    }
+    var st="",rt=0;
+    f.innerHTML='<p class="lab">დატოვე შეფასება</p><div class="seg3" id="stSel"><button data-s="worked">იმუშავა</button><button data-s="partial">ნაწილობრივ</button><button data-s="failed">არ იმუშავა</button></div>'+
+      '<div class="stars" id="rStars">'+[1,2,3,4,5].map(function(n){return '<button class="star" data-star="'+n+'" aria-label="'+n+' ვარსკვლავი">★</button>'}).join("")+'</div>'+
+      '<div class="f" style="margin-top:8px"><textarea id="revText" maxlength="500" rows="3" placeholder="კომენტარი (არასავალდებულო)"></textarea></div>'+
+      '<button class="light wide" id="revSend">გაგზავნა</button><p class="hint" id="revMsg"></p><button class="lnk" id="revOut">გასვლა ('+esc(sess.email||"")+')</button>';
+    $("stSel").querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){st=b.getAttribute("data-s");$("stSel").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b)})})});
+    $("rStars").querySelectorAll(".star").forEach(function(b){b.addEventListener("click",function(){rt=parseInt(b.getAttribute("data-star"),10);$("rStars").querySelectorAll(".star").forEach(function(x){x.classList.toggle("on",parseInt(x.getAttribute("data-star"),10)<=rt)})})});
+    $("revOut").addEventListener("click",function(){sess=null;sbSave();renderReviewForm(s)});
+    $("revSend").addEventListener("click",function(){
+      var txt=$("revText").value.trim();
+      if(!rt&&!st&&!txt){$("revMsg").textContent="აირჩიე ვარსკვლავები, სტატუსი ან დაწერე კომენტარი.";return}
+      $("revSend").disabled=true;
+      var body={station_id:s.id,rating:rt||null,status:st||null,comment:txt||null,updated_at:new Date().toISOString()};
+      sbReq("/rest/v1/reviews?on_conflict=station_id,user_id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(body)})
+        .then(function(r){if(!r.ok)throw new Error("rv"+r.status);toast("მადლობა! შეფასება შენახულია");renderReviews(s)})
+        .catch(function(){$("revMsg").textContent="ვერ შევინახეთ. თუ ხელახლა შეგვიდიხარ, სცადე გასვლა და ისევ შესვლა.";$("revSend").disabled=false});
+    });
+  }
+
+  /* ---------- sync saved data to the user's account ---------- */
+  var syncT=null;
+  function localBundle(){return {garage:garage,S:S,places:getPlaces(),plans:getSaved()}}
+  function syncPush(){
+    if(!SB_ON||!sess||!sess.uid)return;
+    clearTimeout(syncT);
+    syncT=setTimeout(function(){
+      sbReq("/rest/v1/user_data?on_conflict=user_id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},
+        body:JSON.stringify({user_id:sess.uid,data:localBundle(),updated_at:new Date().toISOString()})}).catch(function(){});
+    },1500);
+  }
+  function syncPull(){
+    if(!SB_ON||!sess)return;
+    sbReq("/rest/v1/user_data?select=data&limit=1").then(function(r){return r.ok?r.json():[]}).then(function(a){
+      var d=a[0]&&a[0].data;
+      if(d&&d.garage&&d.garage.saved&&!garage.saved){
+        garage=Object.assign(garage,d.garage);if(d.S)S=Object.assign(S,d.S);
+        store.set("evebi_garage",JSON.stringify(garage));store.set("evebi_set",JSON.stringify(S));
+        if(d.places)store.set("evebi_places",JSON.stringify(d.places));
+        if(d.plans)store.set("evebi_plans",JSON.stringify(d.plans));
+        applyGarageFilter();renderCarBoxes();
+        if($("v-car").classList.contains("on")){viewStack=["home"];show("home",false)}
+        toast("შენი მანქანა და პარამეტრები აღდგა");
+      }else if(garage.saved){syncPush()}
+    }).catch(function(){});
+  }
+  function renderAccount(){
+    var b=$("accBox");
+    if(!SB_ON){b.innerHTML='<p class="hint" style="margin-top:0">ანგარიშები მალე დაემატება. მაშინ შენი მანქანა, მისამართები და შეფასებები ყველა მოწყობილობაზე შენახული იქნება.</p>';return}
+    if(sess){
+      b.innerHTML='<div class="list info"><div class="irow"><span>ელფოსტა</span><b>'+esc(sess.email||"")+'</b></div></div><p class="hint">შენი მანქანა, პარამეტრები, მისამართები და შენახული მარშრუტები ინახება ანგარიშზე და ყველა მოწყობილობაზე გამოჩნდება.</p><button class="soft wide" id="accOut">გასვლა</button>';
+      $("accOut").addEventListener("click",function(){sess=null;sbSave();renderAccount()});
+      return;
+    }
+    b.innerHTML='<p class="hint" style="margin-top:0">შესასვლელად ჩაწერე ელფოსტა. გამოგიგზავნით ბმულს, პაროლი არ გჭირდება. შენი მანქანა და შეფასებები ანგარიშზე შეინახება.</p><div class="f"><input id="accEmail" type="email" placeholder="ელფოსტა" autocomplete="email"></div><button class="light wide" id="accGo">ბმულის გამოგზავნა</button><p class="hint" id="accMsg"></p>';
+    $("accGo").addEventListener("click",function(){
+      var em=$("accEmail").value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){$("accMsg").textContent="ჩაწერე სწორი ელფოსტა.";return}
+      $("accGo").disabled=true;
+      sbSignIn(em).then(function(){$("accMsg").textContent="გამოგიგზავნეთ ბმული. გახსენი ელფოსტა და დააჭირე ბმულს."}).catch(function(){$("accMsg").textContent="ვერ გავაგზავნეთ. სცადე ცოტა ხანში."}).then(function(){$("accGo").disabled=false});
+    });
   }
 
   /* ---------- charger detail ---------- */
@@ -679,13 +819,11 @@
     if(s.fee)rows.push(['გადახდა',s.fee==="yes"?"ფასიანია":s.fee==="no"?"უფასოა":s.fee]);
     if(s.partner){if(s.price)rows.push(['ფასი',s.price+' ლარი/კვტსთ']);if(s.pay)rows.push(['როგორ დავიწყო',s.pay]);if(s.phone)rows.push(['ტელეფონი',s.phone])}
     var mail="mailto:contact@evebi.ge?subject="+encodeURIComponent("რუკის შესწორება: "+s.name)+"&body="+encodeURIComponent("სადგური: "+s.name+"\nკოორდინატები: "+s.lat.toFixed(5)+", "+s.lon.toFixed(5)+"\nრა უნდა შეიცვალოს: ");
-    var cur=ratingGet(s.id);
-    var stars=[1,2,3,4,5].map(function(n){return '<button class="star'+(n<=cur?' on':'')+'" data-star="'+n+'" aria-label="'+n+' ვარსკვლავი">★</button>'}).join("");
     $("cBody").innerHTML=(s.partner?'<div class="badge">ოფიციალური მონაცემი</div>':'')+
       '<div class="tags">'+tags+'</div>'+
       '<button class="light wide" id="addPlan">+ მარშრუტში დამატება</button>'+
       '<div class="list info">'+rows.map(function(r){return '<div class="irow"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b></div>'}).join("")+'</div>'+
-      '<p class="lab">შენი შეფასება</p><div class="stars" id="stars">'+stars+'</div><p class="hint" style="margin-top:6px">ახლა შეფასება მხოლოდ შენს მოწყობილობაზე ინახება. საერთო შეფასებები და „იმუშავა / არ იმუშავა“ მალე დაემატება.</p>'+
+      '<p class="lab" style="margin-top:18px">შეფასებები</p><div id="revBox"></div>'+
       '<div class="two" style="margin-top:14px"><a class="soft" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query='+s.lat+','+s.lon+'">Google Maps</a><a class="soft" href="'+mail+'">შეცდომაა?</a></div>';
     $("addPlan").addEventListener("click",function(){
       var p={name:s.name,lat:s.lat,lon:s.lon};
@@ -693,15 +831,14 @@
       else dests.splice(dests.length-1,0,p);
       toast("დაემატა მარშრუტში");viewStack=["home"];show("dest");
     });
-    $("stars").querySelectorAll(".star").forEach(function(b){b.addEventListener("click",function(){
-      var n=parseInt(b.getAttribute("data-star"),10);ratingSet(s.id,n);
-      $("stars").querySelectorAll(".star").forEach(function(x){x.classList.toggle("on",parseInt(x.getAttribute("data-star"),10)<=n)})})});
+    renderReviews(s);
     if(map.panTo)map.panTo([s.lat,s.lon]);
     show("charger");
   }
 
   /* ---------- start ---------- */
   loadState();loadCars();init();loadPartners();renderCarBoxes();applyGarageFilter();
+  sbLoad();takeAuthHash();syncPull();
   var sharedTrip=readShare();
   if(sharedTrip){
     if(garage.saved)applyShare(sharedTrip);
