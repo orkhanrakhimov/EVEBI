@@ -1,5 +1,8 @@
 /* ====== EVები — easy settings. Edit values here; no other file needed. ====== */
 window.EVEBI = {
+  // Site languages. Currently English only; use ["ka","en"] once the Georgian text is corrected.
+  languages: ["en"],
+
   // Contact
   whatsapp: "995595606670",          // digits only, with country code
   email: "contact@evebi.ge",

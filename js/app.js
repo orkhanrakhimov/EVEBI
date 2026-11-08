@@ -18,10 +18,11 @@ var T={
   send:"Sending…",wa:"Message on WhatsApp",mail:"Send by email",
   none:"Not published yet"}
 };
-var lang="ka";
-try{lang=localStorage.getItem("evebi_lang")||"ka"}catch(e){}
+var LANGS=C.languages||["ka","en"];
+var lang=LANGS[0];
+try{var sv=localStorage.getItem("evebi_lang");if(sv&&LANGS.indexOf(sv)>-1)lang=sv}catch(e){}
 var q=new URLSearchParams(location.search).get("lang");
-if(q==="en"||q==="ka")lang=q;
+if(q&&LANGS.indexOf(q)>-1)lang=q;
 
 function pick(o){return o&&typeof o==="object"?(o[lang]||o.ka||""):(o||"")}
 
