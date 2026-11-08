@@ -4,10 +4,10 @@ Reads src/pages/*.html (front matter + body) and src/partials/*.html,
 writes finished pages into the site folder (OUT)."""
 import os, re, html
 ROOT = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(os.path.dirname(ROOT), "p-7f3k9x2m")
-NOINDEX = True                      # set False when the site goes live
+OUT = os.path.dirname(ROOT)
+NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "3"                           # bump to bust the cache of css/js
+VER = "4"                           # bump to bust the cache of css/js
 
 def read(p):
     return open(p, encoding="utf-8").read()
@@ -28,6 +28,7 @@ TEMPLATE = """<!doctype html>
 <meta property="og:description" content="{desc}">
 <meta property="og:image" content="{site}/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{site}/{file}">
 <meta name="theme-color" content="#F5F5F2">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,7 +75,7 @@ for fn in sorted(os.listdir(pagesdir)):
         title=esc(meta["title"]), desc=esc(meta["desc"]),
         title_en=esc(meta.get("title_en", meta["title"])), desc_en=esc(meta.get("desc_en", meta["desc"])),
         wa=esc(meta.get("wa", "")), wa_en=esc(meta.get("wa_en", "")),
-        site=SITE, ver=VER, page=page, ld=ld, header=h, footer=footer, body=body)
+        file=("" if page == "home" else page + ".html"), site=SITE, ver=VER, page=page, ld=ld, header=h, footer=footer, body=body)
     name = "index.html" if page == "home" else page + ".html"
     open(os.path.join(OUT, name), "w", encoding="utf-8").write(out)
     print("built", name)
