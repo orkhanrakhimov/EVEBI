@@ -1,15 +1,15 @@
 title: იპოვე ჩემი EV | EVები
 title_en: Find My EV | EVები
 desc: ელექტრომობილს ეძებ? მითხარი რა გაქვს მხედველობაში და დაგეხმარები ვარიანტების გააზრებაში.
-desc_en: Looking for an electric car? Tell me what you have in mind and I'll help you understand your options.
+desc_en: Looking for an electric or plug-in hybrid car? Tell me what you have in mind and I'll help you understand your options.
 wa: გამარჯობა! ელექტრომობილს ვეძებ. ბიუჯეტი: ___, სასურველი მოდელი: ___.
-wa_en: Hello! I'm looking for an electric car. Budget: ___, preferred model: ___.
+wa_en: Hello! I'm looking for an electric or plug-in hybrid car. Budget: ___, preferred model: ___.
 ---
 <section class="hero">
   <div class="wrap split" style="align-items:start">
     <div>
       <span class="eyebrow rv" data-en="Find My EV">იპოვე ჩემი EV</span>
-      <h1 class="display rv d1" data-en="Looking for an electric car? <span class='red'>Tell me what you have in mind.</span>">ელექტრომობილს ეძებ? <span class="red">მითხარი, რა გაქვს მხედველობაში.</span></h1>
+      <h1 class="display rv d1" data-en="Looking for an electric or plug-in hybrid car? <span class='red'>Tell me what you have in mind.</span>">ელექტრომობილს ეძებ? <span class="red">მითხარი, რა გაქვს მხედველობაში.</span></h1>
       <p class="lead rv d2" style="margin:24px 0" data-en="This isn't an automatic recommendation engine or an online dealership. It's a personal service: I help you understand your options and, where possible, connect you with relevant sellers.">ეს არ არის ავტომატური რეკომენდაციის სისტემა და არც ონლაინ დილერი. ეს პირადი დახმარებაა: დაგეხმარები ვარიანტების გააზრებაში და, სადაც შესაძლებელია, შესაფერის გამყიდველთან დაკავშირებაში.</p>
       <div class="callout rv d3">
         <h3 data-en="Please note">გაითვალისწინე</h3>
@@ -21,6 +21,12 @@ wa_en: Hello! I'm looking for an electric car. Budget: ___, preferred model: ___
         <div class="prog"><i></i><i></i></div>
         <fieldset data-step style="border:0;display:grid;gap:18px">
           <div class="field"><label for="f-models" data-en="Preferred brands or models">სასურველი ბრენდი ან მოდელი</label><input id="f-models" name="models" placeholder="BYD, ZEEKR, Tesla…" data-en-ph="BYD, ZEEKR, Tesla…"></div>
+          <div class="field"><span class="lbl" data-en="Type of car">Type of car</span>
+            <div class="choice">
+              <label><input type="radio" name="powertrain" value="Fully electric"><span data-en="Fully electric">Fully electric</span></label>
+              <label><input type="radio" name="powertrain" value="Plug-in hybrid"><span data-en="Plug-in hybrid">Plug-in hybrid</span></label>
+              <label><input type="radio" name="powertrain" value="Not sure"><span data-en="Not sure">Not sure</span></label>
+            </div></div>
           <div class="field"><span class="lbl" data-en="New or used">ახალი თუ მეორადი</span>
             <div class="choice">
               <label><input type="radio" name="condition" value="ახალი"><span data-en="New">ახალი</span></label>
