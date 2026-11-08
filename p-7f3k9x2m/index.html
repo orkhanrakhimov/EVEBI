@@ -2,31 +2,179 @@
 <html lang="ka">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EVEBI</title>
-<meta name="description" content="ელექტრომობილები საქართველოში.">
+<meta name="robots" content="noindex, nofollow">
+<title>EVები — ელექტრომობილები საქართველოში, გამოცნობის გარეშე</title>
+<meta name="description" content="რეალური EV გამოცდილება, პრაქტიკული ინფორმაცია და პირადი დახმარება საქართველოში შენი შემდეგი ელექტრომობილის პოვნაში.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="EVები">
+<meta property="og:title" content="EVები — ელექტრომობილები საქართველოში, გამოცნობის გარეშე">
+<meta property="og:description" content="რეალური EV გამოცდილება, პრაქტიკული ინფორმაცია და პირადი დახმარება საქართველოში შენი შემდეგი ელექტრომობილის პოვნაში.">
+<meta property="og:image" content="https://evebi.ge/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F5F5F2">
 <link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/LGV-Baxy-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="css/home.css?v=3">
+<link rel="stylesheet" href="css/site.css?v=2">
+<script>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"EVები","url":"https://evebi.ge","inLanguage":["ka","en"]}</script>
 </head>
-<body>
-<header class="bar"><img src="assets/logo.png" alt="EVEBI"></header>
-<main>
-  <section class="hero">
-    <h1>ელექტრომობილები საქართველოში, <em>მარტივად</em></h1>
-    <p>დამტენი სადგურები, მარშრუტი შენი მანქანით და ის, რაც ქართველ EV მძღოლს სჭირდება, ერთ ადგილას.</p>
-    <a class="btn" href="map.html">გახსენი რუკა</a>
-  </section>
-  <section class="sec">
-    <h2>რას ვაკეთებთ</h2>
-    <a class="card" href="map.html">
-      <h3>დამტენების რუკა</h3>
-      <p>იპოვე სადგური შენი კონექტორით და დათვალე მარშრუტი დატენვის გაჩერებებით.</p>
-      <span>რუკაზე გადასვლა →</span>
-    </a>
-  </section>
+<body data-page="home" data-wa="გამარჯობა! EVები-სთან დაკავშირება მინდა." data-wa-en="Hello! I&#x27;d like to get in touch with EVები." data-title-en="EVები — Electric cars in Georgia, without the guesswork" data-desc-en="Real-world EV experiences, practical information and personal help finding your next electric car in Georgia.">
+<a class="skip" href="#main" data-en="Skip to content">მთავარ შინაარსზე გადასვლა</a>
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-in">
+    <a class="logo" href="index.html" aria-label="EVები"><span class="logo-ev">EV</span><span class="logo-ka">ები</span></a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="index.html" data-nav="home" aria-current="page" data-en="Home">მთავარი</a>
+      <div class="dd">
+        <button type="button" class="dd-btn" aria-expanded="false" data-en="Services">სერვისები</button>
+        <div class="dd-menu">
+          <a href="find-my-ev.html" data-nav="find-my-ev" data-en="Find My EV">იპოვე ჩემი EV</a>
+          <a href="sell-your-ev.html" data-nav="sell-your-ev" data-en="Sell Your EV">გაყიდე შენი EV</a>
+        </div>
+      </div>
+      <a href="about.html" data-nav="about" data-en="About">შესახებ</a>
+      <a href="collaborations.html" data-nav="collaborations" data-en="Collaborate">თანამშრომლობა</a>
+      <a href="work.html" data-nav="work" data-en="Selected Work">ნამუშევრები</a>
+      <a href="contact.html" data-nav="contact" data-en="Contact">კონტაქტი</a>
+    </nav>
+    <div class="hdr-end">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="ka" aria-pressed="true">ქარ</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav"><i></i><i></i></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow rv" data-en="Independent EV media · Tbilisi">დამოუკიდებელი EV მედია · თბილისი</span>
+      <h1 class="display rv d1" data-en="Electric cars, <span class='red'>without the guesswork.</span>">ელექტრომობილები, <span class="red">გამოცნობის გარეშე.</span></h1>
+      <p class="lead rv d2" data-en="Real-world EV experiences, practical information and personal help finding your next electric car in Georgia.">რეალური EV გამოცდილება, პრაქტიკული ინფორმაცია და პირადი დახმარება საქართველოში შენი შემდეგი ელექტრომობილის პოვნაში.</p>
+      <div class="btns rv d3">
+        <a class="btn btn-red" href="find-my-ev.html"><span data-en="Find My EV">იპოვე ჩემი EV</span><span class="arr">→</span></a>
+        <a class="btn btn-line" href="collaborations.html" data-en="Work With EVები">ითანამშრომლე EVები-სთან</a>
+        <a class="link" href="about.html" style="align-self:center;margin-left:6px"><span data-en="Meet the creator">გაიცანი ავტორი</span> <span>→</span></a>
+      </div>
+    </div>
+    <div class="ph rv d2" data-src="assets/img/hero.jpg" data-alt="Orkhan with an electric car" data-label="Photo placeholder · assets/img/hero.jpg"></div>
+  </div>
+</section>
+
+<section class="sec sec-alt">
+  <div class="wrap split">
+    <div class="ph ratio-45 rv" data-src="assets/img/portrait.jpg" data-alt="Orkhan Rakhimov" data-label="Portrait placeholder · assets/img/portrait.jpg"></div>
+    <div class="rv d1">
+      <span class="eyebrow" data-en="The person behind it">ვინ დგას ამის უკან</span>
+      <h2 class="h2" style="margin-bottom:22px" data-en="I'm Orkhan Rakhimov.">მე ვარ ორხან რახიმოვი.</h2>
+      <p class="lead" style="margin-bottom:26px" data-en="An EV enthusiast from Tbilisi. I test electric cars in real conditions and explain, in Georgian, what living with them is actually like.">EV ენთუზიასტი თბილისიდან. ელექტრომობილებს რეალურ პირობებში ვამოწმებ და ქართულად ვუხსნი, როგორია მათთან ყოველდღიური ცხოვრება.</p>
+      <a class="link" href="about.html"><span data-en="More about me">მეტი ჩემ შესახებ</span> <span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow" data-en="EVები in numbers">EVები ციფრებში</span>
+      <h2 class="h2" data-en="Small, growing and honest.">პატარა, მზარდი და გულწრფელი.</h2>
+    </div>
+    <div class="stats rv">
+      <div class="stat"><b data-stat="followers">—</b><span data-en="TikTok followers">TikTok გამომწერი</span></div>
+      <div class="stat"><b data-stat="videos">—</b><span data-en="Published videos">გამოქვეყნებული ვიდეო</span></div>
+      <div class="stat"><b data-stat="views" style="font-size:clamp(30px,4.2vw,54px);padding-top:.25em">—</b><span data-en="Total views">ჯამური ნახვა</span></div>
+    </div>
+    <p class="note"><span data-stat="asOf"></span> · <a class="link" data-tt-link href="#" target="_blank" rel="noopener">TikTok @ev.ebi</a></p>
+  </div>
+</section>
+
+<section class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow" data-en="What EVები does">რას აკეთებს EVები</span>
+      <h2 class="h2" data-en="Experience. Understand. Connect.">განვიცდით. ვიგებთ. ვაკავშირებთ.</h2>
+    </div>
+    <div class="grid g3">
+      <article class="card rv"><span class="num">01</span><h3 class="h3" data-en="Experience">გამოცდილება</h3><p data-en="Real-world EV reviews, road trips and automotive storytelling.">რეალური EV მიმოხილვები, გზის მოგზაურობები და ავტომობილური ისტორიები.</p></article>
+      <article class="card rv d1"><span class="num">02</span><h3 class="h3" data-en="Understand">გაგება</h3><p data-en="Useful information about vehicles, warranties, technology and ownership.">სასარგებლო ინფორმაცია მანქანებზე, გარანტიაზე, ტექნოლოგიასა და ექსპლუატაციაზე.</p></article>
+      <article class="card rv d2"><span class="num">03</span><h3 class="h3" data-en="Connect">დაკავშირება</h3><p data-en="Helping buyers find a suitable car, and connecting dealerships with interested customers.">მყიდველს ვეხმარები შესაფერისი მანქანის პოვნაში, დილერებს კი ვაკავშირებ დაინტერესებულ მომხმარებლებთან.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-dark">
+  <div class="wrap split">
+    <div class="rv">
+      <span class="eyebrow" data-en="For dealerships and brands">დილერებისა და ბრენდებისთვის</span>
+      <h2 class="h2" style="margin-bottom:22px" data-en="Let's create something worth watching.">შევქმნათ ისეთი რამ, რაც ღირს ყურებად.</h2>
+      <p class="lead" style="margin-bottom:30px" data-en="Reviews, road trips, promotional videos, content production and event coverage for dealerships, automotive brands and businesses.">მიმოხილვები, გზის ტესტები, სარეკლამო ვიდეოები, კონტენტის წარმოება და ივენთების გაშუქება დილერებისთვის, ავტობრენდებისა და ბიზნესებისთვის.</p>
+      <a class="btn btn-red" href="collaborations.html"><span data-en="Collaboration options">თანამშრომლობის ფორმატები</span><span class="arr">→</span></a>
+    </div>
+    <div class="ph ratio-43 rv d1" data-src="assets/img/collab.jpg" data-alt="" data-label="Photo placeholder · assets/img/collab.jpg"></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap split">
+    <div class="ph ratio-43 rv" data-src="assets/img/find.jpg" data-alt="" data-label="Photo placeholder · assets/img/find.jpg"></div>
+    <div class="rv d1">
+      <span class="eyebrow" data-en="Find My EV">იპოვე ჩემი EV</span>
+      <h2 class="h2" style="margin-bottom:22px" data-en="Looking for an electric car? Tell me what you have in mind.">ელექტრომობილს ეძებ? მითხარი, რა გაქვს მხედველობაში.</h2>
+      <p class="lead" style="margin-bottom:30px" data-en="Share your budget and preferences. I'll help you understand your options and, where possible, connect you with relevant sellers. It takes two minutes.">მითხარი შენი ბიუჯეტი და სურვილები. დაგეხმარები ვარიანტების გააზრებაში და, სადაც შესაძლებელია, შესაფერის გამყიდველთან დაკავშირებაში. ორი წუთი საკმარისია.</p>
+      <a class="btn btn-dark" href="find-my-ev.html"><span data-en="Start">დაწყება</span><span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt">
+  <div class="wrap" style="text-align:center;display:grid;gap:22px;justify-items:center">
+    <h2 class="display rv" style="font-size:clamp(40px,7vw,92px)" data-en="Let's <span class='red'>talk.</span>">მოდი, <span class="red">ვისაუბროთ.</span></h2>
+    <p class="lead rv d1" data-en="Message me on WhatsApp or by email.">მომწერე WhatsApp-ზე ან ელფოსტით.</p>
+    <div class="btns rv d2" style="justify-content:center">
+      <a class="btn btn-red" data-wa-link href="#" rel="noopener">WhatsApp</a>
+      <a class="btn btn-line" data-mail-link href="#" data-keep>contact@evebi.ge</a>
+    </div>
+  </div>
+</section>
 </main>
-<footer>EVEBI · <a href="mailto:contact@evebi.ge">contact@evebi.ge</a></footer>
+<footer class="ftr">
+  <div class="wrap ftr-in">
+    <div class="ftr-brand">
+      <a class="logo" href="index.html" aria-label="EVები"><span class="logo-ev">EV</span><span class="logo-ka">ები</span></a>
+      <p data-en="Independent Georgian EV media. Real-world experiences, honest explanations.">დამოუკიდებელი ქართული EV მედია. რეალური გამოცდილება, გულწრფელი ახსნა.</p>
+    </div>
+    <div class="ftr-col">
+      <h4 data-en="Pages">გვერდები</h4>
+      <a href="about.html" data-en="About">შესახებ</a>
+      <a href="collaborations.html" data-en="Collaborate">თანამშრომლობა</a>
+      <a href="work.html" data-en="Selected Work">ნამუშევრები</a>
+      <a href="find-my-ev.html" data-en="Find My EV">იპოვე ჩემი EV</a>
+      <a href="sell-your-ev.html" data-en="Sell Your EV">გაყიდე შენი EV</a>
+    </div>
+    <div class="ftr-col">
+      <h4 data-en="Contact">კონტაქტი</h4>
+      <a data-wa-link href="#" rel="noopener">WhatsApp</a>
+      <a data-mail-link href="#">contact@evebi.ge</a>
+      <a data-tt-link href="https://www.tiktok.com/@ev.ebi" rel="noopener" target="_blank">TikTok</a>
+      <a data-ig-link href="#" rel="noopener" target="_blank" hidden>Instagram</a>
+    </div>
+  </div>
+  <div class="wrap ftr-note">
+    <span data-en="© EVები. Tbilisi, Georgia.">© EVები. თბილისი, საქართველო.</span>
+    <span data-en="EVები does not provide warranties and does not guarantee vehicle condition, price or availability.">EVები არ გასცემს გარანტიას და არ იძლევა მანქანის მდგომარეობის, ფასისა და ხელმისაწვდომობის გარანტიას.</span>
+  </div>
+</footer>
+<a class="wa-float" data-wa-float href="#" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.4Z"/></svg>
+</a>
+
+<script src="js/config.js?v=2"></script>
+<script src="js/app.js?v=2"></script>
 </body>
 </html>
