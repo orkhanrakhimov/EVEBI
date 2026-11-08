@@ -15,9 +15,9 @@
 <meta name="theme-color" content="#F5F5F2">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preload" href="assets/fonts/Inter-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/site.css?v=32">
+<link rel="stylesheet" href="css/site.css?v=34">
 <script>document.documentElement.classList.add('js')</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"EVebi","url":"https://evebi.ge","inLanguage":["ka","en"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://evebi.ge/#org","name":"EVebi","url":"https://evebi.ge/","logo":"https://evebi.ge/assets/logo-light.png","email":"contact@evebi.ge","founder":{"@type":"Person","name":"Orkhan Rakhimov"},"sameAs":["https://www.tiktok.com/@ev.ebi","https://www.instagram.com/ev.ebi/"]},{"@type":"WebSite","name":"EVebi","url":"https://evebi.ge/","inLanguage":["en"],"publisher":{"@id":"https://evebi.ge/#org"}}]}</script>
 </head>
 <body data-page="home" data-wa="Hello! I&#x27;d like to get in touch with EVebi.">
 <a class="skip" href="#main">Skip to content</a>
@@ -27,13 +27,7 @@
     <nav class="nav" id="nav" aria-label="Main">
       <a href="index.html" data-nav="home" aria-current="page">Home</a>
       <a href="about.html" data-nav="about">About</a>
-      <div class="dd">
-        <button type="button" class="dd-btn" aria-expanded="false">Explore</button>
-        <div class="dd-menu">
-          <a href="dealerships.html" data-nav="dealerships">Dealerships</a>
-          <a href="explained.html" data-nav="explained">EV Explained</a>
-        </div>
-      </div>
+      <a href="explained.html" data-nav="explained">EV Explained</a>
       <a href="collaborations.html" data-nav="collaborations" class="pill">Collaborate</a>
       <a href="contact.html" data-nav="contact">Contact</a>
       <div class="dd dd-sec">
@@ -91,8 +85,8 @@
 
 <section class="sec sec-dark">
   <div class="wrap">
-    <div class="split">
-      <div class="rv">
+    <div>
+      <div class="rv" style="max-width:760px">
         <h2 class="h2" style="margin-bottom:22px">Let's create something worth watching.</h2>
         <p class="lead" style="margin-bottom:28px">Give me a car to test, invite me to an event, or let's build a campaign together. You get honest, well-made content that people actually want to watch, and the audience gets a real look at the car.</p>
         <div class="btns">
@@ -100,7 +94,6 @@
           <a class="btn btn-line" data-wa-link href="#" rel="noopener">WhatsApp</a>
         </div>
       </div>
-      <div class="ph ratio-43 rv d1" data-src="assets/img/collab.jpg" data-alt="" data-label="Photo placeholder · assets/img/collab.jpg"></div>
     </div>
     <ul class="chips rv" style="margin-top:44px">
       <li>Independent reviews</li><li>Vehicle presentations</li><li>Promotional content</li><li>Road trips</li><li>Real-world tests</li><li>Events</li><li>Model launches</li><li>Brand campaigns</li>
@@ -118,20 +111,6 @@
   </div>
 </section>
 
-<section class="sec" data-stats-block>
-  <div class="wrap">
-    <div class="sec-head rv">
-      <h2 class="h2">Small, growing and honest.</h2>
-    </div>
-    <div class="stats rv">
-      <div class="stat" data-stat-wrap="followers"><b data-stat="followers"></b><span>TikTok followers</span></div>
-      <div class="stat" data-stat-wrap="videos"><b data-stat="videos"></b><span>Published videos</span></div>
-      <div class="stat" data-stat-wrap="views"><b data-stat="views"></b><span>Total views</span></div>
-    </div>
-    <p class="note"><span data-stat="asOf"></span> · <a class="link" data-tt-link href="#" target="_blank" rel="noopener">TikTok @ev.ebi</a></p>
-  </div>
-</section>
-
 <section class="sec sec-alt">
   <div class="wrap split" style="align-items:start">
     <div class="rv">
@@ -144,18 +123,6 @@
       <li><a href="explained-battery-warranty.html">Battery warranty: what to check →</a></li>
       <li><a href="explained-charging-connectors.html">CCS2, GB/T and other charging connectors →</a></li>
     </ul>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <h2 class="h2">Dealerships and guides, with transparency.</h2>
-    </div>
-    <div class="grid g2">
-      <a class="card rv" href="dealerships.html"><h3 class="h3">Dealerships</h3><p>Warranty, servicing and parts, shown only when confirmed. Anything else says "Not confirmed".</p><p class="link" style="margin-top:18px"><span>See the directory</span> <span>→</span></p></a>
-      <a class="card rv d1" href="explained.html"><h3 class="h3">EV Explained</h3><p>Plain-language guides on dealership questions, battery warranty and charging connectors.</p><p class="link" style="margin-top:18px"><span>Read the guides</span> <span>→</span></p></a>
-    </div>
   </div>
 </section>
 
@@ -193,7 +160,6 @@
       <h4>Pages</h4>
       <a href="about.html">About</a>
       <a href="collaborations.html">Collaborate</a>
-      <a href="dealerships.html">Dealerships</a>
       <a href="explained.html">EV Explained</a>
       <a href="find-my-ev.html">Find My EV</a>
       <a href="sell-your-ev.html">Sell Your EV</a>
@@ -216,7 +182,7 @@
   <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.4Z"/></svg>
 </a>
 
-<script src="js/config.js?v=32"></script>
-<script src="js/app.js?v=32"></script>
+<script src="js/config.js?v=34"></script>
+<script src="js/app.js?v=34"></script>
 </body>
 </html>

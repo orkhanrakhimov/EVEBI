@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "32"
+VER = "34"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -112,7 +112,12 @@ for fn in sorted(os.listdir(pagesdir)):
     meta, body = parse(read(os.path.join(pagesdir, fn)))
     navkey = meta.get("nav", page)
     h = header.replace('data-nav="%s"' % navkey, 'data-nav="%s" aria-current="page"' % navkey)
-    ld = '{"@context":"https://schema.org","@type":"WebSite","name":"EVები","url":"%s","inLanguage":["ka","en"]}' % SITE
+    ld = ('{"@context":"https://schema.org","@graph":['
+          '{"@type":"Organization","@id":"%s/#org","name":"EVები","url":"%s/","logo":"%s/assets/logo-light.png",'
+          '"email":"contact@evebi.ge","founder":{"@type":"Person","name":"Orkhan Rakhimov"},'
+          '"sameAs":["https://www.tiktok.com/@ev.ebi","https://www.instagram.com/ev.ebi/"]},'
+          '{"@type":"WebSite","name":"EVები","url":"%s/","inLanguage":%s,"publisher":{"@id":"%s/#org"}}]}'
+          % (SITE, SITE, SITE, SITE, '["en"]' if EN_ONLY else '["ka","en"]', SITE))
     out = TEMPLATE.format(
         robots='<meta name="robots" content="noindex, nofollow">\n' if NOINDEX else "",
         title=esc(meta["title_en"] if EN_ONLY else meta["title"]), desc=esc(meta["desc_en"] if EN_ONLY else meta["desc"]),
@@ -127,6 +132,8 @@ for fn in sorted(os.listdir(pagesdir)):
         out = out.replace('<html lang="ka">', '<html lang="en">')
         out = out.replace('<span class="logo-ka">ები</span>', '<span class="logo-ka">ebi</span>').replace("EVები", "EVebi")
         out = re.sub(r'\sdata-(title-en|desc-en|wa-en)="[^"]*"', "", out)
+    if page == "404":
+        out = out.replace('<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta name="viewport" content="width=device-width, initial-scale=1">\n<base href="/">\n<meta name="robots" content="noindex">', 1)
     name = "index.html" if page == "home" else page + ".html"
     if meta.get("sitemap", "yes") != "no":
         SITEMAP.append("" if page == "home" else page + ".html")
