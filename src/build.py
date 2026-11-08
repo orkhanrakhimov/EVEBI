@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(ROOT), "p-7f3k9x2m")
 NOINDEX = True                      # set False when the site goes live
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "2"                           # bump to bust the cache of css/js
+VER = "3"                           # bump to bust the cache of css/js
 
 def read(p):
     return open(p, encoding="utf-8").read()

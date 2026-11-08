@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/LGV-Baxy-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="css/site.css?v=2">
+<link rel="stylesheet" href="css/site.css?v=3">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"EVები","url":"https://evebi.ge","inLanguage":["ka","en"]}</script>
 </head>
@@ -28,17 +28,25 @@
     <a class="logo" href="index.html" aria-label="EVები"><span class="logo-ev">EV</span><span class="logo-ka">ები</span></a>
     <nav class="nav" id="nav" aria-label="Main">
       <a href="index.html" data-nav="home" data-en="Home">მთავარი</a>
+      <a href="about.html" data-nav="about" data-en="About">ჩემ შესახებ</a>
+      <a href="work.html" data-nav="work" data-en="Work">ნამუშევრები</a>
       <div class="dd">
+        <button type="button" class="dd-btn" aria-expanded="false" data-en="Explore">გაიგე მეტი</button>
+        <div class="dd-menu">
+          <a href="cars.html" data-nav="cars" data-en="Electric Cars">ელექტრომობილები</a>
+          <a href="dealerships.html" data-nav="dealerships" data-en="Dealerships">დილერები</a>
+          <a href="explained.html" data-nav="explained" data-en="EV Explained">EV გასაგებად</a>
+        </div>
+      </div>
+      <a href="collaborations.html" data-nav="collaborations" class="pill" data-en="Collaborate">თანამშრომლობა</a>
+      <a href="contact.html" data-nav="contact" data-en="Contact">კონტაქტი</a>
+      <div class="dd dd-sec">
         <button type="button" class="dd-btn" aria-expanded="false" data-en="Services">სერვისები</button>
         <div class="dd-menu">
           <a href="find-my-ev.html" data-nav="find-my-ev" data-en="Find My EV">იპოვე ჩემი EV</a>
           <a href="sell-your-ev.html" data-nav="sell-your-ev" aria-current="page" data-en="Sell Your EV">გაყიდე შენი EV</a>
         </div>
       </div>
-      <a href="about.html" data-nav="about" data-en="About">შესახებ</a>
-      <a href="collaborations.html" data-nav="collaborations" data-en="Collaborate">თანამშრომლობა</a>
-      <a href="work.html" data-nav="work" data-en="Selected Work">ნამუშევრები</a>
-      <a href="contact.html" data-nav="contact" data-en="Contact">კონტაქტი</a>
     </nav>
     <div class="hdr-end">
       <div class="lang" role="group" aria-label="Language">
@@ -58,7 +66,7 @@
     <p class="lead rv d2" style="margin:26px 0 34px" data-en="I can help owners promote their electric cars through professional video content and publications, so your car reaches potential buyers.">შემიძლია დაგეხმარო ელექტრომობილის რეკლამირებაში პროფესიონალური ვიდეო კონტენტითა და პუბლიკაციებით, რათა შენი მანქანა პოტენციურ მყიდველამდე მივიდეს.</p>
     <div class="btns rv d3">
       <a class="btn btn-red" data-wa-link href="#" rel="noopener"><span data-en="Contact on WhatsApp">მომწერე WhatsApp-ზე</span><span class="arr">→</span></a>
-      <a class="btn btn-line" href="#form" data-en="Use the form">შეავსე ფორმა</a>
+      <a class="btn btn-line" data-mail-link data-keep href="#">contact@evebi.ge</a>
     </div>
   </div>
 </section>
@@ -74,31 +82,7 @@
     </div>
     <div class="callout rv" style="margin-top:44px;max-width:760px">
       <h3 data-en="Good to know">გასათვალისწინებელია</h3>
-      <p data-en="EVები is not a classifieds marketplace and does not process sales or payments. I provide promotional assistance and cannot guarantee that your car will sell.">EVები არ არის განცხადებების ბაზარი და არ ამუშავებს გაყიდვებს ან გადახდებს. ვეწევი რეკლამირებაში დახმარებას და ვერ გარანტირებ, რომ მანქანა გაიყიდება.</p>
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="form">
-  <div class="wrap split" style="align-items:start">
-    <div class="rv"><span class="eyebrow" data-en="Quick form">სწრაფი ფორმა</span>
-      <h2 class="h2" data-en="Tell me about your car.">მომიყევი შენს მანქანაზე.</h2></div>
-    <div class="rv d1">
-      <form class="form" data-form data-subject="EVები — Sell Your EV inquiry" novalidate>
-        <div class="row">
-          <div class="field"><label for="s-name" data-en="Name">სახელი</label><input id="s-name" name="name" required autocomplete="name"></div>
-          <div class="field"><label for="s-contact" data-en="WhatsApp number or email">WhatsApp ნომერი ან ელფოსტა</label><input id="s-contact" name="contact" required data-valid="contact"></div>
-        </div>
-        <div class="row">
-          <div class="field"><label for="s-model" data-en="Car model">მანქანის მოდელი</label><input id="s-model" name="model" required></div>
-          <div class="field"><label for="s-year" data-en="Year">გამოშვების წელი</label><input id="s-year" name="year" inputmode="numeric"></div>
-        </div>
-        <div class="field"><label for="s-price" data-en="Asking price">მოთხოვნილი ფასი</label><input id="s-price" name="price"></div>
-        <div class="field"><label for="s-msg" data-en="Anything else">დამატებითი ინფორმაცია</label><textarea id="s-msg" name="comments"></textarea></div>
-        <input class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <div class="form-nav"><button class="btn btn-red" type="submit" data-en="Send">გაგზავნა</button></div>
-        <div class="fstate" role="status" aria-live="polite"></div>
-      </form>
+      <p data-en="EVები is not a classifieds marketplace and does not process sales or payments. I provide promotional assistance and cannot guarantee that your car will sell.">EVები არ არის განცხადებების ბაზარი და არ ამუშავებს გაყიდვებს ან გადახდებს. რეკლამირებაში დახმარებას გთავაზობ, თუმცა გაყიდვის გარანტიას ვერ გაძლევ.</p>
     </div>
   </div>
 </section>
@@ -111,9 +95,12 @@
     </div>
     <div class="ftr-col">
       <h4 data-en="Pages">გვერდები</h4>
-      <a href="about.html" data-en="About">შესახებ</a>
+      <a href="about.html" data-en="About">ჩემ შესახებ</a>
+      <a href="work.html" data-en="Work">ნამუშევრები</a>
       <a href="collaborations.html" data-en="Collaborate">თანამშრომლობა</a>
-      <a href="work.html" data-en="Selected Work">ნამუშევრები</a>
+      <a href="cars.html" data-en="Electric Cars">ელექტრომობილები</a>
+      <a href="dealerships.html" data-en="Dealerships">დილერები</a>
+      <a href="explained.html" data-en="EV Explained">EV გასაგებად</a>
       <a href="find-my-ev.html" data-en="Find My EV">იპოვე ჩემი EV</a>
       <a href="sell-your-ev.html" data-en="Sell Your EV">გაყიდე შენი EV</a>
     </div>
@@ -134,7 +121,7 @@
   <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.4Z"/></svg>
 </a>
 
-<script src="js/config.js?v=2"></script>
-<script src="js/app.js?v=2"></script>
+<script src="js/config.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>
