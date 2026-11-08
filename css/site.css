@@ -311,3 +311,4 @@ main{animation:pgin .45s var(--ease)}
 .stats{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .hero h1.art-title{font-family:"Inter",sans-serif;font-weight:700;font-size:clamp(32px,5vw,58px);letter-spacing:-.03em;line-height:1.08;max-width:20ch}
 .hero .ph.ratio-45{height:auto;min-height:0;width:100%}
+.ph img{object-position:50% 16%}

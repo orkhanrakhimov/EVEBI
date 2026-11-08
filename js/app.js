@@ -71,7 +71,7 @@ function dynamic(){
 
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
 function thumb(ph,src,alt){
-  if(!src)return;var im=new Image();im.alt=alt||"";im.loading="lazy";
+  if(!src)return;var im=new Image();im.alt=alt||"";
   im.onload=function(){ph.classList.add("has");ph.appendChild(im)};im.src=src;
 }
 function filterBar(host,values,onPick,label){
@@ -180,7 +180,7 @@ function renderDealerProfile(){
 
 /* ---------- photo placeholders: real image replaces the placeholder if the file exists ---------- */
 $$(".ph[data-src]").forEach(function(ph){
-  var im=new Image();im.alt=ph.dataset.alt||"";im.loading="lazy";
+  var im=new Image();im.alt=ph.dataset.alt||"";
   im.onload=function(){ph.classList.add("has");ph.appendChild(im)};
   im.src=ph.dataset.src;
 });
