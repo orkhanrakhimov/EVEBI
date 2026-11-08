@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "14"
+VER = "17"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -32,9 +32,7 @@ TEMPLATE = """<!doctype html>
 <link rel="canonical" href="{site}/{file}">
 <meta name="theme-color" content="#F5F5F2">
 <link rel="icon" href="assets/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="preload" href="assets/fonts/MSBlock.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="assets/fonts/Inter-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="css/site.css?v={ver}">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">{ld}</script>
