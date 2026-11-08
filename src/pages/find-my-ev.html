@@ -16,50 +16,18 @@ wa_en: Hello! I'm looking for an electric or plug-in hybrid car. Budget: ___, pr
       </div>
     </div>
     <div class="rv d2">
-      <form class="form" data-form data-subject="EVები: Find My EV request" novalidate>
-        <div class="prog"><i></i><i></i></div>
-        <fieldset data-step style="border:0;display:grid;gap:18px">
-          <div class="field"><label for="f-models" data-en="Preferred brands or models">სასურველი ბრენდი ან მოდელი</label><input id="f-models" name="models" placeholder="BYD, ZEEKR, Tesla…" data-en-ph="BYD, ZEEKR, Tesla…"></div>
-          <div class="field"><span class="lbl" data-en="Type of car">Type of car</span>
-            <div class="choice">
-              <label><input type="radio" name="powertrain" value="Fully electric"><span data-en="Fully electric">Fully electric</span></label>
-              <label><input type="radio" name="powertrain" value="Plug-in hybrid"><span data-en="Plug-in hybrid">Plug-in hybrid</span></label>
-              <label><input type="radio" name="powertrain" value="Not sure"><span data-en="Not sure">Not sure</span></label>
-            </div></div>
-          <div class="field"><span class="lbl" data-en="New or used">ახალი თუ მეორადი</span>
-            <div class="choice">
-              <label><input type="radio" name="condition" value="ახალი"><span data-en="New">ახალი</span></label>
-              <label><input type="radio" name="condition" value="მეორადი"><span data-en="Used">მეორადი</span></label>
-              <label><input type="radio" name="condition" value="არ აქვს მნიშვნელობა"><span data-en="Either">არ აქვს მნიშვნელობა</span></label>
-            </div></div>
-          <div class="row">
-            <div class="field"><label for="f-budget" data-en="Budget">ბიუჯეტი</label><input id="f-budget" name="budget" inputmode="numeric" required></div>
-            <div class="field"><label for="f-cur" data-en="Currency">ვალუტა</label><select id="f-cur" name="currency"><option>USD</option><option>GEL</option><option>EUR</option></select></div>
-          </div>
-          <div class="field"><span class="lbl" data-en="Buying locally or importing?">ადგილობრივად ყიდულობ თუ იმპორტს განიხილავ?</span>
-            <div class="choice">
-              <label><input type="radio" name="source" value="ადგილობრივად"><span data-en="Locally">ადგილობრივად</span></label>
-              <label><input type="radio" name="source" value="იმპორტი"><span data-en="Import">იმპორტი</span></label>
-              <label><input type="radio" name="source" value="ჯერ არ ვიცი"><span data-en="Not sure yet">ჯერ არ ვიცი</span></label>
-            </div></div>
-          <div class="field"><label for="f-time" data-en="Expected purchase timeframe">შეძენის სავარაუდო ვადა</label>
-            <select id="f-time" name="timeframe"><option value="" data-en="Choose…">აირჩიე…</option><option value="1 თვეში" data-en="Within 1 month">1 თვეში</option><option value="1–3 თვეში" data-en="1–3 months">1–3 თვეში</option><option value="3–6 თვეში" data-en="3–6 months">3–6 თვეში</option><option value="უფრო გვიან / ვეცნობი" data-en="Later / just exploring">უფრო გვიან / ვეცნობი</option></select></div>
-          <div class="form-nav"><span></span><button class="btn btn-dark" type="button" data-next><span data-en="Next">შემდეგი</span><span class="arr">→</span></button></div>
-        </fieldset>
-        <fieldset data-step style="border:0;display:grid;gap:18px" hidden>
-          <div class="field"><label for="f-name" data-en="Full name">სახელი და გვარი</label><input id="f-name" name="name" required autocomplete="name"></div>
-          <div class="field"><span class="lbl" data-en="Preferred contact method">კონტაქტის სასურველი გზა</span>
-            <div class="choice">
-              <label><input type="radio" name="method" value="WhatsApp" checked><span>WhatsApp</span></label>
-              <label><input type="radio" name="method" value="ელფოსტა"><span data-en="Email">ელფოსტა</span></label>
-            </div></div>
-          <div class="field"><label for="f-contact" data-en="WhatsApp number or email">WhatsApp ნომერი ან ელფოსტა</label><input id="f-contact" name="contact" required data-valid="contact" autocomplete="tel"></div>
-          <div class="field"><label for="f-msg" data-en="Additional comments">დამატებითი კომენტარი</label><textarea id="f-msg" name="comments"></textarea></div>
-          <input class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="form-nav"><button class="btn btn-line" type="button" data-prev data-en="Back">უკან</button><button class="btn btn-red" type="submit" data-en="Send request">მოთხოვნის გაგზავნა</button></div>
-        </fieldset>
-        <div class="fstate" role="status" aria-live="polite"></div>
-      </form>
+      <h2 class="h2" style="margin-bottom:16px">Send me the basics.</h2>
+      <p class="lead" style="margin-bottom:18px">Message me on WhatsApp or by email with:</p>
+      <ul class="list" style="margin-bottom:26px">
+        <li>Your budget and currency</li>
+        <li>Electric or plug-in hybrid, new or used</li>
+        <li>Brands or models you like</li>
+        <li>How you drive and where you can charge</li>
+      </ul>
+      <div class="btns">
+        <a class="btn btn-red" data-wa-link href="#" rel="noopener">WhatsApp</a>
+        <a class="btn btn-line" data-mail-link data-keep href="#">contact@evebi.ge</a>
+      </div>
     </div>
   </div>
 </section>
