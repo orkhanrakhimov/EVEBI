@@ -328,3 +328,31 @@ h1,h2,h3,h4{font-weight:600;letter-spacing:-.03em;font-optical-sizing:auto}
 .hero .ph.hero-img{height:auto;min-height:0;aspect-ratio:2/1;width:100%;margin-top:clamp(34px,5vw,60px)}
 .hero-img img{object-position:50% 55%}
 @media(max-width:980px){.hero .ph.hero-img{order:0;aspect-ratio:4/3}}
+
+/* v5: full-bleed hero that melts into the page colour; portraits blend instead of boxed images */
+.hero-cover{position:relative;isolation:isolate;overflow:hidden;padding:clamp(70px,11vw,160px) 0 clamp(40px,6vw,80px)}
+.hero-cover .hero-bg{position:absolute;inset:0 0 0 22%;z-index:-2;border-radius:0;background:none;height:auto;min-height:0;margin:0;width:auto;aspect-ratio:auto}
+.hero-cover .hero-bg::before,.hero-cover .hero-bg::after{display:none}
+.hero-cover .hero-bg img{object-position:58% 50%}
+.hero-cover .hero-text{max-width:600px}
+.hero-cover::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+   linear-gradient(90deg,var(--bg) 0%,var(--bg) 24%,rgba(245,245,242,.8) 34%,rgba(245,245,242,.35) 46%,rgba(245,245,242,0) 60%),
+   linear-gradient(0deg,var(--bg) 0%,rgba(245,245,242,0) 30%),
+   linear-gradient(180deg,var(--bg) 0%,rgba(245,245,242,0) 14%)}
+.hero-cover .pillars{border-top-color:rgba(11,11,11,.25);margin-top:clamp(70px,10vw,140px)}
+.ph.blend{background:none;border-radius:0;
+  -webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%),linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%);
+  -webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,#000 70%,transparent 100%),linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-composite:intersect}
+.ph.blend::before,.ph.blend::after{display:none}
+.ph.portrait img{object-position:50% 6%}
+@media(max-width:980px){
+  .hero-cover{padding-top:calc(74vw + 20px)}
+  .hero-cover .hero-text{max-width:none}
+  .hero-cover .hero-bg{inset:0 0 auto 0;height:80vw}
+  .hero-cover .hero-bg img{object-position:68% 50%}
+  .hero-cover::before{inset:0 0 auto 0;height:80vw;
+    background:linear-gradient(0deg,var(--bg) 0%,rgba(245,245,242,0) 38%),linear-gradient(180deg,var(--bg) 0%,rgba(245,245,242,0) 12%)}
+  .hero .ph.ratio-45.portrait{aspect-ratio:4/5;order:-1;max-width:440px;margin:0 auto}
+}
+.hero-cover .lead{max-width:30em}@media(max-width:980px){.hero-cover .lead{max-width:none}}
