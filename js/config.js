@@ -39,14 +39,6 @@ window.EVEBI = {
     { id: "charging", title: "EV charging and ownership",  category: "Ownership",  text: "", link: "", image: "assets/img/work-charging.jpg" }
   ],
 
-  // ---- CARS (curated, not a database) ----------------------------------------
-  // Add a car by copying one block. Only confirmed facts. specs: [["Label","Value","Source / model year"]]
-  cars: [
-    { id: "tesla-model-3", brand: "Tesla", model: "Model 3", type: "Sedan", intro: "Tesla's electric sedan.", project: "model-3", specs: [] },
-    { id: "tesla-model-y", brand: "Tesla", model: "Model Y", type: "SUV",   intro: "Tesla's electric crossover SUV.", project: "model-y", specs: [] },
-    { id: "lotus-eletre",  brand: "Lotus", model: "Eletre",  type: "SUV",   intro: "Lotus's electric SUV.", project: "eletre", specs: [] }
-  ],
-
   // ---- DEALERSHIPS (publish only verified information) ------------------------
   // status: "dealer" (provided by the dealership) | "checked" (independently checked), anything not filled shows "Not confirmed".
   // Example (copy, fill, remove the comment):

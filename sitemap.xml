@@ -2,7 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://evebi.ge/</loc></url>
   <url><loc>https://evebi.ge/about.html</loc></url>
-  <url><loc>https://evebi.ge/cars.html</loc></url>
   <url><loc>https://evebi.ge/collaborations.html</loc></url>
   <url><loc>https://evebi.ge/contact.html</loc></url>
   <url><loc>https://evebi.ge/dealerships.html</loc></url>
@@ -12,5 +11,4 @@
   <url><loc>https://evebi.ge/explained.html</loc></url>
   <url><loc>https://evebi.ge/find-my-ev.html</loc></url>
   <url><loc>https://evebi.ge/sell-your-ev.html</loc></url>
-  <url><loc>https://evebi.ge/work.html</loc></url>
 </urlset>

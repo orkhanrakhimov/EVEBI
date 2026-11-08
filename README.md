@@ -25,8 +25,7 @@ Previous version (charging map) is in git history before commit "New site".
 The site is currently published in English only (`EN_ONLY = True` in `src/build.py`, `languages: ["en"]` in `js/config.js`). The Georgian text is kept in `src/pages/` next to each English string. To bring it back after corrections: set `EN_ONLY = False`, set `languages: ["ka","en"]`, run `python3 src/build.py`.
 
 ## Content you maintain (all in `js/config.js`)
-- `projects`, Selected Work (title, category, one-line text, TikTok link, thumbnail in `assets/img/`).
-- `cars`, car profiles (`car.html?id=...`). Add confirmed `specs` only.
+- `projects`, the Selected work cards on the home page (title, category, one-line text, TikTok link, thumbnail in `assets/img/`).
 - `dealerships`, dealership directory and profiles (`dealership.html?id=...`). Only verified information.
 - `stats`, audience numbers; an empty value hides that figure.
 Guides live in `src/pages/explained-*.html`. Revised sections (home, about, collaborations, work, cars, dealerships, guides) are English-only for now; Georgian versions to be added.
