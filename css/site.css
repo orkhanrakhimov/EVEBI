@@ -356,3 +356,22 @@ h1,h2,h3,h4{font-weight:600;letter-spacing:-.03em;font-optical-sizing:auto}
   .hero .ph.ratio-45.portrait{aspect-ratio:4/5;order:-1;max-width:440px;margin:0 auto}
 }
 .hero-cover .lead{max-width:30em}@media(max-width:980px){.hero-cover .lead{max-width:none}}
+
+/* dark full-bleed hero (About) */
+.hero-dark{background:var(--char);color:var(--milk)}
+.hero-dark .eyebrow,.hero-dark .lead{color:#a3a8b0}
+.hero-dark .hero-bg img{object-position:58% 50%}
+.hero-dark::before{
+  background:
+   linear-gradient(90deg,var(--char) 0%,var(--char) 24%,rgba(18,19,21,.8) 34%,rgba(18,19,21,.35) 46%,rgba(18,19,21,0) 60%),
+   linear-gradient(270deg,var(--char) 0%,rgba(18,19,21,0) 14%),
+   linear-gradient(0deg,var(--char) 0%,rgba(18,19,21,0) 30%),
+   linear-gradient(180deg,var(--char) 0%,rgba(18,19,21,0) 18%)}
+@media(max-width:980px){
+  .hero-dark::before{background:
+    linear-gradient(0deg,var(--char) 0%,rgba(18,19,21,0) 40%),
+    linear-gradient(180deg,var(--char) 0%,rgba(18,19,21,0) 14%),
+    linear-gradient(90deg,var(--char) 0%,rgba(18,19,21,0) 10%),
+    linear-gradient(270deg,var(--char) 0%,rgba(18,19,21,0) 10%)}
+}
+.hero-dark .hero-text{max-width:560px}.hero.hero-dark h1.display{font-size:clamp(36px,4.8vw,64px)}@media(max-width:980px){.hero-dark .hero-text{max-width:none}}
