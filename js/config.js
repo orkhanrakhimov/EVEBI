@@ -1,4 +1,4 @@
-/* ====== EVebi — easy settings. Edit values here; no other file needed. ====== */
+/* ====== EVebi, easy settings. Edit values here; no other file needed. ====== */
 window.EVEBI = {
   // Site languages. Currently English only; use ["ka","en"] once the Georgian text is corrected.
   languages: ["en"],
@@ -48,7 +48,7 @@ window.EVEBI = {
   ],
 
   // ---- DEALERSHIPS (publish only verified information) ------------------------
-  // status: "dealer" (provided by the dealership) | "checked" (independently checked) — anything not filled shows "Not confirmed".
+  // status: "dealer" (provided by the dealership) | "checked" (independently checked), anything not filled shows "Not confirmed".
   // Example (copy, fill, remove the comment):
   // { id:"example", name:"Dealership name", city:"Tbilisi", brands:["BYD"], condition:"New", updated:"2026-11-08",
   //   status:"dealer", models:["..."], vehicleWarranty:"", batteryWarranty:"", servicing:"", parts:"", testDrive:"",

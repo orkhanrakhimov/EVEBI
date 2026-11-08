@@ -313,7 +313,7 @@ main{animation:pgin .45s var(--ease)}
 .hero .ph.ratio-45{height:auto;min-height:0;width:100%}
 .ph img{object-position:50% 16%}
 
-/* v4: elegant type — Inter (display optical size) instead of the block logo font */
+/* v4: elegant type | Inter (display optical size) instead of the block logo font */
 h1,h2,h3,h4{font-weight:600;letter-spacing:-.03em;font-optical-sizing:auto}
 .display{font-weight:600;letter-spacing:-.036em;line-height:1.02}
 .hero h1.display{font-family:var(--display);font-weight:600;letter-spacing:-.036em;font-size:clamp(42px,6.6vw,96px);line-height:1.02}

@@ -7,13 +7,13 @@ var body=document.body;
 var T={
  ka:{req:"გთხოვ, შეავსე ეს ველი",email:"შეიყვანე სწორი ელფოსტა",contact:"შეიყვანე WhatsApp ნომერი ან ელფოსტა",
   okT:"მადლობა, შეტყობინება გაიგზავნა!",okP:"მალე გიპასუხებ.",
-  noEpT:"ფორმა ჯერ არ არის დაკავშირებული",noEpP:"შეტყობინება არ გაიგზავნა. მომწერე პირდაპირ WhatsApp-ით ან ელფოსტით — შენი ტექსტი უკვე მზადაა.",
+  noEpT:"ფორმა ჯერ არ არის დაკავშირებული",noEpP:"შეტყობინება არ გაიგზავნა. მომწერე პირდაპირ WhatsApp-ით ან ელფოსტით, შენი ტექსტი უკვე მზადაა.",
   netT:"გაგზავნა ვერ მოხერხდა",netP:"შეამოწმე ინტერნეტი და სცადე თავიდან, ან მომწერე პირდაპირ:",
   send:"იგზავნება…",wa:"მოწერა WhatsApp-ზე",mail:"მოწერა ელფოსტით",
   none:"ჯერ არ არის გამოქვეყნებული"},
  en:{req:"Please fill in this field",email:"Enter a valid email",contact:"Enter a WhatsApp number or an email",
   okT:"Thank you, your message was sent!",okP:"I'll get back to you soon.",
-  noEpT:"The form isn't connected yet",noEpP:"Your message was not sent. Write to me directly on WhatsApp or by email — your text is already prepared.",
+  noEpT:"The form isn't connected yet",noEpP:"Your message was not sent. Write to me directly on WhatsApp or by email. Your text is already prepared.",
   netT:"Couldn't send",netP:"Check your connection and try again, or write to me directly:",
   send:"Sending…",wa:"Message on WhatsApp",mail:"Send by email",
   none:"Not published yet"}
@@ -127,7 +127,7 @@ function renderCarProfile(){
   var id=new URLSearchParams(location.search).get("id");
   var c=(C.cars||[]).filter(function(x){return x.id===id})[0];
   if(!c){host.innerHTML="";host.appendChild(el("p","lead","Car not found. "));var a=el("a","link","See all cars");a.href="cars.html";host.appendChild(a);return}
-  var name=c.brand+" "+c.model;document.title=name+" — EVebi";
+  var name=c.brand+" "+c.model;document.title=name+" | EVebi";
   $$("[data-car-name]").forEach(function(e){e.textContent=name});
   $$("[data-car-type]").forEach(function(e){e.textContent=c.type||"EV"});
   $$("[data-car-intro]").forEach(function(e){e.textContent=c.intro||""});
@@ -167,7 +167,7 @@ function renderDealerProfile(){
   var id=new URLSearchParams(location.search).get("id");
   var d=(C.dealerships||[]).filter(function(x){return x.id===id})[0];
   if(!d){host.innerHTML="";host.appendChild(el("p","lead","Dealership not found. "));var a=el("a","link","See the directory");a.href="dealerships.html";host.appendChild(a);return}
-  document.title=d.name+" — EVebi";
+  document.title=d.name+" | EVebi";
   $$("[data-d-name]").forEach(function(e){e.textContent=d.name});
   $$("[data-d-city]").forEach(function(e){e.textContent=d.city||""});
   var st=STATUS[d.status]||["Not confirmed","b-none"];
