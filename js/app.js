@@ -62,21 +62,120 @@ function dynamic(){
   $$("[data-stat]").forEach(function(el){var v=s[el.dataset.stat];el.textContent=pick(v)});
   var mk=$$("[data-mediakit]");mk.forEach(function(a){if(C.mediaKit){a.href=C.mediaKit;a.hidden=false}else a.hidden=true});
   $$("[data-mediakit-none]").forEach(function(el){el.hidden=!!C.mediaKit});
-  var pr=$("#projects");
-  if(pr){
-    var list=C.projects||[];
+  // stats: hide anything empty (no dashes)
+  $$("[data-stat-wrap]").forEach(function(w){var v=pick(s[w.dataset.statWrap]);w.hidden=!v});
+  var any=["followers","videos","views"].some(function(k){return pick(s[k])});
+  $$("[data-stats-block]").forEach(function(el){el.hidden=!any});
+  renderProjects();renderCars();renderCarProfile();renderDealers();renderDealerProfile();
+}
+
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function thumb(ph,src,alt){
+  if(!src)return;var im=new Image();im.alt=alt||"";im.loading="lazy";
+  im.onload=function(){ph.classList.add("has");ph.appendChild(im)};im.src=src;
+}
+function filterBar(host,values,onPick,label){
+  host.innerHTML="";var all=["All"].concat(values);
+  all.forEach(function(v,i){
+    var b=el("button","chip"+(i?"":" on"),v);b.type="button";b.setAttribute("aria-pressed",i===0);
+    b.addEventListener("click",function(){$$(".chip",host).forEach(function(c){c.classList.remove("on");c.setAttribute("aria-pressed","false")});b.classList.add("on");b.setAttribute("aria-pressed","true");onPick(i?v:null)});
+    host.appendChild(b);
+  });
+  host.setAttribute("aria-label",label||"Filter");
+}
+function renderProjects(){
+  var pr=$("#projects");if(!pr)return;
+  var list=C.projects||[],lim=parseInt(pr.dataset.limit||"0",10),cat=null;
+  function draw(){
     pr.innerHTML="";
+    var items=list.filter(function(p){return !cat||p.category===cat});if(lim)items=items.slice(0,lim);
     $$("[data-projects-empty]").forEach(function(e){e.hidden=list.length>0});
-    list.forEach(function(p){
-      var a=document.createElement(p.link?"a":"div");a.className="proj rv in";
-      if(p.link){a.href=p.link;a.target="_blank";a.rel="noopener"}
-      var ph=document.createElement("div");ph.className="ph ratio-169";ph.dataset.label=pick(p.type);
-      if(p.image){var im=new Image();im.alt=pick(p.title);im.loading="lazy";im.onload=function(){ph.classList.add("has")};im.onerror=function(){im.remove()};im.src=p.image;ph.appendChild(im)}
-      var h=document.createElement("h3");h.textContent=pick(p.title);
-      var t=document.createElement("p");t.textContent=pick(p.text);
-      a.appendChild(ph);a.appendChild(h);a.appendChild(t);pr.appendChild(a);
+    items.forEach(function(p){
+      var a=el("a","proj");a.href=p.link||C.tiktok||"#";a.target="_blank";a.rel="noopener";
+      var ph=el("div","ph ratio-169");ph.dataset.label="Thumbnail · "+(p.image||"");thumb(ph,p.image,p.title);
+      var tag=el("span","proj-tag",p.category);ph.appendChild(tag);
+      a.appendChild(ph);a.appendChild(el("h3","",p.title));
+      if(p.text)a.appendChild(el("p","",p.text));
+      a.appendChild(el("span","proj-go",p.link?"Watch on TikTok ↗":"See on TikTok ↗"));
+      pr.appendChild(a);
     });
   }
+  var fb=$("[data-project-filters]");
+  if(fb&&!fb.dataset.done){fb.dataset.done=1;var cats=[];list.forEach(function(p){if(cats.indexOf(p.category)<0)cats.push(p.category)});filterBar(fb,cats,function(c){cat=c;draw()},"Filter projects")}
+  draw();
+}
+function carHref(c){return "car.html?id="+encodeURIComponent(c.id)}
+function renderCars(){
+  var g=$("#cars-grid");if(!g)return;var list=C.cars||[],br=null;
+  function draw(){
+    g.innerHTML="";
+    list.filter(function(c){return !br||c.brand===br}).forEach(function(c){
+      var a=el("a","card car-card");a.href=carHref(c);
+      a.appendChild(el("span","badge",c.type||"EV"));
+      a.appendChild(el("h3","h3",c.brand+" "+c.model));
+      a.appendChild(el("p","",c.intro||""));
+      a.appendChild(el("span","link","View profile →"));
+      g.appendChild(a);
+    });
+  }
+  var fb=$("[data-car-filters]");
+  if(fb&&!fb.dataset.done){fb.dataset.done=1;var bs=[];list.forEach(function(c){if(bs.indexOf(c.brand)<0)bs.push(c.brand)});filterBar(fb,bs,function(b){br=b;draw()},"Filter by brand")}
+  draw();
+}
+function renderCarProfile(){
+  var host=$("#car-profile");if(!host)return;
+  var id=new URLSearchParams(location.search).get("id");
+  var c=(C.cars||[]).filter(function(x){return x.id===id})[0];
+  if(!c){host.innerHTML="";host.appendChild(el("p","lead","Car not found. "));var a=el("a","link","See all cars");a.href="cars.html";host.appendChild(a);return}
+  var name=c.brand+" "+c.model;document.title=name+" — EVebi";
+  $$("[data-car-name]").forEach(function(e){e.textContent=name});
+  $$("[data-car-type]").forEach(function(e){e.textContent=c.type||"EV"});
+  $$("[data-car-intro]").forEach(function(e){e.textContent=c.intro||""});
+  $$("[data-car-ask]").forEach(function(a){a.href="find-my-ev.html?model="+encodeURIComponent(name)});
+  $$("[data-car-wa]").forEach(function(a){a.dataset.msgEn="Hello! I have a question about the "+name+": ";a.href=waHref(a.dataset.msgEn);a.target="_blank"});
+  var proj=(C.projects||[]).filter(function(p){return p.id===c.project})[0];
+  var cov=$("[data-car-coverage]");if(cov){cov.href=proj&&proj.link?proj.link:C.tiktok;cov.hidden=!proj}
+  var sp=$("[data-car-specs]");sp.innerHTML="";
+  if((c.specs||[]).length){c.specs.forEach(function(r){var d=el("div");d.appendChild(el("dt","",r[0]));d.appendChild(el("dd","",r[1]+(r[2]?" ("+r[2]+")":"")));sp.appendChild(d)});$$("[data-specs-empty]").forEach(function(e){e.hidden=true})}
+  else $$("[data-specs-empty]").forEach(function(e){e.hidden=false});
+}
+var DFIELDS=[["Brands represented","brands"],["Available models","models"],["Vehicle warranty","vehicleWarranty"],["Battery warranty","batteryWarranty"],["Local servicing","servicing"],["Parts availability","parts"],["Test drives","testDrive"],["Phone","phone"],["Website","website"]];
+var STATUS={dealer:["Dealership-provided","b-dealer"],checked:["Independently checked","b-checked"]};
+function val(v){return Array.isArray(v)?v.join(", "):v}
+function renderDealers(){
+  var g=$("#dealer-grid");if(!g)return;var list=C.dealerships||[],br=null;
+  $$("[data-dealers-empty]").forEach(function(e){e.hidden=list.length>0});
+  $$("[data-dealer-filters]").forEach(function(e){e.hidden=!list.length});
+  function draw(){
+    g.innerHTML="";
+    list.filter(function(d){return !br||(d.brands||[]).indexOf(br)>-1}).forEach(function(d){
+      var a=el("a","card");a.href="dealership.html?id="+encodeURIComponent(d.id);
+      var st=STATUS[d.status]||["Not confirmed","b-none"];
+      a.appendChild(el("span","badge "+st[1],st[0]));
+      a.appendChild(el("h3","h3",d.name));
+      a.appendChild(el("p","",[d.city,val(d.brands)].filter(Boolean).join(" · ")));
+      if(d.updated)a.appendChild(el("p","note","Updated "+d.updated));
+      g.appendChild(a);
+    });
+  }
+  var fb=$("[data-dealer-filters]");
+  if(fb&&list.length&&!fb.dataset.done){fb.dataset.done=1;var bs=[];list.forEach(function(d){(d.brands||[]).forEach(function(b){if(bs.indexOf(b)<0)bs.push(b)})});filterBar(fb,bs,function(b){br=b;draw()},"Filter by brand")}
+  draw();
+}
+function renderDealerProfile(){
+  var host=$("#dealer-profile");if(!host)return;
+  var id=new URLSearchParams(location.search).get("id");
+  var d=(C.dealerships||[]).filter(function(x){return x.id===id})[0];
+  if(!d){host.innerHTML="";host.appendChild(el("p","lead","Dealership not found. "));var a=el("a","link","See the directory");a.href="dealerships.html";host.appendChild(a);return}
+  document.title=d.name+" — EVebi";
+  $$("[data-d-name]").forEach(function(e){e.textContent=d.name});
+  $$("[data-d-city]").forEach(function(e){e.textContent=d.city||""});
+  var st=STATUS[d.status]||["Not confirmed","b-none"];
+  $$("[data-d-status]").forEach(function(e){e.textContent=st[0];e.className="badge "+st[1]});
+  $$("[data-d-updated]").forEach(function(e){e.textContent=d.updated?"Last updated "+d.updated:"Last update: not recorded"});
+  var dl=$("[data-d-facts]");dl.innerHTML="";
+  DFIELDS.forEach(function(f){var v=val(d[f[1]]);var r=el("div");r.appendChild(el("dt","",f[0]));r.appendChild(el("dd",v?"":"nc",v||"Not confirmed"));dl.appendChild(r)});
+  $$("[data-d-wa]").forEach(function(a){a.dataset.msgEn="Hello! I have a question about "+d.name+": ";a.href=waHref(a.dataset.msgEn);a.target="_blank"});
 }
 
 /* ---------- photo placeholders: real image replaces the placeholder if the file exists ---------- */

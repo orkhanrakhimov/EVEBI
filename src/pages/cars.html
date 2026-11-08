@@ -1,54 +1,40 @@
 title: ელექტრომობილები — EVები
-title_en: Electric Cars — EVები
-desc: შერჩეული, მსუბუქი გზამკვლევი ელექტრომობილებზე საქართველოში: რა უნდა იცოდე და რა იკითხო დილერთან.
-desc_en: A curated, lightweight guide to electric cars in Georgia: what to know and what to ask a dealership.
-wa: გამარჯობა! ელექტრომობილზე მაქვს შეკითხვა: ___.
+title_en: Electric Cars — EVebi
+desc: Practical electric car profiles for Georgia: what to know and what to ask before you buy.
+desc_en: Practical electric car profiles for Georgia: what to know and what to ask before you buy.
+wa: Hello! I have a question about an electric car: ___.
 wa_en: Hello! I have a question about an electric car: ___.
 ---
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow rv" data-en="Explore · Electric Cars">გაიგე მეტი · ელექტრომობილები</span>
-    <h1 class="display rv d1" data-en="Know the car <span class='red'>before you buy it.</span>">გაიცანი მანქანა <span class="red">ყიდვამდე.</span></h1>
-    <p class="lead rv d2" style="margin-top:26px" data-en="Not a giant specification database. A small, curated guide to the EVs you meet in my videos and at Georgian dealerships.">ეს არ არის ტექნიკური მონაცემების უზარმაზარი ბაზა. ეს არის პატარა, შერჩეული გზამკვლევი იმ EV-ებზე, რომლებსაც ჩემს ვიდეოებსა და ქართულ დილერებთან ნახავ.</p>
+    <span class="eyebrow rv">Explore · Electric Cars</span>
+    <h1 class="display rv d1">Know the car <span class="red">before you buy it.</span></h1>
+    <p class="lead rv d2" style="margin-top:26px">Not a giant specification database. A small, curated guide to the electric cars EVebi covers: what they are, how ownership works in Georgia, and which questions to ask.</p>
   </div>
 </section>
-
 <section class="sec sec-alt">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="eyebrow" data-en="Profiles">პროფილები</span>
-      <h2 class="h2" data-en="In preparation.">მზადების პროცესშია.</h2>
-      <p class="muted" data-en="A profile is published only when its facts are confirmed. Manufacturer specifications and my real-world observations will always be shown separately.">პროფილი ქვეყნდება მხოლოდ მაშინ, როცა მისი ფაქტები დადასტურებულია. მწარმოებლის მონაცემები და ჩემი რეალური დაკვირვებები ყოველთვის ცალ-ცალკე იქნება ნაჩვენები.</p>
-    </div>
-    <div class="grid g3">
-      <article class="card rv"><span class="badge" data-en="Profile in preparation">პროფილი მზადდება</span><h3 class="h3" style="margin:18px 0 10px">Tesla</h3><a class="link" href="find-my-ev.html?model=Tesla"><span data-en="Interested? Ask EVები">დაინტერესდი? მკითხე</span> <span>→</span></a></article>
-      <article class="card rv d1"><span class="badge" data-en="Profile in preparation">პროფილი მზადდება</span><h3 class="h3" style="margin:18px 0 10px">BYD</h3><a class="link" href="find-my-ev.html?model=BYD"><span data-en="Interested? Ask EVები">დაინტერესდი? მკითხე</span> <span>→</span></a></article>
-      <article class="card rv d2"><span class="badge" data-en="Profile in preparation">პროფილი მზადდება</span><h3 class="h3" style="margin:18px 0 10px">ZEEKR</h3><a class="link" href="find-my-ev.html?model=ZEEKR"><span data-en="Interested? Ask EVები">დაინტერესდი? მკითხე</span> <span>→</span></a></article>
-    </div>
+    <div class="filters" data-car-filters></div>
+    <div class="grid g3" id="cars-grid"></div>
+    <p class="note" style="margin-top:26px">Profiles list only confirmed facts. Manufacturer specifications and EVebi's own real-world observations are always shown separately, with model year and market.</p>
   </div>
 </section>
-
 <section class="sec">
   <div class="wrap split" style="align-items:start">
-    <div class="rv">
-      <span class="eyebrow" data-en="What each profile will cover">რას მოიცავს თითოეული პროფილი</span>
-      <h2 class="h2" data-en="Useful, not overwhelming.">სასარგებლო, ზედმეტის გარეშე.</h2>
-    </div>
+    <div class="rv"><span class="eyebrow">Every profile covers</span><h2 class="h2">Useful, not overwhelming.</h2></div>
     <ul class="list rv d1">
-      <li data-en="What the car is and who it might suit">რა მანქანაა და ვის შეიძლება შეეფერებოდეს</li>
-      <li data-en="Main features, battery and range (with model year, variant and market)">ძირითადი ფუნქციები, ბატარეა და სავალი მანძილი (გამოშვების წელი, კომპლექტაცია და ბაზარი მითითებით)</li>
-      <li data-en="Charging standards">დატენვის სტანდარტები</li>
-      <li data-en="Real-world considerations and software / connectivity">რეალური გამოცდილება, პროგრამული უზრუნველყოფა და კავშირი</li>
-      <li data-en="Warranty questions to ask">გარანტიასთან დაკავშირებული შეკითხვები, რომლებიც უნდა დასვა</li>
-      <li data-en="Local servicing and parts">ადგილობრივი სერვისი და ნაწილები</li>
-      <li data-en="Dealership information, only if confirmed">დილერის ინფორმაცია, მხოლოდ დადასტურებულის შემთხვევაში</li>
+      <li>What the car is and who it might suit</li>
+      <li>Battery, range and charging standard, with model year, variant and market</li>
+      <li>Real-world ownership, software and connectivity</li>
+      <li>Warranty questions to ask</li>
+      <li>Local servicing and parts</li>
+      <li>Dealership information, only if confirmed</li>
     </ul>
   </div>
 </section>
-
 <section class="sec sec-dark">
   <div class="wrap split">
-    <div class="rv"><h2 class="h2" data-en="Have a question about a specific car?">გაქვს შეკითხვა კონკრეტულ მანქანაზე?</h2></div>
-    <div class="rv d1 btns"><a class="btn btn-red" data-wa-link href="#" rel="noopener">WhatsApp</a><a class="btn btn-line" href="find-my-ev.html" data-en="Find My EV">იპოვე ჩემი EV</a></div>
+    <div class="rv"><h2 class="h2">Asking about a car that isn't here?</h2></div>
+    <div class="rv d1 btns"><a class="btn btn-red" data-wa-link href="#" rel="noopener">WhatsApp</a><a class="btn btn-line" href="find-my-ev.html">Find My EV</a></div>
   </div>
 </section>

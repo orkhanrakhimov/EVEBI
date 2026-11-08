@@ -1,4 +1,4 @@
-/* ====== EVები — easy settings. Edit values here; no other file needed. ====== */
+/* ====== EVebi — easy settings. Edit values here; no other file needed. ====== */
 window.EVEBI = {
   // Site languages. Currently English only; use ["ka","en"] once the Georgian text is corrected.
   languages: ["en"],
@@ -9,12 +9,13 @@ window.EVEBI = {
   tiktok: "https://www.tiktok.com/@ev.ebi",
   instagram: "",                      // paste the official Instagram link; empty = hidden
 
-  // Audience numbers (shown on the home page). Update when they change.
+  // Audience numbers (home page). A number left empty ("") is hidden automatically.
+  // These are the figures recorded when 6 videos were published: confirm/update them.
   stats: {
     followers: "1,100+",
     videos: "6",
     views: { ka: "ასობით ათასი", en: "Hundreds of thousands" },
-    asOf: { ka: "2026 წლის ნოემბრის მონაცემებით", en: "As of November 2026" }
+    asOf: { ka: "ციფრები დაფიქსირებულია 6 ვიდეოს გამოქვეყნებისას", en: "Figures recorded when EVebi had 6 published videos." }
   },
 
   // Forms. Create a free form at https://formspree.io (or any service that accepts
@@ -23,11 +24,34 @@ window.EVEBI = {
   formEndpoint: "",
 
   // Media kit: put the PDF in assets/ and paste its path, e.g. "assets/evebi-media-kit.pdf".
-  // While empty the download button is not shown.
   mediaKit: "",
 
-  // Selected work. Add real projects only. Example:
-  // { title:{ka:"BYD Seal — 24 საათი",en:"BYD Seal — 24 hours"}, type:{ka:"მიმოხილვა",en:"Review"},
-  //   text:{ka:"...",en:"..."}, image:"assets/img/work-1.jpg", link:"https://www.tiktok.com/@ev.ebi/video/..." }
-  projects: []
+  // ---- SELECTED WORK ---------------------------------------------------------
+  // One entry per real project. category: "Vehicles" | "Technology" | "Ownership".
+  // link  = the TikTok video URL (empty = card links to the TikTok profile)
+  // image = thumbnail in assets/img/ (missing file = tidy placeholder)
+  // text  = one factual line (leave "" until you have it; nothing is invented)
+  projects: [
+    { id: "model-3",  title: "Tesla Model 3",              category: "Vehicles",   text: "", link: "", image: "assets/img/work-model-3.jpg" },
+    { id: "model-y",  title: "Tesla Model Y",              category: "Vehicles",   text: "", link: "", image: "assets/img/work-model-y.jpg" },
+    { id: "eletre",   title: "Lotus Eletre 900",           category: "Vehicles",   text: "", link: "", image: "assets/img/work-eletre.jpg" },
+    { id: "tesla-tech", title: "Tesla technology explained", category: "Technology", text: "", link: "", image: "assets/img/work-tesla-tech.jpg" },
+    { id: "charging", title: "EV charging and ownership",  category: "Ownership",  text: "", link: "", image: "assets/img/work-charging.jpg" }
+  ],
+
+  // ---- CARS (curated, not a database) ----------------------------------------
+  // Add a car by copying one block. Only confirmed facts. specs: [["Label","Value","Source / model year"]]
+  cars: [
+    { id: "tesla-model-3", brand: "Tesla", model: "Model 3", type: "Sedan", intro: "Tesla's electric sedan.", project: "model-3", specs: [] },
+    { id: "tesla-model-y", brand: "Tesla", model: "Model Y", type: "SUV",   intro: "Tesla's electric crossover SUV.", project: "model-y", specs: [] },
+    { id: "lotus-eletre",  brand: "Lotus", model: "Eletre",  type: "SUV",   intro: "Lotus's electric SUV.", project: "eletre", specs: [] }
+  ],
+
+  // ---- DEALERSHIPS (publish only verified information) ------------------------
+  // status: "dealer" (provided by the dealership) | "checked" (independently checked) — anything not filled shows "Not confirmed".
+  // Example (copy, fill, remove the comment):
+  // { id:"example", name:"Dealership name", city:"Tbilisi", brands:["BYD"], condition:"New", updated:"2026-11-08",
+  //   status:"dealer", models:["..."], vehicleWarranty:"", batteryWarranty:"", servicing:"", parts:"", testDrive:"",
+  //   phone:"", website:"" }
+  dealerships: []
 };

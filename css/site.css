@@ -252,3 +252,62 @@ h1,h2,h3,h4{font-family:"Inter",var(--font);font-weight:600;letter-spacing:-.02e
 .card .num{font-family:var(--display);font-weight:400}
 .nav>a.pill,.btn{font-family:"Inter",var(--font)}
 .stat b[data-stat=views]{font-family:"Inter",sans-serif;font-weight:700;letter-spacing:-.02em;font-size:clamp(26px,3.4vw,40px);line-height:1.1;padding-top:.3em}
+
+/* v3: filters, portfolio, profiles, articles, editorial rows */
+@keyframes pgin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+main{animation:pgin .45s var(--ease)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.chip{border:1.5px solid var(--line);background:var(--white);border-radius:999px;min-height:42px;padding:0 18px;cursor:pointer;font-family:"Inter",var(--font);font-size:15px;transition:.2s}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.proj{display:block;position:relative}
+.proj .ph{transition:transform .5s var(--ease)}
+.proj:hover .ph{transform:scale(.985)}
+.proj .ph img{transition:transform .8s var(--ease)}
+.proj:hover .ph img{transform:scale(1.05)}
+.proj-tag{position:absolute;left:14px;top:14px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);color:#fff;font-size:13px;padding:5px 12px;border-radius:999px;font-family:"Inter",sans-serif}
+.proj h3{font-size:22px;margin:4px 0 6px}
+.proj-go{color:var(--red);font-size:15px;display:inline-block;margin-top:4px;transition:transform .25s var(--ease)}
+.proj:hover .proj-go{transform:translateX(4px)}
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--ink);margin-top:clamp(40px,6vw,72px)}
+.pillar{padding:22px 24px 6px 0}
+.pillar b{display:block;font-family:"Inter",sans-serif;font-weight:600;font-size:19px;margin-bottom:6px}
+.pillar span{color:var(--mute);font-size:16px}
+.badge.b-dealer{background:#e5eefb;color:#1d4a8a}
+.badge.b-checked{background:#e3f3e8;color:#14532d}
+.badge.b-none{background:var(--bg2);color:var(--mute)}
+.badge.b-ind{background:#e3f3e8;color:#14532d}
+.badge.b-spons{background:#fff1d6;color:#7a4a00}
+.nc{color:var(--mute)!important;font-style:italic}
+.car-card{display:flex;flex-direction:column;gap:10px}
+.car-card .link{margin-top:auto;width:fit-content}
+.rows{border-top:1px solid var(--ink)}
+.row-i{display:grid;grid-template-columns:90px minmax(0,1fr) minmax(0,1.3fr);gap:24px;padding:30px 0;border-bottom:1px solid var(--line);align-items:start;transition:padding .3s var(--ease),background .3s}
+.row-i:hover{padding-left:14px;background:linear-gradient(90deg,rgba(217,45,63,.06),transparent 60%)}
+.row-i .n{font-family:var(--display);font-size:22px;color:var(--red)}
+.row-i h3{font-size:clamp(22px,2.4vw,30px);line-height:1.15}
+.row-i p{color:var(--mute)}
+.start{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.start .card{display:flex;flex-direction:column;gap:10px}
+.start .card .link{margin-top:auto;width:fit-content}
+.labels{display:grid;gap:0;border-top:1px solid var(--line)}
+.labels div{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center}
+.labels p{color:var(--mute);font-size:16px}
+.prose{max-width:720px;font-size:19px;line-height:1.7}
+.prose h2{font-size:clamp(26px,3vw,34px);margin:2.2em 0 .6em;line-height:1.15}
+.prose h3{font-size:21px;margin:1.6em 0 .4em}
+.prose p{margin-bottom:1.1em;color:#2a2c30}
+.prose ul{margin:0 0 1.3em 1.2em}.prose li{margin-bottom:.5em;color:#2a2c30}
+.prose .callout{margin:1.6em 0}
+.art-meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;color:var(--mute);font-size:15px;margin-bottom:22px}
+.art-card{display:flex;flex-direction:column;gap:12px}
+.art-card .link{margin-top:auto;width:fit-content}
+@media(max-width:980px){
+  .pillars,.start{grid-template-columns:minmax(0,1fr)}
+  .row-i{grid-template-columns:44px minmax(0,1fr);gap:8px 14px}
+  .row-i p{grid-column:2}
+  .labels div{grid-template-columns:minmax(0,1fr);gap:6px}
+}
+.stats{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.hero h1.art-title{font-family:"Inter",sans-serif;font-weight:700;font-size:clamp(32px,5vw,58px);letter-spacing:-.03em;line-height:1.08;max-width:20ch}
+.hero .ph.ratio-45{height:auto;min-height:0;width:100%}

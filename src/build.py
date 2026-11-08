@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "9"
+VER = "12"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -105,13 +105,15 @@ def to_en(src):
 def esc(s):
     return html.escape(s, quote=True)
 
+SITEMAP = []
 pagesdir = os.path.join(ROOT, "pages")
 for fn in sorted(os.listdir(pagesdir)):
     if not fn.endswith(".html"):
         continue
     page = fn[:-5]
     meta, body = parse(read(os.path.join(pagesdir, fn)))
-    h = header.replace('data-nav="%s"' % page, 'data-nav="%s" aria-current="page"' % page)
+    navkey = meta.get("nav", page)
+    h = header.replace('data-nav="%s"' % navkey, 'data-nav="%s" aria-current="page"' % navkey)
     ld = '{"@context":"https://schema.org","@type":"WebSite","name":"EVები","url":"%s","inLanguage":["ka","en"]}' % SITE
     out = TEMPLATE.format(
         robots='<meta name="robots" content="noindex, nofollow">\n' if NOINDEX else "",
@@ -128,5 +130,10 @@ for fn in sorted(os.listdir(pagesdir)):
         out = out.replace('<span class="logo-ka">ები</span>', '<span class="logo-ka">ebi</span>').replace("EVები", "EVebi")
         out = re.sub(r'\sdata-(title-en|desc-en|wa-en)="[^"]*"', "", out)
     name = "index.html" if page == "home" else page + ".html"
+    if meta.get("sitemap", "yes") != "no":
+        SITEMAP.append("" if page == "home" else page + ".html")
     open(os.path.join(OUT, name), "w", encoding="utf-8").write(out)
     print("built", name)
+
+sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join('  <url><loc>%s/%s</loc></url>\n' % (SITE, u) for u in sorted(SITEMAP)) + '</urlset>\n'
+open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(sm)

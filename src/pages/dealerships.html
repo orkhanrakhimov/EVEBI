@@ -1,57 +1,69 @@
 title: დილერები — EVები
-title_en: Dealerships — EVები
-desc: რას გთავაზობენ დილერები სინამდვილეში: გარანტია, სერვისი, ნაწილები. მხოლოდ დადასტურებული ინფორმაცია.
-desc_en: What dealerships really offer: warranty, servicing, parts. Confirmed information only.
-wa: გამარჯობა! დილერთან დაკავშირებით მაქვს შეკითხვა / მინდა დილერის პროფილში მონაწილეობა.
+title_en: Dealerships — EVebi
+desc: What dealerships really offer: warranty, servicing and parts. Confirmed information only.
+desc_en: What dealerships really offer: warranty, servicing and parts. Confirmed information only.
+wa: Hello! I have a question about a dealership / I'd like a dealership profile.
 wa_en: Hello! I have a question about a dealership / I'd like a dealership profile.
 ---
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow rv" data-en="Explore · Dealerships">გაიგე მეტი · დილერები</span>
-    <h1 class="display rv d1" data-en="What a dealership <span class='red'>really offers.</span>">რას გთავაზობს დილერი <span class="red">სინამდვილეში.</span></h1>
-    <p class="lead rv d2" style="margin-top:26px" data-en="Warranty, battery coverage, servicing and parts are the questions buyers worry about most. This directory is built to answer them honestly.">გარანტია, ბატარეის დაფარვა, სერვისი და ნაწილები — ეს ის კითხვებია, რაც მყიდველს ყველაზე მეტად აღელვებს. ეს კატალოგი მათზე გულწრფელი პასუხისთვის იქმნება.</p>
+    <span class="eyebrow rv">Explore · Dealerships</span>
+    <h1 class="display rv d1">What a dealership <span class="red">really offers.</span></h1>
+    <p class="lead rv d2" style="margin-top:26px">Warranty, battery coverage, servicing and parts are what buyers worry about most. This directory exists to answer those questions honestly.</p>
   </div>
 </section>
 
 <section class="sec sec-alt">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="eyebrow" data-en="How information is labelled">როგორ აღინიშნება ინფორმაცია</span>
-      <h2 class="h2" data-en="Three levels of trust.">ნდობის სამი დონე.</h2>
-    </div>
-    <div class="grid g3">
-      <div class="card rv"><h3 class="h3" data-en="Dealership-provided">დილერის მიერ მოწოდებული</h3><p data-en="Information the dealership gave us, shown as theirs.">ინფორმაცია, რომელიც დილერმა მოგვაწოდა და მისი სახელით არის ნაჩვენები.</p></div>
-      <div class="card rv d1"><h3 class="h3" data-en="Independently checked">დამოუკიდებლად შემოწმებული</h3><p data-en="Only when specific verification criteria have actually been met.">მხოლოდ მაშინ, როცა კონკრეტული შემოწმების კრიტერიუმები რეალურად შესრულებულია.</p></div>
-      <div class="card rv d2"><h3 class="h3" data-en="Not confirmed">არ არის დადასტურებული</h3><p data-en="If we don't know, we say so, instead of guessing.">თუ არ ვიცით, პირდაპირ ვწერთ ამას და ვარაუდს არ ვაქვეყნებთ.</p></div>
+    <div class="sec-head rv"><span class="eyebrow">Directory</span><h2 class="h2">Dealership profiles.</h2></div>
+    <div class="filters" data-dealer-filters hidden></div>
+    <div class="grid g3" id="dealer-grid"></div>
+    <div class="empty rv" data-dealers-empty>
+      <h3 class="h3">No dealership has confirmed its information yet</h3>
+      <p style="max-width:56ch;margin:0 auto 22px">A profile is published only with information the dealership has provided or EVebi has independently checked. Nothing is guessed, and nothing here implies an official partnership.</p>
+      <a class="btn btn-dark" href="#for-dealers">I represent a dealership</a>
     </div>
   </div>
 </section>
 
-<section class="sec">
+<section class="sec" id="standards">
+  <div class="wrap">
+    <div class="sec-head rv"><span class="eyebrow">How information is labelled</span><h2 class="h2">Three levels of trust.</h2></div>
+    <div class="labels rv">
+      <div><span class="badge b-dealer" style="width:fit-content">Dealership-provided</span><p>Information the dealership gave EVebi, shown as their claim.</p></div>
+      <div><span class="badge b-checked" style="width:fit-content">Independently checked</span><p>Used only when specific verification criteria have actually been met and the check is dated.</p></div>
+      <div><span class="badge b-none" style="width:fit-content">Not confirmed</span><p>If we don't know, we say so instead of guessing.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt">
   <div class="wrap split" style="align-items:start">
     <div class="rv">
-      <span class="eyebrow" data-en="Profile template">პროფილის შაბლონი</span>
-      <h2 class="h2" style="margin-bottom:18px" data-en="This is how each profile will look.">ასე გამოიყურება თითოეული პროფილი.</h2>
-      <p class="muted" data-en="Real dealership profiles will be added only with accurate, confirmed information, and each will show when it was last updated.">რეალური დილერების პროფილები დაემატება მხოლოდ ზუსტი, დადასტურებული ინფორმაციით და თითოეულზე ჩანს ბოლო განახლების თარიღი.</p>
+      <span class="eyebrow">Profile template</span>
+      <h2 class="h2" style="margin-bottom:18px">This is what each profile will contain.</h2>
+      <p class="muted">Every profile shows when it was last updated, who provided the information, and what is still unconfirmed.</p>
     </div>
     <div class="card rv d1">
-      <span class="badge" data-en="Template — not a real dealership">შაბლონი — არა რეალური დილერი</span>
-      <h3 class="h3" style="margin:16px 0 18px" data-en="Dealership name">დილერის სახელი</h3>
+      <span class="badge b-none">Template — not a real dealership</span>
+      <h3 class="h3" style="margin:16px 0 18px">Dealership name</h3>
       <dl class="facts">
-        <div><dt data-en="Brands">ბრენდები</dt><dd data-en="Not confirmed">არ არის დადასტურებული</dd></div>
-        <div><dt data-en="Vehicle warranty">მანქანის გარანტია</dt><dd data-en="Not confirmed">არ არის დადასტურებული</dd></div>
-        <div><dt data-en="Battery warranty">ბატარეის გარანტია</dt><dd data-en="Not confirmed">არ არის დადასტურებული</dd></div>
-        <div><dt data-en="Local servicing">ადგილობრივი სერვისი</dt><dd data-en="Not confirmed">არ არის დადასტურებული</dd></div>
-        <div><dt data-en="Parts availability">ნაწილების ხელმისაწვდომობა</dt><dd data-en="Not confirmed">არ არის დადასტურებული</dd></div>
-        <div><dt data-en="Test drives">ტესტ-დრაივი</dt><dd data-en="Not confirmed">არ არის დადასტურებული</dd></div>
+        <div><dt>Brands represented</dt><dd class="nc">Not confirmed</dd></div>
+        <div><dt>Available models</dt><dd class="nc">Not confirmed</dd></div>
+        <div><dt>Vehicle warranty</dt><dd class="nc">Not confirmed</dd></div>
+        <div><dt>Battery warranty</dt><dd class="nc">Not confirmed</dd></div>
+        <div><dt>Local servicing</dt><dd class="nc">Not confirmed</dd></div>
+        <div><dt>Parts availability</dt><dd class="nc">Not confirmed</dd></div>
+        <div><dt>Test drives</dt><dd class="nc">Not confirmed</dd></div>
+        <div><dt>Last updated</dt><dd class="nc">—</dd></div>
       </dl>
     </div>
   </div>
 </section>
 
-<section class="sec sec-dark">
+<section class="sec sec-dark" id="for-dealers">
   <div class="wrap split">
-    <div class="rv"><span class="eyebrow" data-en="For dealerships">დილერებისთვის</span><h2 class="h2" data-en="Want your dealership featured?">გინდა, რომ შენი დილერი აქ იყოს?</h2><p class="lead" style="margin-top:16px" data-en="Share accurate warranty and service information and we'll present it clearly. The dealership remains responsible for its own warranties and after-sales obligations.">მომაწოდე ზუსტი ინფორმაცია გარანტიასა და სერვისზე და გასაგებად წარვადგენ. გარანტიებზე და გაყიდვის შემდგომ ვალდებულებებზე პასუხისმგებელი დილერი რჩება.</p></div>
-    <div class="rv d1 btns"><a class="btn btn-red" href="collaborations.html"><span data-en="Collaborate">თანამშრომლობა</span><span class="arr">→</span></a><a class="btn btn-line" data-wa-link href="#" rel="noopener">WhatsApp</a></div>
+    <div class="rv"><span class="eyebrow">For dealerships</span><h2 class="h2">Want your dealership listed?</h2><p class="lead" style="margin-top:16px">Send accurate warranty, battery, service and parts information and EVebi will present it clearly. The dealership stays responsible for its own warranties and after-sales obligations.</p></div>
+    <div class="rv d1 btns"><a class="btn btn-red" data-wa-link href="#" rel="noopener">WhatsApp</a><a class="btn btn-line" data-mail-link data-keep href="#">contact@evebi.ge</a></div>
   </div>
 </section>

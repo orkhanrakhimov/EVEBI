@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Electric Cars — EVebi</title>
-<meta name="description" content="A curated, lightweight guide to electric cars in Georgia: what to know and what to ask a dealership.">
+<meta name="description" content="Practical electric car profiles for Georgia: what to know and what to ask before you buy.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="EVebi">
 <meta property="og:title" content="Electric Cars — EVebi">
-<meta property="og:description" content="A curated, lightweight guide to electric cars in Georgia: what to know and what to ask a dealership.">
+<meta property="og:description" content="Practical electric car profiles for Georgia: what to know and what to ask before you buy.">
 <meta property="og:image" content="https://evebi.ge/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://evebi.ge/cars.html">
@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preload" href="assets/fonts/MSBlock.otf" as="font" type="font/otf" crossorigin>
-<link rel="stylesheet" href="css/site.css?v=9">
+<link rel="stylesheet" href="css/site.css?v=12">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"EVebi","url":"https://evebi.ge","inLanguage":["ka","en"]}</script>
 </head>
@@ -59,47 +59,33 @@
 <section class="hero">
   <div class="wrap">
     <span class="eyebrow rv">Explore · Electric Cars</span>
-    <h1 class="display rv d1">Know the car <span class='red'>before you buy it.</span></h1>
-    <p class="lead rv d2" style="margin-top:26px">Not a giant specification database. A small, curated guide to the EVs you meet in my videos and at Georgian dealerships.</p>
+    <h1 class="display rv d1">Know the car <span class="red">before you buy it.</span></h1>
+    <p class="lead rv d2" style="margin-top:26px">Not a giant specification database. A small, curated guide to the electric cars EVebi covers: what they are, how ownership works in Georgia, and which questions to ask.</p>
   </div>
 </section>
-
 <section class="sec sec-alt">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="eyebrow">Profiles</span>
-      <h2 class="h2">In preparation.</h2>
-      <p class="muted">A profile is published only when its facts are confirmed. Manufacturer specifications and my real-world observations will always be shown separately.</p>
-    </div>
-    <div class="grid g3">
-      <article class="card rv"><span class="badge">Profile in preparation</span><h3 class="h3" style="margin:18px 0 10px">Tesla</h3><a class="link" href="find-my-ev.html?model=Tesla"><span>Interested? Ask EVebi</span> <span>→</span></a></article>
-      <article class="card rv d1"><span class="badge">Profile in preparation</span><h3 class="h3" style="margin:18px 0 10px">BYD</h3><a class="link" href="find-my-ev.html?model=BYD"><span>Interested? Ask EVebi</span> <span>→</span></a></article>
-      <article class="card rv d2"><span class="badge">Profile in preparation</span><h3 class="h3" style="margin:18px 0 10px">ZEEKR</h3><a class="link" href="find-my-ev.html?model=ZEEKR"><span>Interested? Ask EVebi</span> <span>→</span></a></article>
-    </div>
+    <div class="filters" data-car-filters></div>
+    <div class="grid g3" id="cars-grid"></div>
+    <p class="note" style="margin-top:26px">Profiles list only confirmed facts. Manufacturer specifications and EVebi's own real-world observations are always shown separately, with model year and market.</p>
   </div>
 </section>
-
 <section class="sec">
   <div class="wrap split" style="align-items:start">
-    <div class="rv">
-      <span class="eyebrow">What each profile will cover</span>
-      <h2 class="h2">Useful, not overwhelming.</h2>
-    </div>
+    <div class="rv"><span class="eyebrow">Every profile covers</span><h2 class="h2">Useful, not overwhelming.</h2></div>
     <ul class="list rv d1">
       <li>What the car is and who it might suit</li>
-      <li>Main features, battery and range (with model year, variant and market)</li>
-      <li>Charging standards</li>
-      <li>Real-world considerations and software / connectivity</li>
+      <li>Battery, range and charging standard, with model year, variant and market</li>
+      <li>Real-world ownership, software and connectivity</li>
       <li>Warranty questions to ask</li>
       <li>Local servicing and parts</li>
       <li>Dealership information, only if confirmed</li>
     </ul>
   </div>
 </section>
-
 <section class="sec sec-dark">
   <div class="wrap split">
-    <div class="rv"><h2 class="h2">Have a question about a specific car?</h2></div>
+    <div class="rv"><h2 class="h2">Asking about a car that isn't here?</h2></div>
     <div class="rv d1 btns"><a class="btn btn-red" data-wa-link href="#" rel="noopener">WhatsApp</a><a class="btn btn-line" href="find-my-ev.html">Find My EV</a></div>
   </div>
 </section>
@@ -138,7 +124,7 @@
   <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.4Z"/></svg>
 </a>
 
-<script src="js/config.js?v=9"></script>
-<script src="js/app.js?v=9"></script>
+<script src="js/config.js?v=12"></script>
+<script src="js/app.js?v=12"></script>
 </body>
 </html>
