@@ -1,7 +1,9 @@
+@font-face{font-family:"MS Block";src:url("../assets/fonts/MSBlock.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"LGV Baxy";src:url("../assets/fonts/LGV-Baxy-Regular.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:swap;size-adjust:135%;unicode-range:U+10D0-10FF,U+10A0-10CF,U+2D00-2D2F}
 :root{
   --bg:#F5F5F2;--bg2:#ECEAE3;--ink:#0B0B0B;--mute:#55575c;--line:#dcdad2;--white:#fff;
   --red:#D92D3F;--red-d:#b9202f;--char:#121315;--char2:#1b1d20;--char-line:#2c2f34;--milk:#f3f1eb;
+  --display:"MS Block","Inter",system-ui,sans-serif;
   --font:"LGV Baxy","Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --r:18px;--ease:cubic-bezier(.2,.7,.2,1);--hdr:68px;
 }
@@ -240,3 +242,13 @@ h1,h2,h3,h4{font-weight:400;line-height:1.08;letter-spacing:-.01em}
   .nav>a.pill{margin:10px 0;text-align:center;border-radius:999px;border-bottom:0}
   .dd-sec .dd-btn{color:var(--ink)}
 }
+
+/* brand logo + MS Block display font (used for page titles and big numbers only) */
+.logo img{height:30px;width:auto;display:block}
+h1,h2,h3,h4{font-family:"Inter",var(--font);font-weight:600;letter-spacing:-.02em}
+.display{font-weight:700;letter-spacing:-.035em}
+.hero h1.display{font-family:var(--display);font-weight:400;letter-spacing:0;font-size:clamp(28px,4.6vw,60px);line-height:1.12;max-width:none!important}
+.stat b{font-family:var(--display);font-weight:400;letter-spacing:0;font-size:clamp(30px,4.6vw,56px)}
+.card .num{font-family:var(--display);font-weight:400}
+.nav>a.pill,.btn{font-family:"Inter",var(--font)}
+.stat b[data-stat=views]{font-family:"Inter",sans-serif;font-weight:700;letter-spacing:-.02em;font-size:clamp(26px,3.4vw,40px);line-height:1.1;padding-top:.3em}

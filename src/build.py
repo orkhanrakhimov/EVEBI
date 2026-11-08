@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "6"
+VER = "9"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -34,7 +34,7 @@ TEMPLATE = """<!doctype html>
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="preload" href="assets/fonts/LGV-Baxy-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="assets/fonts/MSBlock.otf" as="font" type="font/otf" crossorigin>
 <link rel="stylesheet" href="css/site.css?v={ver}">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">{ld}</script>
@@ -124,7 +124,6 @@ for fn in sorted(os.listdir(pagesdir)):
         out = re.sub(r'placeholder="[^"]*"\s+data-en-ph="([^"]*)"', r'placeholder="\1"', out)
         out = to_en(out)
         out = re.sub(r'<div class="lang".*?</div>', "", out, flags=re.S)
-        out = re.sub(r'<link rel="preload"[^>]*>\n', "", out)
         out = out.replace('<html lang="ka">', '<html lang="en">')
         out = out.replace('<span class="logo-ka">ები</span>', '<span class="logo-ka">ebi</span>').replace("EVები", "EVebi")
         out = re.sub(r'\sdata-(title-en|desc-en|wa-en)="[^"]*"', "", out)
