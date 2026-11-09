@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "60"
+VER = "63"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -197,6 +197,25 @@ def lang_switch(page, cur):
         return '<a href="%s" hreflang="%s" lang="%s" aria-label="%s"%s>%s</a>' % (href, code, code, name, ' aria-current="true"' if cur == code else "", label)
     return '<div class="lang" role="group" aria-label="Language">' + a("ka", "ქარ", ka_, "ქართული") + a("en", "EN", en, "English") + '</div>'
 
+
+def mtavruli(t):
+    """Georgian capitals (Mtavruli): every letter the same height."""
+    return "".join(chr(ord(c) - 0x10D0 + 0x1C90) if 0x10D0 <= ord(c) <= 0x10FA or 0x10FD <= ord(c) <= 0x10FF else c for c in t) if True else t
+
+def _caps_text(inner):
+    return re.sub(r">([^<>]+)<", lambda m: ">" + mtavruli(m.group(1)) + "<", ">" + inner + "<")[1:-1]
+
+def caps_headings(out):
+    """Headings, buttons, menu and footer links of the Georgian pages are set in capitals."""
+    out = re.sub(r"(<(h1|h2|h3|h4|b|strong|summary)\b[^>]*>)(.*?)(</\2>)", lambda m: m.group(1) + _caps_text(m.group(3)) + m.group(4), out, flags=re.S)
+    def anchors(seg):
+        return re.sub(r"(<a\b[^>]*>)(.*?)(</a>)", lambda m: m.group(1) + _caps_text(m.group(2)) + m.group(3), seg, flags=re.S)
+    out = re.sub(r"<nav class=\"nav\".*?</nav>", lambda m: anchors(m.group(0)), out, flags=re.S)
+    out = re.sub(r"<a\b[^>]*class=\"[^\"]*\bbtn\b[^>]*>.*?</a>", lambda m: anchors(m.group(0)), out, flags=re.S)
+    out = re.sub(r"<div class=\"ftr-col\">.*?</div>", lambda m: anchors(m.group(0)), out, flags=re.S)
+    out = re.sub(r"<div class=\"filters[^>]*>.*?</div>", lambda m: re.sub(r"(<button\b[^>]*>)(.*?)(</button>)", lambda k: k.group(1) + _caps_text(k.group(2)) + k.group(3), m.group(0), flags=re.S), out, flags=re.S)
+    return out
+
 def to_ka(out, page, meta_en, strings):
     k = KA["meta"][KA_PAGES[page]]
     def tr(m):
@@ -225,8 +244,7 @@ def to_ka(out, page, meta_en, strings):
         return 'href="%s%s"' % (("/ka/" + path) if name in KA_PAGES else "/" + path, frag)
     out = re.sub(r'href="/([a-z0-9-]*)(#[^"]*)?"', lk, out)
     out = re.sub(r'\b(href|src|data-src)="((?:assets|css|js)/)', r'\1="/\2', out)
-    out = out.replace('href="https://evebi.ge/', 'href="https://evebi.ge/')
-    return out
+    return caps_headings(out)
 
 SITEMAP = []
 def _alts(page):
