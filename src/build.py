@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "43"
+VER = "44"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -196,7 +196,7 @@ for fn in sorted(os.listdir(pagesdir)):
     h = header.replace('data-nav="%s"' % navkey, 'data-nav="%s" aria-current="page"' % navkey)
     ld = ('{"@context":"https://schema.org","@graph":['
           '{"@type":"Organization","@id":"%s/#org","name":"EVები","url":"%s/","logo":"%s/assets/logo-light.png",'
-          '"email":"contact@evebi.ge","founder":{"@type":"Person","name":"Orkhan Rakhimov"},'
+          '"email":"contact@evebi.ge",'
           '"sameAs":["https://www.tiktok.com/@ev.ebi","https://www.instagram.com/ev.ebi/"]},'
           '{"@type":"WebSite","name":"EVები","url":"%s/","inLanguage":%s,"publisher":{"@id":"%s/#org"}}]}'
           % (SITE, SITE, SITE, SITE, '["en"]' if EN_ONLY else '["ka","en"]', SITE))
