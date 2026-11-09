@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "66"
+VER = "68"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -187,11 +187,14 @@ def hub_path():
 # ---------- Georgian version (text comes from src/i18n_ka.json) ----------
 import json
 KA = json.load(open(os.path.join(ROOT, "i18n_ka.json"), encoding="utf-8"))
-KA_PAGES = {"home": "index.html", "about": "about.html", "collaborations": "collaborations.html", "contact": "contact.html", "explained": "explained.html"}
+KA_PAGES = {"home": "index.html", "about": "about.html", "collaborations": "collaborations.html", "contact": "contact.html", "explained": "explained.html", "privacy": "privacy.html"}
+for _g in ["ev-basics", "powertrains", "range-battery", "charging-basics", "charging-connectors", "battery-warranty", "dealer-questions"]:
+    KA_PAGES["explained-" + _g] = "explained-" + _g + ".html"
 KA_MISSING = []
+KA_HTML_USED = set()
 
 def lang_switch(page, cur):
-    en = "/" if page == "home" else "/" + page
+    en = "/" if page in ("home", "404") else "/" + page
     ka_ = ("/ka/" if page == "home" else "/ka/" + page) if page in KA_PAGES else "/ka/"
     def a(code, label, href, name):
         return '<a href="%s" hreflang="%s" lang="%s" aria-label="%s"%s>%s</a>' % (href, code, code, name, ' aria-current="true"' if cur == code else "", label)
@@ -216,15 +219,22 @@ def caps_headings(out):
     out = re.sub(r"<div class=\"filters[^>]*>.*?</div>", lambda m: re.sub(r"(<button\b[^>]*>)(.*?)(</button>)", lambda k: k.group(1) + _caps_text(k.group(2)) + k.group(3), m.group(0), flags=re.S), out, flags=re.S)
     return out
 
-def to_ka(out, page, meta_en, strings):
-    k = KA["meta"][KA_PAGES[page]]
+def to_ka(out, page, meta_en, strings, metakey=None):
+    k = KA["meta"][metakey or KA_PAGES[page]]
+    def inl(m):
+        inner = re.sub(r"\s+", " ", m.group(3)).strip()
+        if "<" in inner and inner in KA["html"]:
+            KA_HTML_USED.add(inner)
+            return "<%s%s>%s</%s>" % (m.group(1), m.group(2), KA["html"][inner], m.group(1))
+        return m.group(0)
+    out = re.sub(r"<(p|li)((?:\s[^>]*)?)>(.*?)</\1>", inl, out, flags=re.S)
     def tr(m):
         raw = m.group(1)
         t = re.sub(r"\s+", " ", html.unescape(raw)).strip()
         if t in strings:
             lead = raw[:len(raw) - len(raw.lstrip())]; trail = raw[len(raw.rstrip()):]
             return ">" + lead + html.escape(strings[t], quote=False) + trail + "<"
-        if re.search(r"[A-Za-z]{3,}", t) and t not in ("TikTok", "WhatsApp", "Instagram", "contact@evebi.ge", "EVebi", "@ev.ebi") and not t.startswith(("document.", "{")):
+        if re.search(r"[A-Za-z]{3,}", t) and not re.search("[\u10D0-\u10FF\u1C90-\u1CBF]", t) and t not in ("TikTok", "WhatsApp", "Instagram", "contact@evebi.ge", "EVebi", "@ev.ebi", "State of Health (SOH)") and not t.startswith(("document.", "{", "if(")):
             KA_MISSING.append((page, t))
         return m.group(0)
     out = out.replace(esc(meta_en["title_en"].replace("EVები", "EVebi")), esc(k["title"])).replace(esc(meta_en["desc_en"].replace("EVები", "EVebi")), esc(k["desc"]))
@@ -293,7 +303,7 @@ for fn in sorted(os.listdir(pagesdir)):
     out = re.sub(r'href="index\.html(#[^"]*)?"', lambda m: 'href="/%s"' % (m.group(1) or ""), out)
     out = re.sub(r'href="([a-z0-9-]+)\.html(#[^"]*)?"', lambda m: 'href="/%s%s"' % (m.group(1), m.group(2) or ""), out)
     if page == "404":
-        out = out.replace('<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta name="viewport" content="width=device-width, initial-scale=1">\n<base href="/">\n<meta name="robots" content="noindex">', 1)
+        out = out.replace('<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta name="viewport" content="width=device-width, initial-scale=1">\n<base href="/">\n<meta name="robots" content="noindex">\n<script>if(location.pathname.indexOf("/ka/")===0)location.replace("/ka/not-found")</script>', 1)
     name = "index.html" if page == "home" else page + ".html"
     if meta.get("sitemap", "yes") != "no":
         SITEMAP.append("" if page == "home" else page)
@@ -302,6 +312,12 @@ for fn in sorted(os.listdir(pagesdir)):
     en_out = out.replace("<!--LANG-->", lang_switch(page, "en"))
     open(os.path.join(OUT, name), "w", encoding="utf-8").write(en_out)
     print("built", name)
+    if page == "404":
+        os.makedirs(os.path.join(OUT, "ka"), exist_ok=True)
+        ka_out = to_ka(out, page, meta, KA["strings"], "404.html").replace("<!--LANG-->", lang_switch(page, "ka"))
+        ka_out = re.sub(r'<script>if\(location\.pathname[^<]*</script>\n?', "", ka_out)
+        open(os.path.join(OUT, "ka", "not-found.html"), "w", encoding="utf-8").write(ka_out)
+        print("built ka/not-found.html")
     if page in KA_PAGES:
         os.makedirs(os.path.join(OUT, "ka"), exist_ok=True)
         ka_out = to_ka(out, page, meta, KA["strings"]).replace("<!--LANG-->", lang_switch(page, "ka"))
@@ -315,3 +331,9 @@ if KA_MISSING:
     print("\nGeorgian: English text still on the page (add to src/i18n_ka.json):")
     for pg, t in KA_MISSING:
         print("  [%s] %s" % (pg, t[:90]))
+
+_unused = [k for k in KA["html"] if k not in KA_HTML_USED]
+if _unused:
+    print("\nGeorgian: these inline-markup entries did not match any page:")
+    for k in _unused:
+        print("  " + k[:90])

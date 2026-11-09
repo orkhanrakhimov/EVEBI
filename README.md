@@ -27,8 +27,9 @@ Guides live in `src/pages/explained-*.html`. Revised sections (home, about, coll
 
 ## Georgian version
 
-English is the default. Georgian lives at `/ka/` (home, about, collaborate, contact, EV Explained hub).
+English is the default. Georgian lives at `/ka/` (home, about, collaborate, contact, EV Explained hub, the seven guides, privacy policy and 404).
 All Georgian wording is in `src/i18n_ka.json` (English text on the left, Georgian on the right, plus page titles,
 descriptions and WhatsApp messages under `meta`). `python3 src/build.py` writes `ka/*.html` and lists any English
-text that has no Georgian yet. Pages not in the list (the seven guides, Privacy Policy, 404) stay English until their
-translations are added to the file and the page name is added to `KA_PAGES` in `src/build.py`.
+text that has no Georgian yet.
+To add a page, put its name in `KA_PAGES` in `src/build.py` and its text in the JSON file.
+Paragraphs that contain bold text or links are matched as a whole under `html` in the JSON file.

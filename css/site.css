@@ -355,3 +355,4 @@ html[lang=ka] .hero-cover .btns,html[lang=ka] .hero-dark .btns{max-width:none}
 html[lang=ka] h2.display[style]{font-size:clamp(24px,6.4vw,64px)!important}
 
 .fab-hide .wa-float,.fab-late.fab-on.fab-hide .wa-float{opacity:0;pointer-events:none}
+html[lang=ka] body .art-title{font-size:clamp(26px,3.4vw,48px);line-height:1.15;font-weight:600}
