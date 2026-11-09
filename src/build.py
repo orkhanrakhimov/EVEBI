@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "68"
+VER = "69"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -187,7 +187,7 @@ def hub_path():
 # ---------- Georgian version (text comes from src/i18n_ka.json) ----------
 import json
 KA = json.load(open(os.path.join(ROOT, "i18n_ka.json"), encoding="utf-8"))
-KA_PAGES = {"home": "index.html", "about": "about.html", "collaborations": "collaborations.html", "contact": "contact.html", "explained": "explained.html", "privacy": "privacy.html"}
+KA_PAGES = {"home": "index.html", "about": "about.html", "collaborations": "collaborations.html", "contact": "contact.html", "explained": "explained.html", "privacy": "privacy.html", "reviews": "reviews.html"}
 for _g in ["ev-basics", "powertrains", "range-battery", "charging-basics", "charging-connectors", "battery-warranty", "dealer-questions"]:
     KA_PAGES["explained-" + _g] = "explained-" + _g + ".html"
 KA_MISSING = []

@@ -356,3 +356,22 @@ html[lang=ka] h2.display[style]{font-size:clamp(24px,6.4vw,64px)!important}
 
 .fab-hide .wa-float,.fab-late.fab-on.fab-hide .wa-float{opacity:0;pointer-events:none}
 html[lang=ka] body .art-title{font-size:clamp(26px,3.4vw,48px);line-height:1.15;font-weight:600}
+
+/* Reviews */
+.revs{display:grid;gap:0;border-top:1px solid var(--ink)}
+.rev{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:clamp(28px,6vw,90px);padding:clamp(36px,5vw,64px) 0;border-bottom:1px solid var(--line);align-items:start;scroll-margin-top:90px}
+.rev-h{position:sticky;top:96px;display:grid;gap:14px;justify-items:start}
+.rev-label{display:inline-block;font-size:13px;font-weight:500;letter-spacing:.02em;padding:6px 14px;border:1px solid var(--line);border-radius:999px;color:var(--mute)}
+.rev-one{color:var(--mute);font-size:17px;line-height:1.5}
+.rev-b{display:grid;gap:14px}
+.rev-t{font-size:clamp(20px,2vw,24px);margin-top:14px;letter-spacing:-.02em}
+.rev-l{list-style:none;display:grid;gap:10px}
+.rev-l li{position:relative;padding-left:20px;color:var(--ink);line-height:1.5}
+.rev-l li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--ink)}
+.rev-o{border-top:1px solid var(--line);margin-top:12px;padding-top:6px}
+.rev-o summary{cursor:pointer;font-weight:500;padding:14px 0;font-size:18px}
+.rev-o h4{margin:18px 0 8px;font-size:15px;letter-spacing:.02em;color:var(--mute);font-weight:500}
+.rev-o .src{margin-top:18px;font-size:14px}
+.rev-o .src a{border-bottom:1px solid currentColor}
+@media(max-width:860px){.rev{grid-template-columns:minmax(0,1fr)}.rev-h{position:static}}
+html[lang=ka] .rev-label{font-size:12px}
