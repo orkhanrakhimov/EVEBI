@@ -4,38 +4,10 @@ var C=window.EVEBI||{};
 var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var body=document.body;
-var LANGS=C.languages||["ka","en"];
-var lang=LANGS[0];
-try{var sv=localStorage.getItem("evebi_lang");if(sv&&LANGS.indexOf(sv)>-1)lang=sv}catch(e){}
-var q=new URLSearchParams(location.search).get("lang");
-if(q&&LANGS.indexOf(q)>-1)lang=q;
-
-
-/* ---------- language ---------- */
-function applyLang(l,save){
-  lang=l;
-  document.documentElement.lang=l;
-  $$("[data-en]").forEach(function(el){
-    if(el.dataset.ka===undefined)el.dataset.ka=el.innerHTML;
-    el.innerHTML=l==="en"?el.dataset.en:el.dataset.ka;
-  });
-  $$("[data-en-ph]").forEach(function(el){
-    if(el.dataset.kaPh===undefined)el.dataset.kaPh=el.getAttribute("placeholder")||"";
-    el.setAttribute("placeholder",l==="en"?el.dataset.enPh:el.dataset.kaPh);
-  });
-  if(body.dataset.titleKa===undefined){body.dataset.titleKa=document.title;var m=$('meta[name=description]');body.dataset.descKa=m?m.content:""}
-  document.title=l==="en"?body.dataset.titleEn:body.dataset.titleKa;
-  var md=$('meta[name=description]');if(md)md.content=l==="en"?body.dataset.descEn:body.dataset.descKa;
-  $$(".lang button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.lang===l)});
-  dynamic();
-  if(save){try{localStorage.setItem("evebi_lang",l)}catch(e){}}
-}
-$$(".lang button").forEach(function(b){b.addEventListener("click",function(){applyLang(b.dataset.lang,true)})});
 
 /* ---------- dynamic links ---------- */
 function waMsg(el){
-  var own=lang==="en"?el&&el.dataset.msgEn:el&&el.dataset.msgKa;
-  return own||(lang==="en"?body.dataset.waEn:body.dataset.wa)||"";
+  return (el&&el.dataset.msg)||body.dataset.wa||"";
 }
 function waHref(msg){return "https://wa.me/"+(C.whatsapp||"")+(msg?"?text="+encodeURIComponent(msg):"")}
 function dynamic(){
@@ -133,5 +105,5 @@ if("IntersectionObserver" in window){
   })}
 })();
 
-applyLang(lang,false);
+dynamic();
 })();

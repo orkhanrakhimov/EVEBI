@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "54"
+VER = "55"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -30,6 +30,7 @@ TEMPLATE = """<!doctype html>
 <meta property="og:image" content="{site}/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="{site}/{file}">
+{alt}
 <meta name="theme-color" content="#F5F5F2">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preload" href="assets/fonts/Geist-var.woff" as="font" type="font/woff" crossorigin>
@@ -182,7 +183,59 @@ def hub_path():
                      % (g["topic"], g["slug"], g["href"], i + 1, g["kind"] if g["kind"] == "Checklist" else g["topic"], g["minutes"], g["h1"], esc(g["summary"])))
     return '<ol class="path">' + "".join(items) + '</ol>'
 
+
+# ---------- Georgian version (text comes from src/i18n_ka.json) ----------
+import json
+KA = json.load(open(os.path.join(ROOT, "i18n_ka.json"), encoding="utf-8"))
+KA_PAGES = {"home": "index.html", "about": "about.html", "collaborations": "collaborations.html", "contact": "contact.html", "explained": "explained.html"}
+KA_MISSING = []
+
+def lang_switch(page, cur):
+    en = "/" if page == "home" else "/" + page
+    ka_ = ("/ka/" if page == "home" else "/ka/" + page) if page in KA_PAGES else "/ka/"
+    def a(code, label, href, name):
+        return '<a href="%s" hreflang="%s" lang="%s" aria-label="%s"%s>%s</a>' % (href, code, code, name, ' aria-current="true"' if cur == code else "", label)
+    return '<div class="lang" role="group" aria-label="Language">' + a("ka", "ქარ", ka_, "ქართული") + a("en", "EN", en, "English") + '</div>'
+
+def to_ka(out, page, meta_en, strings):
+    k = KA["meta"][KA_PAGES[page]]
+    def tr(m):
+        raw = m.group(1)
+        t = re.sub(r"\s+", " ", html.unescape(raw)).strip()
+        if t in strings:
+            lead = raw[:len(raw) - len(raw.lstrip())]; trail = raw[len(raw.rstrip()):]
+            return ">" + lead + html.escape(strings[t], quote=False) + trail + "<"
+        if re.search(r"[A-Za-z]{3,}", t) and t not in ("TikTok", "WhatsApp", "Instagram", "contact@evebi.ge", "EVebi", "@ev.ebi") and not t.startswith(("document.", "{")):
+            KA_MISSING.append((page, t))
+        return m.group(0)
+    out = out.replace(esc(meta_en["title_en"].replace("EVები", "EVebi")), esc(k["title"])).replace(esc(meta_en["desc_en"].replace("EVები", "EVebi")), esc(k["desc"]))
+    out = re.sub(r">([^<>]+)<", tr, out)
+    def attr(m):
+        v = html.unescape(m.group(2))
+        return '%s="%s"' % (m.group(1), esc(strings[v])) if v in strings else m.group(0)
+    out = re.sub(r'\b(data-alt|placeholder|aria-label)="([^"]*)"', attr, out)
+    out = re.sub(r'<link rel="canonical" href="%s/([^"]*)">' % re.escape(SITE), lambda m: '<link rel="canonical" href="%s/ka/%s">' % (SITE, m.group(1)), out)
+    out = re.sub(r'data-wa="[^"]*"', 'data-wa="%s"' % esc(k["wa"]), out, count=1)
+    out = out.replace('<html lang="en">', '<html lang="ka">').replace('content="EVebi"', 'content="EVები"').replace('"name":"EVebi"', '"name":"EVები"')
+    out = out.replace('<meta property="og:type" content="website">', '<meta property="og:type" content="website">\n<meta property="og:locale" content="ka_GE">', 1)
+    # links: translated pages stay in /ka/, the rest (guides, privacy) go to the English pages
+    def lk(m):
+        path, frag = m.group(1), m.group(2) or ""
+        name = "home" if path == "" else path
+        return 'href="%s%s"' % (("/ka/" + path) if name in KA_PAGES else "/" + path, frag)
+    out = re.sub(r'href="/([a-z0-9-]*)(#[^"]*)?"', lk, out)
+    out = re.sub(r'\b(href|src|data-src)="((?:assets|css|js)/)', r'\1="/\2', out)
+    out = out.replace('href="https://evebi.ge/', 'href="https://evebi.ge/')
+    return out
+
 SITEMAP = []
+def _alts(page):
+    if page not in KA_PAGES:
+        return ""
+    u = "" if page == "home" else page
+    return ('<link rel="alternate" hreflang="en" href="%s/%s">\n<link rel="alternate" hreflang="ka" href="%s/ka/%s">\n<link rel="alternate" hreflang="x-default" href="%s/%s">'
+            % (SITE, u, SITE, u, SITE, u))
+ALT = {p: _alts(p) for p in KA_PAGES}
 pagesdir = os.path.join(ROOT, "pages")
 for fn in sorted(os.listdir(pagesdir)):
     if not fn.endswith(".html"):
@@ -205,12 +258,11 @@ for fn in sorted(os.listdir(pagesdir)):
         title=esc(meta["title_en"] if EN_ONLY else meta["title"]), desc=esc(meta["desc_en"] if EN_ONLY else meta["desc"]),
         title_en=esc(meta.get("title_en", meta["title"])), desc_en=esc(meta.get("desc_en", meta["desc"])),
         wa=esc(meta.get("wa_en", "") if EN_ONLY else meta.get("wa", "")), wa_en=esc(meta.get("wa_en", "")),
-        file=("" if page == "home" else page), site=SITE, ver=VER, page=page, ld=ld, header=h, footer=footer, body=body)
+        file=("" if page == "home" else page), alt=ALT.get(page, ""), site=SITE, ver=VER, page=page, ld=ld, header=h, footer=footer, body=body)
     if EN_ONLY:
         out = re.sub(r'(<input type="radio" name="\w+" value=")[^"]*("[^>]*><span data-en=")([^"]*)(")', lambda m: m.group(1)+m.group(3)+m.group(2)+m.group(3)+m.group(4), out)
         out = re.sub(r'placeholder="[^"]*"\s+data-en-ph="([^"]*)"', r'placeholder="\1"', out)
         out = to_en(out)
-        out = re.sub(r'<div class="lang".*?</div>', "", out, flags=re.S)
         out = out.replace('<html lang="ka">', '<html lang="en">')
         out = out.replace('<span class="logo-ka">ები</span>', '<span class="logo-ka">ebi</span>').replace("EVები", "EVebi")
         out = re.sub(r'\sdata-(title-en|desc-en|wa-en)="[^"]*"', "", out)
@@ -227,8 +279,21 @@ for fn in sorted(os.listdir(pagesdir)):
     name = "index.html" if page == "home" else page + ".html"
     if meta.get("sitemap", "yes") != "no":
         SITEMAP.append("" if page == "home" else page)
-    open(os.path.join(OUT, name), "w", encoding="utf-8").write(out)
+        if page in KA_PAGES:
+            SITEMAP.append("ka/" if page == "home" else "ka/" + page)
+    en_out = out.replace("<!--LANG-->", lang_switch(page, "en"))
+    open(os.path.join(OUT, name), "w", encoding="utf-8").write(en_out)
     print("built", name)
+    if page in KA_PAGES:
+        os.makedirs(os.path.join(OUT, "ka"), exist_ok=True)
+        ka_out = to_ka(out, page, meta, KA["strings"]).replace("<!--LANG-->", lang_switch(page, "ka"))
+        open(os.path.join(OUT, "ka", name), "w", encoding="utf-8").write(ka_out)
+        print("built ka/" + name)
 
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join('  <url><loc>%s/%s</loc></url>\n' % (SITE, u) for u in sorted(SITEMAP)) + '</urlset>\n'
 open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(sm)
+
+if KA_MISSING:
+    print("\nGeorgian: English text still on the page (add to src/i18n_ka.json):")
+    for pg, t in KA_MISSING:
+        print("  [%s] %s" % (pg, t[:90]))

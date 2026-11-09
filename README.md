@@ -24,3 +24,11 @@ The site is currently published in English only (`EN_ONLY = True` in `src/build.
 
 ## Settings (`js/config.js`)
 Guides live in `src/pages/explained-*.html`. Revised sections (home, about, collaborations, guides) are English-only for now; Georgian versions to be added.
+
+## Georgian version
+
+English is the default. Georgian lives at `/ka/` (home, about, collaborate, contact, EV Explained hub).
+All Georgian wording is in `src/i18n_ka.json` (English text on the left, Georgian on the right, plus page titles,
+descriptions and WhatsApp messages under `meta`). `python3 src/build.py` writes `ka/*.html` and lists any English
+text that has no Georgian yet. Pages not in the list (the seven guides, Privacy Policy, 404) stay English until their
+translations are added to the file and the page name is added to `KA_PAGES` in `src/build.py`.

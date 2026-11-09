@@ -1,9 +1,9 @@
 @font-face{font-family:"Geist";src:url("../assets/fonts/Geist-var.woff") format("woff");font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:"LGV Baxy";src:url("../assets/fonts/LGV-Baxy-Regular.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:swap;size-adjust:135%;unicode-range:U+10D0-10FF,U+10A0-10CF,U+2D00-2D2F}
+@font-face{font-family:"Noto Sans Georgian";src:url("../assets/fonts/NotoSansGeorgian-var.woff") format("woff");font-weight:300 800;font-style:normal;font-display:swap;unicode-range:U+10A0-10FF,U+1C90-1CBF,U+2D00-2D2F}
 :root{
   --bg:#fff;--bg-rgb:255,255,255;--bg2:#F5F5F4;--ink:#0A0A0A;--mute:#686B70;--line:#E7E7E5;--white:#fff;
   --red:#D92D3F;--char:#0C0D0F;--char-rgb:12,13,15;--char2:#17181B;--char-line:#2A2C30;--milk:#F2F2F0;--dim:#9A9DA3;
-  --font:"Geist","LGV Baxy",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font:"Geist","Noto Sans Georgian",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --ease:cubic-bezier(.2,.7,.2,1);--hdr:76px;--r:6px;
   --ic-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h16M14 6l6 6-6 6'/%3E%3C/svg%3E");
   --ic-up:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E");
@@ -33,7 +33,7 @@ button,input{font:inherit;color:inherit}
 a:hover>.arr{transform:translateX(4px)}
 .btn:hover .arr-up,a:hover>.arr-up{transform:translate(2px,-2px)}
 a:hover>.arr-back{transform:scaleX(-1) translateX(4px)}
-.lang{display:flex;gap:2px;margin-right:8px}.lang button{border:0;background:none;padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:500}.lang button[aria-pressed=true]{background:var(--ink);color:#fff}
+.lang{display:flex;gap:2px;margin-right:8px}.lang a{padding:6px 10px;border-radius:999px;font-size:13px;font-weight:500;color:var(--mute);line-height:1.2}.lang a:hover{color:var(--ink)}.lang a[aria-current=true]{background:var(--ink);color:#fff}
 .ico{display:inline-block;width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
 [data-wa-link]{--ic:var(--ic-wa)}[data-tt-link]{--ic:var(--ic-tt)}[data-mail-link]{--ic:var(--ic-ml)}[data-ig-link]{--ic:var(--ic-ig)}
 .btn[data-wa-link]::before,.btn[data-tt-link]::before,.btn[data-mail-link]::before,.btn[data-ig-link]::before,.ftr-col a[data-wa-link]::before,.ftr-col a[data-tt-link]::before,.ftr-col a[data-mail-link]::before,.ftr-col a[data-ig-link]::before,.cta-card::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
@@ -303,3 +303,15 @@ a.pg:hover{opacity:.55}
 }
 .fab-late .wa-float{opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .3s,transform .3s}
 .fab-late.fab-on .wa-float{opacity:1;pointer-events:auto;transform:none}
+
+/* Georgian: longer words and wider letters, so headings are set smaller and without tight tracking */
+html[lang=ka] body *{letter-spacing:normal}
+html[lang=ka] .display{font-size:clamp(32px,4.4vw,64px);line-height:1.1;font-weight:700;overflow-wrap:normal}
+html[lang=ka] .hero-cover h1.display{font-size:clamp(32px,3.6vw,54px)}
+html[lang=ka] .hero.hero-dark h1.display{font-size:clamp(30px,3.4vw,50px)}
+html[lang=ka] .hero-cover .hero-text,html[lang=ka] .hero-dark .hero-text{max-width:620px}
+html[lang=ka] .h2{font-size:clamp(26px,3.2vw,44px);line-height:1.15;font-weight:700}
+html[lang=ka] .lead{line-height:1.65}
+@media(max-width:980px){
+  html[lang=ka] .hero-cover h1.display,html[lang=ka] .hero.hero-dark h1.display{font-size:clamp(27px,7.6vw,40px);line-height:1.12}
+}
