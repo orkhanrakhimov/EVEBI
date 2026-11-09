@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "37"
+VER = "42"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -32,7 +32,7 @@ TEMPLATE = """<!doctype html>
 <link rel="canonical" href="{site}/{file}">
 <meta name="theme-color" content="#F5F5F2">
 <link rel="icon" href="assets/favicon.png">
-<link rel="preload" href="assets/fonts/Inter-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="assets/fonts/Geist-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="css/site.css?v={ver}">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">{ld}</script>
@@ -170,7 +170,7 @@ def guide_page(g):
 <section class="sec sec-dark">
   <div class="wrap split">
     <div><h2 class="h2">Still unsure? Ask me.</h2><p class="lead" style="margin-top:14px">Send your question, or tell me which car you're considering.</p></div>
-    <div class="btns"><a class="btn btn-red" data-wa-link href="#" rel="noopener">Ask on WhatsApp</a><a class="btn btn-line" href="find-my-ev.html">Find My EV</a></div>
+    <div class="btns"><a class="btn btn-red" data-wa-link href="#" rel="noopener">Ask on WhatsApp</a><a class="btn btn-line" data-mail-link data-keep href="#">contact@evebi.ge</a></div>
   </div>
 </section>""" % dict(topic=g["topic"], kind=g["kind"], num=i + 1, n=n, min=g["minutes"], h1=g["h1"], lead=esc(g["lead"]),
         toc=toc_html, pts=pts, prose=prose, prev=pager(prev, "← Previous", "prev"), next=pager(nxt, "Next →", "next"))
@@ -214,6 +214,11 @@ for fn in sorted(os.listdir(pagesdir)):
         out = out.replace('<html lang="ka">', '<html lang="en">')
         out = out.replace('<span class="logo-ka">ები</span>', '<span class="logo-ka">ebi</span>').replace("EVები", "EVebi")
         out = re.sub(r'\sdata-(title-en|desc-en|wa-en)="[^"]*"', "", out)
+    out = re.sub(r'<span>→</span>', '<span class="arr"></span>', out)
+    out = re.sub(r'<span>↗</span>', '<span class="arr arr-up"></span>', out)
+    out = re.sub(r'\s*→(?=</a>)', ' <span class="arr"></span>', out)
+    out = re.sub(r'(<a class="link[^>]*>)\s*← ', r'\1<span class="arr arr-back"></span> ', out)
+    out = out.replace('<span class="arr">→</span>', '<span class="arr"></span>')
     if page == "404":
         out = out.replace('<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta name="viewport" content="width=device-width, initial-scale=1">\n<base href="/">\n<meta name="robots" content="noindex">', 1)
     name = "index.html" if page == "home" else page + ".html"
