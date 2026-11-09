@@ -47,7 +47,7 @@ a:hover>.arr-back{transform:scaleX(-1) translateX(4px)}
 .nav{display:contents}
 .nav-l,.nav-r{display:flex;align-items:center;gap:clamp(18px,2.6vw,34px);grid-row:1}
 .nav-l{grid-column:1;justify-self:start}
-.nav-r{grid-column:3;justify-self:end}
+.nav-r{grid-column:3;justify-self:end;margin-right:112px}
 .nav a{position:relative;font-size:15px;font-weight:450;color:var(--ink);padding:6px 0;transition:opacity .2s}
 .nav a:hover{opacity:.55}
 .nav a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink)}
@@ -266,6 +266,7 @@ a.pg:hover{opacity:.55}
   .burger{display:block;margin-right:-10px}
   .nav{display:flex;flex-direction:column;position:fixed;inset:var(--hdr) 0 0 0;background:var(--bg);padding:10px 24px 34px;overflow:auto;transform:translateY(-8px);opacity:0;visibility:hidden;transition:.3s var(--ease)}
   .nav.open{transform:none;opacity:1;visibility:visible}
+  .nav-r{margin-right:0}
   .nav-l,.nav-r{flex-direction:column;align-items:stretch;gap:0;width:100%;justify-self:auto;grid-column:auto}
   .nav a{font-size:26px;font-weight:500;letter-spacing:-.03em;padding:18px 0;border-bottom:1px solid var(--line)}
   .nav a[aria-current]::after{display:none}
@@ -314,4 +315,23 @@ html[lang=ka] .h2{font-size:clamp(26px,3.2vw,44px);line-height:1.18;font-weight:
 html[lang=ka] .lead{line-height:1.65}
 @media(max-width:980px){
   html[lang=ka] .hero-cover h1.display,html[lang=ka] .hero.hero-dark h1.display{font-size:clamp(27px,7.6vw,40px);line-height:1.12}
+}
+@media(min-width:981px){
+  html[lang=ka] .nav-l,html[lang=ka] .nav-r{gap:clamp(12px,1.5vw,26px)}
+  html[lang=ka] .nav a{white-space:nowrap;font-size:14px}
+}
+/* Georgian labels are long, so the burger menu starts earlier */
+@media(max-width:1260px){
+  html[lang=ka] .hdr-in{display:flex;justify-content:space-between}
+  html[lang=ka] .logo,html[lang=ka] .hdr-end{grid-column:auto}
+  html[lang=ka] .burger{display:block;margin-right:-10px}
+  html[lang=ka] .nav{display:flex;flex-direction:column;position:fixed;inset:var(--hdr) 0 0 0;background:var(--bg);padding:10px 24px 34px;overflow:auto;transform:translateY(-8px);opacity:0;visibility:hidden;transition:.3s var(--ease)}
+  html[lang=ka] .nav.open{transform:none;opacity:1;visibility:visible}
+  html[lang=ka] .nav-r{margin-right:0}
+  html[lang=ka] .nav-l,html[lang=ka] .nav-r{flex-direction:column;align-items:stretch;gap:0;width:100%;justify-self:auto;grid-column:auto}
+  html[lang=ka] .nav a{font-size:24px;font-weight:500;padding:18px 0;border-bottom:1px solid var(--line);white-space:normal}
+  html[lang=ka] .nav a[aria-current]::after{display:none}
+  html[lang=ka] .nav a.pill{background:none;color:var(--ink);padding:18px 0;border-radius:0}
+  html[lang=ka] .nav a.ic{display:none}
+}
 }
