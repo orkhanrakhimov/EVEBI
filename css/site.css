@@ -119,9 +119,9 @@ h1,h2,h3,h4{font-weight:600;line-height:1.08;letter-spacing:-.03em}
 .g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,7vw,110px);align-items:center}
 .note{font-size:14px;color:var(--mute);margin-top:18px}
-.list{list-style:none;display:grid;gap:14px}
-.list li{padding-left:26px;position:relative}
-.list li::before{content:"";position:absolute;left:0;top:.8em;width:12px;height:1px;background:currentColor}
+.list{list-style:none;display:grid;border-top:1px solid var(--line)}
+.list li{padding:16px 0;border-bottom:1px solid var(--line);line-height:1.45}
+.sec-dark .list{border-top-color:var(--char-line)}.sec-dark .list li{border-bottom-color:var(--char-line);color:var(--milk)}
 .badge{display:inline-block;padding:4px 12px;border-radius:999px;background:var(--bg2);font-size:13px;font-weight:500;color:var(--mute)}
 .sec-alt .badge{background:#fff}
 .badge.b-dealer{background:#E6EEFA;color:#1d4a8a}
