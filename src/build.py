@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "34"
+VER = "37"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -103,6 +103,85 @@ def to_en(src):
 def esc(s):
     return html.escape(s, quote=True)
 
+
+# ---------- EV Explained guides ----------
+import math
+def slug(t):
+    t=re.sub(r"<[^>]+>","",t).lower()
+    t=re.sub(r"[^a-z0-9]+","-",t).strip("-")
+    return t or "section"
+
+GUIDES = []
+_pd = os.path.join(ROOT, "pages")
+for _fn in sorted(os.listdir(_pd)):
+    if not _fn.endswith(".html"):
+        continue
+    _m, _b = parse(read(os.path.join(_pd, _fn)))
+    if _m.get("guide") == "yes":
+        _words = len(re.sub(r"<[^>]+>", " ", _b).split())
+        GUIDES.append(dict(slug=_fn[:-5], href=_fn, order=int(_m["order"]), topic=_m["topic"], kind=_m.get("kind", "Guide"),
+                           h1=_m["h1"], lead=_m["lead"], points=[x.strip() for x in _m["points"].split("|")],
+                           summary=_m.get("summary", ""), minutes=max(2, math.ceil(_words / 190)), body=_b))
+GUIDES.sort(key=lambda g: g["order"])
+
+def guide_page(g):
+    i = GUIDES.index(g); n = len(GUIDES)
+    ids = []; toc = []
+    def addid(m):
+        base = slug(m.group(1)); sid = base; k = 2
+        while sid in ids:
+            sid = "%s-%d" % (base, k); k += 1
+        ids.append(sid); toc.append((sid, re.sub(r"<[^>]+>", "", m.group(1))))
+        return '<h2 id="%s">%s</h2>' % (sid, m.group(1))
+    prose = re.sub(r"<h2>(.*?)</h2>", addid, g["body"])
+    toc_html = "".join('<li><a href="#%s">%s</a></li>' % (a, b) for a, b in toc)
+    pts = "".join("<li>%s</li>" % esc(x) for x in g["points"])
+    prev = GUIDES[i - 1] if i > 0 else None
+    nxt = GUIDES[i + 1] if i < n - 1 else None
+    def pager(gg, label, cls):
+        if not gg:
+            return '<span class="pg %s off"></span>' % cls
+        return '<a class="pg %s" href="%s"><small>%s</small><b>%s</b></a>' % (cls, gg["href"], label, gg["h1"])
+    return """<div class="progress" aria-hidden="true"><i></i></div>
+<section class="hero art-hero">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="explained.html">EV Explained</a><span>/</span><span>%(topic)s</span></nav>
+    <div class="art-meta"><span class="badge">%(kind)s %(num)d of %(n)d</span><span>%(min)d min read</span><span>General information · Updated November 2026</span></div>
+    <h1 class="display art-title">%(h1)s</h1>
+    <p class="lead art-lead">%(lead)s</p>
+  </div>
+</section>
+<section class="sec art-sec">
+  <div class="wrap art-layout">
+    <aside class="toc"><div class="toc-in"><b>In this guide</b><ol>%(toc)s</ol><a class="toc-back" href="explained.html">← All guides</a></div></aside>
+    <article class="prose">
+      <details class="toc-m"><summary>In this guide</summary><ol>%(toc)s</ol></details>
+      <div class="keypoints"><b>The short version</b><ul>%(pts)s</ul></div>
+%(prose)s
+    </article>
+  </div>
+</section>
+<section class="sec sec-alt art-end">
+  <div class="wrap">
+    <nav class="pager" aria-label="Guide navigation">%(prev)s%(next)s</nav>
+    <p class="art-all"><a class="link" href="explained.html">← Back to all guides</a></p>
+  </div>
+</section>
+<section class="sec sec-dark">
+  <div class="wrap split">
+    <div><h2 class="h2">Still unsure? Ask me.</h2><p class="lead" style="margin-top:14px">Send your question, or tell me which car you're considering.</p></div>
+    <div class="btns"><a class="btn btn-red" data-wa-link href="#" rel="noopener">Ask on WhatsApp</a><a class="btn btn-line" href="find-my-ev.html">Find My EV</a></div>
+  </div>
+</section>""" % dict(topic=g["topic"], kind=g["kind"], num=i + 1, n=n, min=g["minutes"], h1=g["h1"], lead=esc(g["lead"]),
+        toc=toc_html, pts=pts, prose=prose, prev=pager(prev, "← Previous", "prev"), next=pager(nxt, "Next →", "next"))
+
+def hub_path():
+    items = []
+    for i, g in enumerate(GUIDES):
+        items.append('<li class="gstep rv" data-topic="%s" data-slug="%s"><a href="%s"><span class="gstep-n">%d</span><span class="gstep-b"><span class="gstep-meta">%s · %d min read<em class="read"> · Read</em></span><b>%s</b><span class="gstep-s">%s</span></span><span class="gstep-go" aria-hidden="true">→</span></a></li>'
+                     % (g["topic"], g["slug"], g["href"], i + 1, g["kind"] if g["kind"] == "Checklist" else g["topic"], g["minutes"], g["h1"], esc(g["summary"])))
+    return '<ol class="path">' + "".join(items) + '</ol>'
+
 SITEMAP = []
 pagesdir = os.path.join(ROOT, "pages")
 for fn in sorted(os.listdir(pagesdir)):
@@ -110,6 +189,9 @@ for fn in sorted(os.listdir(pagesdir)):
         continue
     page = fn[:-5]
     meta, body = parse(read(os.path.join(pagesdir, fn)))
+    if meta.get("guide") == "yes":
+        body = guide_page(next(x for x in GUIDES if x["slug"] == page))
+    body = body.replace("<!--PATH-->", hub_path())
     navkey = meta.get("nav", page)
     h = header.replace('data-nav="%s"' % navkey, 'data-nav="%s" aria-current="page"' % navkey)
     ld = ('{"@context":"https://schema.org","@graph":['

@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#F5F5F2">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preload" href="assets/fonts/Inter-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/site.css?v=34">
+<link rel="stylesheet" href="css/site.css?v=37">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://evebi.ge/#org","name":"EVebi","url":"https://evebi.ge/","logo":"https://evebi.ge/assets/logo-light.png","email":"contact@evebi.ge","founder":{"@type":"Person","name":"Orkhan Rakhimov"},"sameAs":["https://www.tiktok.com/@ev.ebi","https://www.instagram.com/ev.ebi/"]},{"@type":"WebSite","name":"EVebi","url":"https://evebi.ge/","inLanguage":["en"],"publisher":{"@id":"https://evebi.ge/#org"}}]}</script>
 </head>
@@ -27,7 +27,7 @@
     <nav class="nav" id="nav" aria-label="Main">
       <a href="index.html" data-nav="home">Home</a>
       <a href="about.html" data-nav="about">About</a>
-      <a href="explained.html" data-nav="explained" aria-current="page">EV Explained</a>
+      <a href="explained.html" data-nav="explained">EV Explained</a>
       <a href="collaborations.html" data-nav="collaborations" class="pill">Collaborate</a>
       <a href="contact.html" data-nav="contact">Contact</a>
       <div class="dd dd-sec">
@@ -46,45 +46,50 @@
 </header>
 
 <main id="main">
-<section class="hero" style="padding-bottom:clamp(24px,4vw,40px)">
+<div class="progress" aria-hidden="true"><i></i></div>
+<section class="hero art-hero">
   <div class="wrap">
-    <a class="link rv" href="explained.html" style="margin-bottom:22px">← EV Explained</a>
-    <div class="art-meta rv"><span class="badge">Checklist</span><span>General information · Updated November 2026</span></div>
-    <h1 class="display art-title rv d1">What to ask a dealership before buying an EV</h1>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="explained.html">EV Explained</a><span>/</span><span>Buying</span></nav>
+    <div class="art-meta"><span class="badge">Checklist 7 of 7</span><span>2 min read</span><span>General information · Updated November 2026</span></div>
+    <h1 class="display art-title">What to ask a dealership before buying an EV</h1>
+    <p class="lead art-lead">Questions to take to a dealership, so the answers end up in writing.</p>
   </div>
 </section>
-<section class="sec" style="padding-top:clamp(20px,3vw,32px)">
-  <div class="wrap">
-    <div class="prose">
+<section class="sec art-sec">
+  <div class="wrap art-layout">
+    <aside class="toc"><div class="toc-in"><b>In this guide</b><ol><li><a href="#1-which-car-exactly-is-this">1. Which car exactly is this?</a></li><li><a href="#2-warranty">2. Warranty</a></li><li><a href="#3-battery">3. Battery</a></li><li><a href="#4-servicing-and-parts">4. Servicing and parts</a></li><li><a href="#5-software-charging-and-paperwork">5. Software, charging and paperwork</a></li></ol><a class="toc-back" href="explained.html">← All guides</a></div></aside>
+    <article class="prose">
+      <details class="toc-m"><summary>In this guide</summary><ol><li><a href="#1-which-car-exactly-is-this">1. Which car exactly is this?</a></li><li><a href="#2-warranty">2. Warranty</a></li><li><a href="#3-battery">3. Battery</a></li><li><a href="#4-servicing-and-parts">4. Servicing and parts</a></li><li><a href="#5-software-charging-and-paperwork">5. Software, charging and paperwork</a></li></ol></details>
+      <div class="keypoints"><b>The short version</b><ul><li>Confirm exactly which car this is, including its market spec</li><li>Ask for the warranty terms in writing</li><li>Ask who services the car and supplies parts in Georgia</li><li>For a used car, ask about battery health</li></ul></div>
 <p>Buying an electric or plug-in hybrid car, especially from a brand you don't know well, comes down to a few things the brochure rarely explains. Take these questions with you and ask for the answers <strong>in writing</strong>. If a dealership can't answer one, that is useful information too.</p>
-<h2>1. Which car exactly is this?</h2>
+<h2 id="1-which-car-exactly-is-this">1. Which car exactly is this?</h2>
 <ul>
 <li>Which market is this car built for (for example European, Chinese or American specification)?</li>
 <li>Is it officially distributed in Georgia, or imported separately? Who is the importer?</li>
 <li>Model year, exact variant and battery size?</li>
 <li>Which charging inlet does it have? (See the <a class="link" href="explained-charging-connectors.html">connectors guide</a>.)</li>
 </ul>
-<h2>2. Warranty</h2>
+<h2 id="2-warranty">2. Warranty</h2>
 <ul>
 <li>Who issues the warranty: the manufacturer, the importer or the dealership?</li>
 <li>How long does it last, and is there a distance limit?</li>
 <li>Is the warranty valid in Georgia for this specific car? Can I see the document?</li>
 <li>What is excluded, and what could void it?</li>
 </ul>
-<h2>3. Battery</h2>
+<h2 id="3-battery">3. Battery</h2>
 <ul>
 <li>Is the battery covered separately, and for how long or how far?</li>
 <li>Does the warranty set a minimum battery capacity, and who measures it?</li>
 <li>What happens if the battery needs repair or replacement, and who pays?</li>
 <li>For a plug-in hybrid: how big is the battery, what is the electric range, and can the car run without ever being plugged in?</li>
 </ul>
-<h2>4. Servicing and parts</h2>
+<h2 id="4-servicing-and-parts">4. Servicing and parts</h2>
 <ul>
 <li>Who services the car in Georgia, and are the technicians trained for this brand?</li>
 <li>Are common parts kept in stock, or ordered? How long does ordering usually take?</li>
 <li>Is there a loan car or other support while mine is being repaired?</li>
 </ul>
-<h2>5. Software, charging and paperwork</h2>
+<h2 id="5-software-charging-and-paperwork">5. Software, charging and paperwork</h2>
 <ul>
 <li>Which features and apps work in Georgia, and in which language?</li>
 <li>Is a charging cable included, and can the dealership help with a home charger?</li>
@@ -92,16 +97,13 @@
 <li>Can I take a test drive?</li>
 </ul>
 <div class="callout"><h3>Remember</h3><p>Warranties, prices and availability are the dealership's and manufacturer's responsibility. EVebi does not provide warranties or guarantees and can't confirm a dealership's claims unless a page says it was independently checked.</p></div>
-    </div>
+    </article>
   </div>
 </section>
-<section class="sec sec-alt">
+<section class="sec sec-alt art-end">
   <div class="wrap">
-    <div class="sec-head"><h2 class="h2">Related guides.</h2></div>
-    <div class="grid g2">
-<a class="card art-card" href="explained-battery-warranty.html"><h3 class="h3">Battery warranty: what to check</h3><span class="link">Read →</span></a>
-<a class="card art-card" href="explained-charging-connectors.html"><h3 class="h3">CCS2, GB/T and other connectors</h3><span class="link">Read →</span></a>
-    </div>
+    <nav class="pager" aria-label="Guide navigation"><a class="pg prev" href="explained-battery-warranty.html"><small>← Previous</small><b>Battery warranty: what to check</b></a><span class="pg next off"></span></nav>
+    <p class="art-all"><a class="link" href="explained.html">← Back to all guides</a></p>
   </div>
 </section>
 <section class="sec sec-dark">
@@ -143,7 +145,7 @@
   <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.4Z"/></svg>
 </a>
 
-<script src="js/config.js?v=34"></script>
-<script src="js/app.js?v=34"></script>
+<script src="js/config.js?v=37"></script>
+<script src="js/app.js?v=37"></script>
 </body>
 </html>

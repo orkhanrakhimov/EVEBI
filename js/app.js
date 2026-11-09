@@ -82,5 +82,48 @@ if("IntersectionObserver" in window){
 }else rv.forEach(function(el){el.classList.add("in")});
 
 
+/* ---------- EV Explained ---------- */
+(function(){
+  var KEY="evebi-read";
+  function getRead(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return []}}
+  function setRead(list){try{localStorage.setItem(KEY,JSON.stringify(list))}catch(e){}}
+  var page=body.getAttribute("data-page")||"";
+  var bar=$(".progress i"),art=$(".prose");
+  if(bar&&art){
+    var marked=false;
+    var onScroll=function(){
+      var r=art.getBoundingClientRect(),h=r.height-window.innerHeight*.6;
+      var p=Math.max(0,Math.min(1,(-r.top+window.innerHeight*.2)/Math.max(h,1)));
+      bar.style.width=(p*100)+"%";
+      if(!marked&&p>.7){marked=true;var l=getRead();if(l.indexOf(page)<0){l.push(page);setRead(l)}}
+    };
+    window.addEventListener("scroll",onScroll,{passive:true});onScroll();
+    var links=$$(".toc a[href^='#']"),heads=$$(".prose h2[id]");
+    if(heads.length&&"IntersectionObserver" in window){
+      var io=new IntersectionObserver(function(es){es.forEach(function(e){
+        if(e.isIntersecting){links.forEach(function(a){a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id)})}
+      })},{rootMargin:"-15% 0px -70% 0px"});
+      heads.forEach(function(h){io.observe(h)});
+    }
+    $$(".toc-m a").forEach(function(a){a.addEventListener("click",function(){var d=$(".toc-m");if(d)d.open=false})});
+  }
+  var steps=$$(".gstep");
+  if(steps.length){
+    var read=getRead();
+    steps.forEach(function(st){if(read.indexOf(st.getAttribute("data-slug"))>-1)st.classList.add("done")});
+    $$(".chip-f").forEach(function(b){b.addEventListener("click",function(){
+      $$(".chip-f").forEach(function(x){x.classList.toggle("on",x===b)});
+      var f=b.getAttribute("data-filter");
+      steps.forEach(function(st){st.hidden=!(f==="all"||st.getAttribute("data-topic")===f)});
+    })});
+  }
+  var q=$("#gl-q");
+  if(q){q.addEventListener("input",function(){
+    var v=q.value.trim().toLowerCase(),n=0;
+    $$(".gl-i").forEach(function(i){var m=!v||i.textContent.toLowerCase().indexOf(v)>-1;i.hidden=!m;if(m)n++});
+    var none=$("#gl-none");if(none)none.hidden=n>0;
+  })}
+})();
+
 applyLang(lang,false);
 })();
