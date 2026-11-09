@@ -62,6 +62,14 @@ if("IntersectionObserver" in window){
   window.addEventListener("scroll",f,{passive:true});f();
 })();
 
+/* the floating WhatsApp button stays out of the way of the page buttons */
+(function(){
+  if("IntersectionObserver" in window){
+    var seen=0,io=new IntersectionObserver(function(es){es.forEach(function(e){seen+=e.isIntersecting?1:-1});body.classList.toggle("fab-hide",seen>0)});
+    $$("main .btns,main .cta-card").forEach(function(b){io.observe(b)});
+  }
+})();
+
 /* ---------- EV Explained ---------- */
 (function(){
   var KEY="evebi-read";
