@@ -29,7 +29,8 @@ button,input{font:inherit;color:inherit}
 .arr{display:inline-block;width:18px;height:18px;font-size:0;background:currentColor;-webkit-mask:var(--ic-arrow) center/contain no-repeat;mask:var(--ic-arrow) center/contain no-repeat;transition:transform .3s var(--ease)}
 .arr-up{-webkit-mask-image:var(--ic-up);mask-image:var(--ic-up)}
 .arr-back{transform:scaleX(-1)}
-.btn:hover .arr,a:hover>.arr{transform:translateX(4px)}
+.btn .arr{display:none}
+a:hover>.arr{transform:translateX(4px)}
 .btn:hover .arr-up,a:hover>.arr-up{transform:translate(2px,-2px)}
 a:hover>.arr-back{transform:scaleX(-1) translateX(4px)}
 .lang{display:flex;gap:2px;margin-right:8px}.lang button{border:0;background:none;padding:6px 10px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:500}.lang button[aria-pressed=true]{background:var(--ink);color:#fff}
@@ -101,25 +102,15 @@ h1,h2,h3,h4{font-weight:600;line-height:1.08;letter-spacing:-.03em}
 .hero .lead{margin-bottom:34px}
 .hero-cover{position:relative;isolation:isolate;overflow:hidden;padding:clamp(90px,13vw,190px) 0 clamp(40px,6vw,80px);min-height:min(88vh,820px);display:flex;align-items:center}
 .hero-cover>.wrap{width:min(1240px,100% - 48px)}
-.hero-bg{position:absolute;inset:0 0 0 38%;z-index:-2;border-radius:0}
+.hero-bg{position:absolute;inset:0 0 0 36%;z-index:-2;border-radius:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 42%),linear-gradient(0deg,transparent 0,#000 28%),linear-gradient(180deg,transparent 0,#000 10%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 42%),linear-gradient(0deg,transparent 0,#000 28%),linear-gradient(180deg,transparent 0,#000 10%);mask-composite:intersect}
 .hero-bg::after{display:none}
 .hero-bg img{object-position:58% 50%}
-.hero-cover::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:
-   linear-gradient(90deg,var(--bg) 0%,var(--bg) 22%,rgba(var(--bg-rgb),.85) 38%,rgba(var(--bg-rgb),.4) 52%,rgba(var(--bg-rgb),0) 68%),
-   linear-gradient(0deg,var(--bg) 0%,rgba(var(--bg-rgb),0) 26%),
-   linear-gradient(180deg,var(--bg) 0%,rgba(var(--bg-rgb),0) 12%)}
-.hero-text{max-width:600px;animation:rise 1s var(--ease) both}
+.hero-text{max-width:540px;animation:rise 1s var(--ease) both}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.hero-cover .lead{max-width:26em}
+.hero-cover .lead{max-width:22em}
 .hero-cover h1.display{font-size:clamp(40px,5.2vw,78px)}
 .hero-dark{background:var(--char);color:var(--milk)}
 .hero-dark .lead{color:#a8abb1}
-.hero-dark::before{background:
-   linear-gradient(90deg,var(--char) 0%,var(--char) 22%,rgba(var(--char-rgb),.8) 33%,rgba(var(--char-rgb),.35) 46%,rgba(var(--char-rgb),0) 60%),
-   linear-gradient(270deg,var(--char) 0%,rgba(var(--char-rgb),0) 14%),
-   linear-gradient(0deg,var(--char) 0%,rgba(var(--char-rgb),0) 28%),
-   linear-gradient(180deg,var(--char) 0%,rgba(var(--char-rgb),0) 18%)}
 .hero.hero-dark h1.display{font-size:clamp(38px,4.6vw,68px)}
 .hero-dark .hero-text{max-width:600px}
 
@@ -283,10 +274,8 @@ a.pg:hover{opacity:.55}
   .nav a:hover{opacity:1}
   .hero-cover{min-height:0;display:block;padding-top:calc(76vw + 16px)}
   .hero-cover .hero-text{max-width:none}
-  .hero-bg{inset:0 0 auto 0;height:84vw}
+  .hero-bg{inset:0 0 auto 0;height:84vw;-webkit-mask-image:linear-gradient(0deg,transparent 0,#000 44%),linear-gradient(180deg,transparent 0,#000 10%),linear-gradient(90deg,transparent 0,#000 8%),linear-gradient(270deg,transparent 0,#000 8%);mask-image:linear-gradient(0deg,transparent 0,#000 44%),linear-gradient(180deg,transparent 0,#000 10%),linear-gradient(90deg,transparent 0,#000 8%),linear-gradient(270deg,transparent 0,#000 8%)}
   .hero-bg img{object-position:66% 50%}
-  .hero-cover::before{inset:0 0 auto 0;height:84vw;background:linear-gradient(0deg,var(--bg) 0%,rgba(var(--bg-rgb),0) 42%),linear-gradient(180deg,var(--bg) 0%,rgba(var(--bg-rgb),0) 10%)}
-  .hero-dark::before{background:linear-gradient(0deg,var(--char) 0%,rgba(var(--char-rgb),0) 42%),linear-gradient(180deg,var(--char) 0%,rgba(var(--char-rgb),0) 10%),linear-gradient(90deg,var(--char) 0%,rgba(var(--char-rgb),0) 10%),linear-gradient(270deg,var(--char) 0%,rgba(var(--char-rgb),0) 10%)}
   .hero-dark .hero-text{max-width:none}
   .split,.g2,.g3,.ftr-in,.pillars,.start{grid-template-columns:minmax(0,1fr)}
   .art-layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}.toc-m{display:block}
