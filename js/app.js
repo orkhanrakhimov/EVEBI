@@ -82,6 +82,14 @@ if("IntersectionObserver" in window){
 }else rv.forEach(function(el){el.classList.add("in")});
 
 
+/* the WhatsApp button waits until the hero is out of the way */
+(function(){
+  if(!$(".hero-cover"))return;
+  body.classList.add("fab-late");
+  var f=function(){body.classList.toggle("fab-on",window.scrollY>window.innerHeight*.6)};
+  window.addEventListener("scroll",f,{passive:true});f();
+})();
+
 /* ---------- EV Explained ---------- */
 (function(){
   var KEY="evebi-read";
