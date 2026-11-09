@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(ROOT)
 NOINDEX = False                     # True = hide from search engines
 SITE = "https://evebi.ge"           # used for canonical/og when live
-VER = "46"
+VER = "47"
 EN_ONLY = True                      # True = publish English only (Georgian text stays in src/ and returns when set to False)                           # bump to bust the cache of css/js
 
 def read(p):
@@ -205,7 +205,7 @@ for fn in sorted(os.listdir(pagesdir)):
         title=esc(meta["title_en"] if EN_ONLY else meta["title"]), desc=esc(meta["desc_en"] if EN_ONLY else meta["desc"]),
         title_en=esc(meta.get("title_en", meta["title"])), desc_en=esc(meta.get("desc_en", meta["desc"])),
         wa=esc(meta.get("wa_en", "") if EN_ONLY else meta.get("wa", "")), wa_en=esc(meta.get("wa_en", "")),
-        file=("" if page == "home" else page + ".html"), site=SITE, ver=VER, page=page, ld=ld, header=h, footer=footer, body=body)
+        file=("" if page == "home" else page), site=SITE, ver=VER, page=page, ld=ld, header=h, footer=footer, body=body)
     if EN_ONLY:
         out = re.sub(r'(<input type="radio" name="\w+" value=")[^"]*("[^>]*><span data-en=")([^"]*)(")', lambda m: m.group(1)+m.group(3)+m.group(2)+m.group(3)+m.group(4), out)
         out = re.sub(r'placeholder="[^"]*"\s+data-en-ph="([^"]*)"', r'placeholder="\1"', out)
@@ -219,11 +219,14 @@ for fn in sorted(os.listdir(pagesdir)):
     out = re.sub(r'\s*→(?=</a>)', ' <span class="arr"></span>', out)
     out = re.sub(r'(<a class="link[^>]*>)\s*← ', r'\1<span class="arr arr-back"></span> ', out)
     out = out.replace('<span class="arr">→</span>', '<span class="arr"></span>')
+    # clean URLs: /about instead of about.html, / instead of index.html
+    out = re.sub(r'href="index\.html(#[^"]*)?"', lambda m: 'href="/%s"' % (m.group(1) or ""), out)
+    out = re.sub(r'href="([a-z0-9-]+)\.html(#[^"]*)?"', lambda m: 'href="/%s%s"' % (m.group(1), m.group(2) or ""), out)
     if page == "404":
         out = out.replace('<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta name="viewport" content="width=device-width, initial-scale=1">\n<base href="/">\n<meta name="robots" content="noindex">', 1)
     name = "index.html" if page == "home" else page + ".html"
     if meta.get("sitemap", "yes") != "no":
-        SITEMAP.append("" if page == "home" else page + ".html")
+        SITEMAP.append("" if page == "home" else page)
     open(os.path.join(OUT, name), "w", encoding="utf-8").write(out)
     print("built", name)
 
