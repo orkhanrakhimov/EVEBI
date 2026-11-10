@@ -256,6 +256,8 @@ def to_ka(out, page, meta_en, strings, metakey=None):
         return 'href="%s%s"' % (("/ka/" + path) if name in KA_PAGES else "/" + path, frag)
     out = re.sub(r'href="/([a-z0-9-]*)(#[^"]*)?"', lk, out)
     out = re.sub(r'\b(href|src|data-src)="((?:assets|css|js)/)', r'\1="/\2', out)
+    # the menu has little room: use the short form of the long guide label there only
+    out = re.sub(r'<nav class="nav".*?</nav>', lambda m: m.group(0).replace("ელექტრომობილების გზამკვლევი", "გზამკვლევი"), out, count=1, flags=re.S)
     return caps_headings(out)
 
 SITEMAP = []
