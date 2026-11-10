@@ -473,7 +473,6 @@
   "This policy explains what personal data EVebi handles when you visit evebi.ge or contact EVebi, why, and what your rights are. It is written to be read, so it is short and plain.": "ეს პოლიტიკა განმარტავს, რა პერსონალურ მონაცემებს ამუშავებს EVები საიტზე evebi.ge სტუმრობისას ან ჩვენთან დაკავშირებისას, რა მიზნით და რა უფლებები გაქვს. ტექსტი განზრახ მოკლე და გასაგებია.",
   "Who is responsible": "ვინ არის პასუხისმგებელი",
   "What this website collects": "რა მონაცემებს აგროვებს ვებსაიტი",
-  "The site has no accounts, no contact forms, no advertising and no analytics or tracking tools. It does not set tracking cookies. Your browser may keep a simple display preference, such as language, on your own device; it is never sent to EVebi.": "საიტზე არ არის მომხმარებლის ანგარიშები, საკონტაქტო ფორმები, რეკლამები, ანალიტიკის ან თვალთვალის ინსტრუმენტები. საიტი არ იყენებს თვალთვალის cookie-ფაილებს. შენმა ბრაუზერმა შესაძლოა საკუთარ მოწყობილობაზე შეინახოს მარტივი პარამეტრი, მაგალითად არჩეული ენა. ეს მონაცემი EVებს არ ეგზავნება.",
   "The site is hosted on GitHub Pages. Like any web host, GitHub may process technical data such as your IP address and browser details when you load a page. EVebi does not receive or use this data. See GitHub's own privacy statement for how it handles it.": "საიტი განთავსებულია GitHub Pages-ზე. სხვა ჰოსტინგის სერვისების მსგავსად, გვერდის ჩატვირთვისას GitHub-მა შეიძლება დაამუშაოს ტექნიკური მონაცემები, მაგალითად IP მისამართი და ბრაუზერის ინფორმაცია. EVები ამ მონაცემებს არ იღებს და არ იყენებს. GitHub-ის მიერ მონაცემების დამუშავების შესახებ იხილე მისი კონფიდენციალურობის პოლიტიკა.",
   "When you contact EVebi": "როცა EVებს უკავშირდები",
   "The site offers WhatsApp and email links. When you use them, you send a message from your own app, and EVebi receives what you choose to include: your name or number, your email address and the content of your message.": "საიტზე მოცემულია WhatsApp-ისა და ელფოსტის ბმულები. მათი გამოყენებისას შეტყობინებას შენი აპლიკაციიდან აგზავნი. EVები იღებს მხოლოდ იმ ინფორმაციას, რომელსაც თავად გაუზიარებ: სახელს ან ტელეფონის ნომერს, ელფოსტის მისამართს და შეტყობინების შინაარსს.",
@@ -622,7 +621,18 @@
   "Want your car": "გინდა, შენი ავტომობილიც",
   "on this page?": "ამ გვერდზე გამოჩნდეს?",
   "Lend me a car or invite me to an event. I will tell people what I really think, and say clearly who provided it.": "მომეცი ავტომობილი გასატესტად ან მომიწვიე ღონისძიებაზე. აუდიტორიას გულწრფელად გავუზიარებ ჩემს შეფასებას და ყოველთვის მკაფიოდ აღვნიშნავ, ვინ მომაწოდა ავტომობილი.",
-  "Work with EVebi": "ითანამშრომლე EVებთან"
+  "Work with EVebi": "ითანამშრომლე EVებთან",
+  "The site has no accounts, no contact forms, no advertising and no analytics or tracking tools. It does not set tracking cookies. Your browser may keep a simple preference on your own device, such as which guides you have marked as read; it is never sent to EVebi.": "საიტზე არ არის მომხმარებლის ანგარიშები, საკონტაქტო ფორმები, რეკლამები, ანალიტიკის ან თვალთვალის ინსტრუმენტები. საიტი არ იყენებს თვალთვალის cookie-ფაილებს. შენმა ბრაუზერმა შესაძლოა საკუთარ მოწყობილობაზე შეინახოს მარტივი პარამეტრი, მაგალითად ის, თუ რომელი გზამკვლევი გაქვს წაკითხულად მონიშნული. ეს მონაცემი EVებს არ ეგზავნება.",
+  "If you send an owner's experience of a car for a review page, it is published only with your permission. Your name is shown only if you agree to it.": "თუ მანქანის მფლობელის გამოცდილებას გამომიგზავნი მიმოხილვის გვერდისთვის, ის მხოლოდ შენი ნებართვით გამოქვეყნდება. შენი სახელი მხოლოდ მაშინ გამოჩნდება, თუ ამაზე თანახმა ხარ.",
+  "All reviews": "ყველა მიმოხილვა",
+  "Read my take": "წაიკითხე ჩემი შეფასება",
+  "See the reviews": "იხილე მიმოხილვები",
+  "Electric": "ელექტრო",
+  "Plug-in hybrid": "დამუხტვადი ჰიბრიდი",
+  "Own this car? Tell me what it is really like.": "გყავს ეს ავტომობილი? მიამბე, როგორია ის სინამდვილეში.",
+  "Your experience helps other buyers in Georgia. Send me a message. With your permission, I may share a short part of it on this page, marked as an owner's experience. I will not publish your name without asking.": "შენი გამოცდილება საქართველოში სხვა მყიდველებს ეხმარება. მომწერე შეტყობინება. შენი ნებართვით, მისი მოკლე ნაწილი შეიძლება გამოვაქვეყნო ამ გვერდზე და მივუთითო, რომ ეს მფლობელის გამოცდილებაა. შენს სახელს ნებართვის გარეშე არ გამოვაქვეყნებ.",
+  "Send an email": "გამომიგზავნე ელფოსტა",
+  "More reviews.": "სხვა მიმოხილვები."
  },
  "meta": {
   "index.html": {
@@ -713,6 +723,30 @@
    "title": "ავტომობილების მიმოხილვები: ჩემი გულწრფელი შეფასება | EVები",
    "desc": "ჩემი გულწრფელი შეფასებები ელექტრომობილებისა და დამუხტვადი ჰიბრიდების შესახებ, რომლებიც საქართველოში მინახავს ან გამომიცდია. თითოეულ ავტომობილთან მითითებულია მისი მოწოდების გარემოებები და სხვა მიმომხილველების მოსაზრებები.",
    "wa": "გამარჯობა! მინდა მანქანის მიმოხილვაზე ვისაუბრო.",
+   "alt": "x"
+  },
+  "review-tesla-model-y.html": {
+   "title": "Tesla Model Y მიმოხილვა: ჩემი გულწრფელი შეფასება | EVები",
+   "desc": "განახლებული დიზაინი, სალონი და პროგრამული უზრუნველყოფა აშკარად უკეთესია. თუმცა მასალების ხარისხი კვლავ სუსტი მხარეა.",
+   "wa": "გამარჯობა! მაქვს Tesla Model Y და მინდა ჩემი გამოცდილება გაგიზიარო.",
+   "alt": "x"
+  },
+  "review-byd-shark.html": {
+   "title": "BYD Shark მიმოხილვა: ჩემი გულწრფელი შეფასება | EVები",
+   "desc": "პირველი შთაბეჭდილება დამუხტვად ჰიბრიდულ პიკაპზე, რომლის სალონიც პრემიუმ კლასის შთაბეჭდილებას ტოვებს. ავტომობილი არ მიტარებია.",
+   "wa": "გამარჯობა! მაქვს BYD Shark და მინდა ჩემი გამოცდილება გაგიზიარო.",
+   "alt": "x"
+  },
+  "review-lexus-rz.html": {
+   "title": "Lexus RZ 350e მიმოხილვა: ჩემი გულწრფელი შეფასება | EVები",
+   "desc": "მშვიდი და კომფორტული სალონი, რომელსაც მოძველებული პროგრამული უზრუნველყოფა ჩრდილავს.",
+   "wa": "გამარჯობა! მაქვს Lexus RZ 350e და მინდა ჩემი გამოცდილება გაგიზიარო.",
+   "alt": "x"
+  },
+  "review-lotus-eletre.html": {
+   "title": "Lotus Eletre R მიმოხილვა: ჩემი გულწრფელი შეფასება | EVები",
+   "desc": "ლამაზი და კარგად გააზრებული ავტომობილია, თუმცა ფასი მეტისმეტად მაღალია.",
+   "wa": "გამარჯობა! მაქვს Lotus Eletre R და მინდა ჩემი გამოცდილება გაგიზიარო.",
    "alt": "x"
   }
  },

@@ -115,3 +115,14 @@ if("IntersectionObserver" in window){
 
 dynamic();
 })();
+
+/* ---------- Review filters ---------- */
+(function(){
+  var chips=document.querySelectorAll("[data-rfilter]"),cards=document.querySelectorAll(".rcard[data-type]");
+  if(!chips.length)return;
+  chips.forEach(function(b){b.addEventListener("click",function(){
+    chips.forEach(function(x){x.classList.toggle("on",x===b)});
+    var f=b.getAttribute("data-rfilter");
+    cards.forEach(function(c){c.hidden=!(f==="all"||c.getAttribute("data-type")===f)});
+  })});
+})();

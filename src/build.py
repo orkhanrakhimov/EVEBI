@@ -190,6 +190,8 @@ KA = json.load(open(os.path.join(ROOT, "i18n_ka.json"), encoding="utf-8"))
 KA_PAGES = {"home": "index.html", "about": "about.html", "collaborations": "collaborations.html", "contact": "contact.html", "explained": "explained.html", "privacy": "privacy.html", "reviews": "reviews.html"}
 for _g in ["ev-basics", "powertrains", "range-battery", "charging-basics", "charging-connectors", "battery-warranty", "dealer-questions"]:
     KA_PAGES["explained-" + _g] = "explained-" + _g + ".html"
+for _r in ["tesla-model-y", "byd-shark", "lexus-rz", "lotus-eletre"]:
+    KA_PAGES["review-" + _r] = "review-" + _r + ".html"
 KA_MISSING = []
 KA_HTML_USED = set()
 
