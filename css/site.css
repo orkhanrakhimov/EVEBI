@@ -389,3 +389,9 @@ html[lang=ka] .rev-label{font-size:12px}
 .rev-solo{max-width:820px}
 .rgrid[hidden],.rcard[hidden]{display:none}
 @media(max-width:860px){.rgrid{grid-template-columns:minmax(0,1fr)}}
+
+/* Georgian dark hero: wider, calmer paragraph with a quiet accent line */
+@media(min-width:861px){
+  html[lang=ka] .hero-dark .hero-text{max-width:620px}
+  html[lang=ka] .hero-dark .hero-text .lead{max-width:31em;font-size:clamp(16px,1.2vw,18px);line-height:1.75;letter-spacing:.005em;font-weight:350;color:#b4b7bd;border-left:2px solid var(--red,#d63a45);padding-left:22px;margin-top:28px}
+}
