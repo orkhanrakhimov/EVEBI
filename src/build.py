@@ -213,6 +213,7 @@ def _caps_text(inner):
 def caps_headings(out):
     """Headings, buttons, menu and footer links of the Georgian pages are set in capitals."""
     out = re.sub(r"(<(h1|h2|h3|h4|b|strong|summary)\b[^>]*>)(.*?)(</\2>)", lambda m: m.group(1) + _caps_text(m.group(3)) + m.group(4), out, flags=re.S)
+    out = re.sub(r'(<p class="lead[^"]*"[^>]*>)(.*?)(</p>)', lambda m: m.group(1) + _caps_text(m.group(2)) + m.group(3), out, flags=re.S)
     def anchors(seg):
         return re.sub(r"(<a\b[^>]*>)(.*?)(</a>)", lambda m: m.group(1) + _caps_text(m.group(2)) + m.group(3), seg, flags=re.S)
     out = re.sub(r"<nav class=\"nav\".*?</nav>", lambda m: anchors(m.group(0)), out, flags=re.S)

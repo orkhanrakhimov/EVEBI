@@ -395,3 +395,7 @@ html[lang=ka] .rev-label{font-size:12px}
   html[lang=ka] .hero-dark .hero-text{max-width:620px}
   html[lang=ka] .hero-dark .hero-text .lead{max-width:31em;font-size:clamp(16px,1.2vw,18px);line-height:1.75;letter-spacing:.005em;font-weight:350;color:#b4b7bd;border-left:2px solid var(--red,#d63a45);padding-left:22px;margin-top:28px}
 }
+
+/* Georgian intro paragraphs are in capitals too: a little more air */
+html[lang=ka] p.lead{letter-spacing:.03em;line-height:1.7}
+html[lang=ka] .hero-dark .hero-text .lead{font-size:clamp(14.5px,1.1vw,16.5px);letter-spacing:.035em;font-weight:400}
